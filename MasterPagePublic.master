@@ -1,0 +1,249 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPagePublic.master.cs" Inherits="RaC_MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <title>भू-समाधान | बिहार सरकार</title>
+
+    <link href="bhusamadhan/vendor/fontawesome-free-6.1.1/css/all.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/css/ruang-admin.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/gfg-style.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+    </style>
+    <style>
+        #link:hover {
+            text-decoration: underline;
+            text-decoration-color: red;
+            color: red;
+        }
+    </style>
+
+    <style>
+        #sidebar-nav {
+            width: 150px;
+            margin: 0;
+            padding: 0;
+            float: left;
+        }
+
+            #sidebar-nav li {
+                list-style: none;
+                border: 1px solid #ddd;
+                margin: 10px;
+                padding: 2px;
+            }
+
+        #content {
+            height: 1000px;
+            width: 100%;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        #sidebar-nav.sticky {
+            position: fixed;
+            top: 5px;
+        }
+    </style>
+
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-light accordion h-auto" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="Default.aspx" style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+                <div class="sidebar-brand-icon" style="margin-top: 15px;">
+                    <p><b>गृह विभाग</b></p>
+                </div>
+            </a>
+            <hr class="sidebar-divider my-0"/>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <center>
+                        <img src="~/images/bihar_homedept_logo.png" style="width: 100px" class="img-fluid" id="img_logo" runat="server" /></center>
+                </a>
+            </li>
+
+
+            <hr class="sidebar-divider" />
+
+
+            <asp:LoginView ID="LoginViewHQ" runat="server">
+                <RoleGroups>
+
+
+                    <asp:RoleGroup Roles="PUBLIC">
+                        <ContentTemplate>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap00"
+                                    aria-expanded="true" aria-controls="collapseBootstrap00">
+                                    <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Action</span>
+                                </a>
+                                <div id="collapseBootstrap00" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                                  
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/AppliedPublic.aspx" id="A3">Unfinalize Application</a>
+                                    </div>
+                                </div>
+                            </li>
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesensitivity" aria-expanded="true"
+                                    aria-controls="collapsePage">
+                                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Progress Report</span>
+                                </a>
+                                <div id="collapsePagesensitivity" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRptPublicLogin.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Meeting Details</a>
+                                    </div>                                   
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRptPublicLogin.aspx" id="A16">Remarks</a></span>
+                                    </div>
+                                </div>
+                                <div class="sidebar-heading" style="color: Black">
+                                </div>
+                            </li>
+
+
+                        </ContentTemplate>
+                    </asp:RoleGroup>
+
+
+
+
+
+
+
+                </RoleGroups>
+            </asp:LoginView>
+
+
+
+
+
+
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top" style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <span style="color: white; font-family: 'Poppins', sans-serif; font-weight: 500">भू-समाधान | गृह विभाग | बिहार सरकार</span>
+
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdownName" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+
+                                <span class="ml-2 d-none d-lg-inline text-white small" style="color: Black; font-family: 'Poppins', sans-serif; font-weight: 700">
+                                    <asp:Label ID="lblusername" runat="server" Text="HQ"></asp:Label>
+                                </span>
+                            </a>
+                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+
+                            <%-- <span class="ml-2 d-none d-lg-inline text-white small" style="color: Black; font-family: 'Poppins', sans-serif; font-weight: 700">
+                                    <asp:Label ID="lblusername" runat="server" Text="HQ"></asp:Label></span>--%>
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+
+                                <span class="ml-2 d-none d-lg-inline text-white small" style="color: Black; font-family: 'Poppins', sans-serif; font-weight: 700">
+                                    <asp:Label ID="lbluserid" runat="server" Text="HQ"></asp:Label>
+                                </span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="ChangePassword.aspx" style="color: Black">
+                                    <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
+                                </a>
+                                <div class="dropdown-divider"></div>
+
+                                <a style="color: Black" runat="server" class="dropdown-item" href="LandDispute/Common/LogOut.aspx">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+
+
+                <form id="form1" runat="server">
+
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto p-2">
+                <span>Copyright &copy;
+                            <script> document.write(new Date().getFullYear()); </script>
+                    - | Home Department, Govt. of Bihar | All Rights Reserved | Software solution provided and designed by
+              <b><a href="https://www.nic.in/" target="_blank" style="color: white; text-decoration: none;">NIC-Bihar</a></b>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script src="bhusamadhan/vendor/jquery/jquery.min.js"></script>
+    <script src="bhusamadhan/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="bhusamadhan/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="bhusamadhan/vendor/chart.js/Chart.min.js"></script>
+    <script src="bhusamadhan/js/demo/chart-area-demo.js"></script>
+    <script src="bhusamadhan/vendor/fontawesome-free-6.1.1/js/all.min.js"></script>
+    <script src="bhusamadhan/js/ruang-admin.min.js"></script>
+
+    <script>
+        var $sidebar = $('#sidebar-nav');
+        var sidebarTop = $sidebar.position().top;
+        var blogHeight = $('#content').outerHeight() - 10;
+        $(window).scroll(fixSidebarOnScroll);
+
+        function fixSidebarOnScroll() {
+            var windowScrollTop = $(window).scrollTop();
+            if (windowScrollTop >= blogHeight || windowScrollTop <= sidebarTop) {
+                $sidebar.removeClass('sticky');
+            }
+            else if (windowScrollTop >= sidebarTop) {
+                if (!$sidebar.hasClass('sticky')) {
+                    $sidebar.addClass('sticky');
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

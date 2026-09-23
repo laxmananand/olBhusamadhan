@@ -1,0 +1,2103 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="RaC_MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    
+    <title>भू-समाधान | बिहार सरकार</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+    <link href="bhusamadhan/vendor/fontawesome-free-6.1.1/css/all.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/css/ruang-admin.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/gfg-style.css" rel="stylesheet" />
+ <%--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>--%>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+    </style>
+
+   
+
+    <style>
+        #link:hover {
+            text-decoration: underline;
+            text-decoration-color: red;
+            color: red;
+        }
+
+   </style>
+
+
+    <style>
+        #sidebar-nav {
+            width: 150px;
+            margin: 0;
+            padding: 0;
+            float: left;
+        }
+
+            #sidebar-nav li {
+                list-style: none;
+                border: 1px solid #ddd;
+                margin: 10px;
+                padding: 2px;
+            }
+
+        #content {
+            height: 1000px;
+            width: 100%;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        #sidebar-nav.sticky {
+            position: fixed;
+            top: 5px;
+        }
+    </style>
+
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-light accordion h-auto" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="Default.aspx" style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+                <div class="sidebar-brand-icon" style="margin-top: 15px;">
+                    <p><b>गृह विभाग</b></p>
+                </div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <center><img src="~/images/bihar_homedept_logo.png" style="width:100px" class="img-fluid" id="img_logo" runat="server"/></center>
+                </a>
+            </li>
+
+
+            <hr class="sidebar-divider">
+
+
+             <li class="nav-item mt-2">
+                 <a class="nav-link collapsed "  href="/LandDispute/DefaultHome.aspx"  
+                    aria-expanded="true" aria-controls="collapseBootstrap">
+                    <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Home</span>
+                </a>
+               
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+                    aria-expanded="true" aria-controls="collapseBootstrap">
+                    <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dashboard</span>
+                </a>
+                <div id="collapseBootstrap" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" href="/LandDispute/LandDispute/Dashboard/Bhu-Dashboard-graph.aspx" id="link6">Dashboard</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" href="#" id="link7">Dispute Area Map</a>
+                    </div>--%>
+                </div>
+            </li>
+            <asp:LoginView ID="LoginViewHQ" runat="server">
+                <RoleGroups>
+
+                    <asp:RoleGroup Roles="HQ,ADMHOME,ADMLR,LAWORDER">
+                        <ContentTemplate>
+                             
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap1"
+                    aria-expanded="true" aria-controls="collapseBootstrap1">
+                    <i class="fas fa-map" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Map</span>
+                </a>
+                <div id="collapseBootstrap1" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    <%--<div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.html" id="link5">भू-समाधान</a>
+                    </div>--%>
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.aspx" id="A4">Map Data</a>
+                    </div>
+                    <%-- <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/MapvillagepointFilter.aspx" id="A5">Map Data(Village Point With Filter)</a>
+                    </div>--%>
+
+
+
+                </div>
+            </li>
+
+            
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Consolidated Report</span>
+                </a>
+                <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/SearchApplicationwise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="Search">Search</a>
+                    </div>
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="LandDispute/Reports/Consolidate/ApplicationConsolidateBlockRpt.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="link1">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationConsolidateRpt.aspx"  id="link2">Division Wise</a></span>
+                    </div>
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationDistConsolidateRpt.aspx" id="link3">District Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                </li>
+
+                 <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesensitivity" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Sensitivity Report</span>
+                </a>
+                <div id="collapsePagesensitivity" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllSensitivityType.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Detail Report</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DivisionWiseSencitivity.aspx"  id="A15">Division Wise</a></span>
+                    </div>--%>
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Consolidate/DistrictSensitivityType.aspx" id="A16">District Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                     </li>
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm101" aria-expanded="true"
+                        aria-controls="collapseForm101">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dispute Details</span>
+                    </a>
+                    <div id="collapseForm101" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">                       
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeConsolidateBlockRpt.aspx" id="Dispute_Details_All">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">                        
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDivConsolidateRpt.aspx" id="Dispute_Details_DivisionWise">Division Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDistConsolidateRpt.aspx" id="Dispute_Details_DistrictWise">District Wise</a></span>
+                        </div>                                              
+                    </div>
+                </li>
+
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1" aria-expanded="true"
+                        aria-controls="collapseForm1">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Vadi Details</span>
+                    </a>
+                    <div id="collapseForm1" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiAllConsolidateRpt.aspx" id="VadiAll">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiConsolidateRpt.aspx" id="VadiDivision">Division Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiDistrictConsolidateRpt.aspx" id="vadiDistrict">District Wise</a></span>
+                        </div>                        
+                    </div>
+                </li>
+
+                    <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                        aria-controls="collapseForm2">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                    </a>
+                    <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiAllConsolidateRpt.aspx" id="A1">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiConsolidateRpt.aspx" id="A6">Division Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiDistrictConsolidateRpt.aspx" id="A7">District Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+
+
+
+                            <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                        aria-controls="collapseForm10">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Meeting Details</span>
+                    </a>
+                    <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRpt.aspx" id="A8">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDivisionWise.aspx" id="A9">Division Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDistrictWise.aspx" id="A10">District Wise</a></span>
+                        </div>
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/ActionDetails.aspx" id="A15">Previous Meeting </a></span>
+                        </div>
+                    </div>
+                </li>
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                    aria-controls="collapseForm2">
+                    <i class="fas fa-home" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                </a>
+                <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                   
+                </div>
+            </li>--%>
+
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm6" aria-expanded="true"
+                    aria-controls="collapseForm6">
+                    <i class="fa fa-house-flood-water" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Khata-Khesra Report</span>
+                </a>
+                <div id="collapseForm6" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                </div>
+            </li>--%>
+
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm3" aria-expanded="true"
+                    aria-controls="collapseForm3">
+                    <i class="fa-solid fa-kitchen-set" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Court Report</span>
+                </a>
+                <div id="collapseForm3" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">                        
+                       <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtWise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="CAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtDistrictConsolidateRpt.aspx" id="CDisW">District Wise</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtConsolidateRpt.aspx" id="CDivW">Division Wise</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm4" aria-expanded="true"
+                    aria-controls="collapseForm4">
+                    <i class="fa-solid fa-house-user" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Crime Report</span>
+                </a>
+                <div id="collapseForm4" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item"  runat="server" href="~/LandDispute/Reports/Crime/All_IncidentConsolidateReport.aspx" id="CrimeAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server"  href="~/LandDispute/Reports/Crime/IncidentDistrictConsolidateRpt.aspx" id="CrimeDistrict">District Wise</a>
+                    </div>
+                    <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Crime/IncidentConsolidateRpt.aspx" id="CrimeDivision">Division wise</a></span>
+                    </div>
+                </div>
+            </li>
+
+           
+
+           <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormr14" aria-expanded="true"
+                    aria-controls="collapseFormr14">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Remarks Report</span>
+                </a>
+                <div id="collapseFormr14" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRpt.aspx" id="A13">Remarks</a>
+                    </div>
+                </div>
+            </li>
+
+
+
+            
+              <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm14" aria-expanded="true"
+                    aria-controls="collapseForm10">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                </a>
+                <div id="collapseForm14" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Entry/LoginDetailsRPT.aspx" id="link">User Credential</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>--%>
+                </div>
+            </li>
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm144" aria-expanded="true"
+                                    aria-controls="collapseForm10">
+                                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Other</span>
+                                </a>
+                                <div id="collapseForm144" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/ViewDetailsIsLogin.aspx" id="A11">Login Detail</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllApplication.aspx" id="A12">Entry Count Thana wise</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/DASuite.aspx" id="A17">Bhu-Shamadhan API</a>
+                                    </div>
+                                </div>
+                            </li>
+
+            
+
+                         </ContentTemplate>
+                    </asp:RoleGroup>
+
+                    <asp:RoleGroup Roles="COM,DIG">
+                        <ContentTemplate>
+                             
+                            
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap1"
+                    aria-expanded="true" aria-controls="collapseBootstrap1">
+                    <i class="fas fa-map" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Map</span>
+                </a>
+                <div id="collapseBootstrap1" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.html" id="link5">भू-समाधान</a>
+                    </div>
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.aspx" id="A4">Map Data</a>
+                    </div>
+                     <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/MapvillagepointFilter.aspx" id="A5">Map Data(Village Point With Filter)</a>
+                    </div>
+
+
+
+                </div>
+            </li>
+
+            
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">
+                        Consolidated Report
+                    </span>
+                </a>
+                <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                     <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/SearchApplicationwise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="Search">Search</a>
+                    </div>
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="LandDispute/Reports/Consolidate/ApplicationConsolidateBlockRpt.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="link1">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationConsolidateRpt.aspx"  id="link2">Subdivision Wise</a></span>
+                    </div>
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationDistConsolidateRpt.aspx" id="link3">District Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+
+
+                <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesensitivity12" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Sensitivity Report</span>
+                </a>
+                <div id="collapsePagesensitivity12" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllSensitivityType.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Detail Report</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DivisionWiseSencitivity.aspx"  id="A15">Division Wise</a></span>
+                    </div>--%>
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Consolidate/DistrictSensitivityType.aspx" id="A16">District Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                     </li>
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm101" aria-expanded="true"
+                        aria-controls="collapseForm101">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dispute Details</span>
+                    </a>
+                    <div id="collapseForm101" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">                       
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeConsolidateBlockRpt.aspx" id="Dispute_Details_All">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">                        
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDivConsolidateRpt.aspx" id="Dispute_Details_DivisionWise">Subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDistConsolidateRpt.aspx" id="Dispute_Details_DistrictWise">District Wise</a></span>
+                        </div>                       
+                       
+                    </div>
+                </li>
+
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1" aria-expanded="true"
+                        aria-controls="collapseForm1">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Vadi Details</span>
+                    </a>
+                    <div id="collapseForm1" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiAllConsolidateRpt.aspx" id="VadiAll">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiConsolidateRpt.aspx" id="VadiDivision">subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiDistrictConsolidateRpt.aspx" id="vadiDistrict">District Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                        aria-controls="collapseForm2">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                    </a>
+                    <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiAllConsolidateRpt.aspx" id="A1">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiConsolidateRpt.aspx" id="A6">Subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiDistrictConsolidateRpt.aspx" id="A7">District Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+                            
+                            <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                        aria-controls="collapseForm10">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Meeting Details</span>
+                    </a>
+                    <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRpt.aspx" id="A8">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDivisionWise.aspx" id="A9">Subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDistrictWise.aspx" id="A10">District Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/ActionDetails.aspx" id="A15">Previous Meeting </a></span>
+                        </div>
+                    </div>
+                </li>
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                    aria-controls="collapseForm2">
+                    <i class="fas fa-home" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                </a>
+                <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                   
+                </div>
+            </li>--%>
+
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm6" aria-expanded="true"
+                    aria-controls="collapseForm6">
+                    <i class="fa fa-house-flood-water" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Khata-Khesra Report</span>
+                </a>
+                <div id="collapseForm6" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                </div>
+            </li>--%>
+
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm3" aria-expanded="true"
+                    aria-controls="collapseForm3">
+                    <i class="fa-solid fa-kitchen-set" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Court Report</span>
+                </a>
+                <div id="collapseForm3" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">                        
+                       <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtWise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="CAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtDistrictConsolidateRpt.aspx" id="CDisW">District Wise</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtConsolidateRpt.aspx" id="CDivW">Subdivision Wise</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm4" aria-expanded="true"
+                    aria-controls="collapseForm4">
+                    <i class="fa-solid fa-house-user" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Crime Report</span>
+                </a>
+                <div id="collapseForm4" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item"  runat="server" href="~/LandDispute/Reports/Crime/All_IncidentConsolidateReport.aspx" id="CrimeAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server"  href="~/LandDispute/Reports/Crime/IncidentDistrictConsolidateRpt.aspx" id="CrimeDistrict">District Wise</a>
+                    </div>
+                    <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Crime/IncidentConsolidateRpt.aspx" id="CrimeDivision">Subdivision wise</a></span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormrc14" aria-expanded="true"
+                    aria-controls="collapseFormrc14">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Remarks Report</span>
+                </a>
+                <div id="collapseFormrc14" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRpt.aspx" id="A13">Remarks</a>
+                    </div>
+                </div>
+            </li>
+
+            
+              <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                    aria-controls="collapseForm10">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                </a>
+                <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="User_Credential.aspx" id="link">User Credential</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>
+                </div>
+            </li>--%>
+
+
+
+                         </ContentTemplate>
+                    </asp:RoleGroup>
+
+                    <asp:RoleGroup Roles="DMOPT,SSPOPT,ADM,DPGRO">
+                        <ContentTemplate>
+                                   
+                            
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap1"
+                    aria-expanded="true" aria-controls="collapseBootstrap1">
+                    <i class="fas fa-map" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Map</span>
+                </a>
+                <div id="collapseBootstrap1" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.html" id="link5">भू-समाधान</a>
+                    </div>
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.aspx" id="A4">Map Data</a>
+                    </div>
+                     <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/MapvillagepointFilter.aspx" id="A5">Map Data(Village Point With Filter)</a>
+                    </div>
+
+
+
+                </div>
+            </li>
+ <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap00"
+                    aria-expanded="true" aria-controls="collapseBootstrap00">
+                    <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Action</span>
+                </a>
+                <div id="collapseBootstrap00" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                    <div class="py-1">                      
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/SearchAppForRemarks.aspx" id="lnkAddMeeting">Add Remarks</a>
+                    </div>
+                </div>
+            </li>
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+                                    aria-controls="collapsePage">
+                                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Consolidated Report</span>
+                                </a>
+                                <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/SearchApplicationwise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="Search">Search</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <a class="collapse-item" runat="server" href="LandDispute/Reports/Consolidate/ApplicationConsolidateBlockRpt.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="link1">Detail Report</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationConsolidateRpt.aspx" id="link2">Subdivision Wise</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationDistConsolidateRpt.aspx" id="link3">circle Wise</a></span>
+                                    </div>
+                                </div>
+                                <div class="sidebar-heading" style="color: Black">
+                                </div>
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesensitivity123" aria-expanded="true"
+                                        aria-controls="collapsePage">
+                                        <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Sensitivity Report</span>
+                                    </a>
+                                    <div id="collapsePagesensitivity123" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                                        <div class="py-1">
+                                            <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllSensitivityType.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Detail Report</a>
+                                        </div>
+                                        <%-- <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DivisionWiseSencitivity.aspx"  id="A15">Division Wise</a></span>
+                    </div>--%>
+                                        <div class="py-1">
+                                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DistrictSensitivityType.aspx" id="A16">Circle Wise</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="sidebar-heading" style="color: Black">
+                                    </div>
+                                </li>
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm101" aria-expanded="true"
+                        aria-controls="collapseForm101">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dispute Details</span>
+                    </a>
+                    <div id="collapseForm101" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">                       
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeConsolidateBlockRpt.aspx" id="Dispute_Details_All">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">                        
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDivConsolidateRpt.aspx" id="Dispute_Details_DivisionWise">Subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDistConsolidateRpt.aspx" id="Dispute_Details_DistrictWise">circle Wise</a></span>
+                        </div>                       
+                       
+                    </div>
+                </li>
+
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1" aria-expanded="true"
+                        aria-controls="collapseForm1">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Vadi Details</span>
+                    </a>
+                    <div id="collapseForm1" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiAllConsolidateRpt.aspx" id="VadiAll">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiConsolidateRpt.aspx" id="VadiDivision">subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiDistrictConsolidateRpt.aspx" id="vadiDistrict">Circle Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+<li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1" aria-expanded="true"
+                        aria-controls="collapseForm2">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                    </a>
+                    <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiAllConsolidateRpt.aspx" id="A1">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiConsolidateRpt.aspx" id="A6">Subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiDistrictConsolidateRpt.aspx" id="A7">District Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+                            
+                            <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                        aria-controls="collapseForm10">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Meeting Details</span>
+                    </a>
+                    <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRpt.aspx" id="A8">Detail Report</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDivisionWise.aspx" id="A9">Subdivision Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDistrictWise.aspx" id="A10">District Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/ActionDetails.aspx" id="A15">Previous Meeting </a></span>
+                        </div>
+                    </div>
+                </li>
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                    aria-controls="collapseForm2">
+                    <i class="fas fa-home" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                </a>
+                <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                   
+                </div>
+            </li>--%>
+
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm6" aria-expanded="true"
+                    aria-controls="collapseForm6">
+                    <i class="fa fa-house-flood-water" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Khata-Khesra Report</span>
+                </a>
+                <div id="collapseForm6" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                </div>
+            </li>--%>
+
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm3" aria-expanded="true"
+                    aria-controls="collapseForm3">
+                    <i class="fa-solid fa-kitchen-set" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Court Report</span>
+                </a>
+                <div id="collapseForm3" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">                        
+                       <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtWise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="CAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtDistrictConsolidateRpt.aspx" id="CDisW">Circle Wise</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtConsolidateRpt.aspx" id="CDivW">Subdivision Wise</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm4" aria-expanded="true"
+                    aria-controls="collapseForm4">
+                    <i class="fa-solid fa-house-user" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Crime Report</span>
+                </a>
+                <div id="collapseForm4" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item"  runat="server" href="~/LandDispute/Reports/Crime/All_IncidentConsolidateReport.aspx" id="CrimeAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server"  href="~/LandDispute/Reports/Crime/IncidentDistrictConsolidateRpt.aspx" id="CrimeDistrict">Circle Wise</a>
+                    </div>
+                    <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Crime/IncidentConsolidateRpt.aspx" id="CrimeDivision">Subdivision wise</a></span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormrad14" aria-expanded="true"
+                    aria-controls="collapseFormrad14">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Remarks Report</span>
+                </a>
+                <div id="collapseFormrad14" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRpt.aspx" id="A13">Remarks</a>
+                    </div>
+                </div>
+            </li>
+
+            
+              <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                    aria-controls="collapseForm10">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                </a>
+                <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="User_Credential.aspx" id="link">User Credential</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>
+                </div>
+            </li>--%>
+
+
+  <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm14" aria-expanded="true"
+                    aria-controls="collapseForm10">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                </a>
+                <div id="collapseForm14" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Entry/LoginDetailsRPT.aspx" id="link">User Credential</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>--%>
+                </div>
+            </li>
+
+<li class="nav-item mt-2">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormDM144" aria-expanded="true"
+        aria-controls="collapseFormDM144">
+        <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Other</span>
+    </a>
+    <div id="collapseFormDM144" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+       
+        <div class="py-1">
+            <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllApplication.aspx" id="A12">Entry Count Thana wise</a>
+        </div>
+       
+    </div>
+</li>
+
+
+                         </ContentTemplate>
+                    </asp:RoleGroup>
+
+
+                    <asp:RoleGroup Roles="DSTNIC1">
+                        <ContentTemplate>
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrapDSTNIC1"
+                                    aria-expanded="true" aria-controls="collapseBootstrapDSTNIC1">
+                                    <i class="fas fa-map" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Map</span>
+                                </a>
+                                <div id="collapseBootstrapDSTNIC1" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Map/Map.html" id="link5">भू-समाधान</a>
+                                    </div>
+                                    <div class="py-1">
+
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Map/Map.aspx" id="A4">Map Data</a>
+                                    </div>
+                                    <div class="py-1">
+
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Map/MapvillagepointFilter.aspx" id="A5">Map Data(Village Point With Filter)</a>
+                                    </div>
+
+
+
+                                </div>
+                            </li>
+
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePageDSTNIC1" aria-expanded="true"
+                                    aria-controls="collapsePageDSTNIC1">
+                                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Consolidated Report</span>
+                                </a>
+                                <div id="collapsePageDSTNIC1" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/SearchApplicationwise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="Search">Search</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <a class="collapse-item" runat="server" href="LandDispute/Reports/Consolidate/ApplicationConsolidateBlockRpt.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="link1">Detail Report</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationConsolidateRpt.aspx" id="link2">Subdivision Wise</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationDistConsolidateRpt.aspx" id="link3">circle Wise</a></span>
+                                    </div>
+                                </div>
+                                <div class="sidebar-heading" style="color: Black">
+                                </div>
+                                </li>
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapseDISTNIC" data-target="#collapseDISTNIC" aria-expanded="true"
+                                        aria-controls="collapsePage">
+                                        <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Sensitivity Report</span>
+                                    </a>
+                                    <div id="collapseDISTNIC" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                                        <div class="py-1">
+                                            <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllSensitivityType.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Detail Report</a>
+                                        </div>
+                                        <%-- <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DivisionWiseSencitivity.aspx"  id="A15">Division Wise</a></span>
+                    </div>--%>
+                                        <div class="py-1">
+                                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DistrictSensitivityType.aspx" id="A16">Circle Wise</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="sidebar-heading" style="color: Black">
+                                    </div>
+                                </li>
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="collapseFormDISTNIC101" aria-expanded="true"
+                                    aria-controls="collapseFormDISTNIC101">
+                                    <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dispute Details</span>
+                                </a>
+                                <div id="collapseFormDISTNIC101" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeConsolidateBlockRpt.aspx" id="Dispute_Details_All">Detail Report</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDivConsolidateRpt.aspx" id="Dispute_Details_DivisionWise">Subdivision Wise</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDistConsolidateRpt.aspx" id="Dispute_Details_DistrictWise">circle Wise</a></span>
+                                    </div>
+
+                                </div>
+                            </li>
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1DISTNIC" aria-expanded="true"
+                                    aria-controls="collapseForm1DISTNIC">
+                                    <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Vadi Details</span>
+                                </a>
+                                <div id="collapseForm1DISTNIC" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiAllConsolidateRpt.aspx" id="VadiAll">Detail Report</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiConsolidateRpt.aspx" id="VadiDivision">subdivision Wise</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiDistrictConsolidateRpt.aspx" id="vadiDistrict">Circle Wise</a></span>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1DISTNIC1" aria-expanded="true"
+                                    aria-controls="collapseForm1DISTNIC1">
+                                    <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                                </a>
+                                <div id="collapseForm1DISTNIC1" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiAllConsolidateRpt.aspx" id="A1">Detail Report</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiConsolidateRpt.aspx" id="A6">Subdivision Wise</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiDistrictConsolidateRpt.aspx" id="A7">District Wise</a></span>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                                    aria-controls="collapseForm10">
+                                    <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Meeting Details</span>
+                                </a>
+                                <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRpt.aspx" id="A8">Detail Report</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDivisionWise.aspx" id="A9">Subdivision Wise</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDistrictWise.aspx" id="A10">District Wise</a></span>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/ActionDetails.aspx" id="A15">Previous Meeting </a></span>
+                                    </div>
+                                </div>
+                            </li>
+                           
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm3" aria-expanded="true"
+                                    aria-controls="collapseForm3">
+                                    <i class="fa-solid fa-kitchen-set" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Court Report</span>
+                                </a>
+                                <div id="collapseForm3" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtWise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="CAll">Detail Report</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtDistrictConsolidateRpt.aspx" id="CDisW">Circle Wise</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtConsolidateRpt.aspx" id="CDivW">Subdivision Wise</a>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm4" aria-expanded="true"
+                                    aria-controls="collapseForm4">
+                                    <i class="fa-solid fa-house-user" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Crime Report</span>
+                                </a>
+                                <div id="collapseForm4" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Crime/All_IncidentConsolidateReport.aspx" id="CrimeAll">Detail Report</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Crime/IncidentDistrictConsolidateRpt.aspx" id="CrimeDistrict">Circle Wise</a>
+                                    </div>
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Crime/IncidentConsolidateRpt.aspx" id="CrimeDivision">Subdivision wise</a></span>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormrad14" aria-expanded="true"
+                                    aria-controls="collapseFormrad14">
+                                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Remarks Report</span>
+                                </a>
+                                <div id="collapseFormrad14" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRpt.aspx" id="A13">Remarks</a>
+                                    </div>
+                                </div>
+                            </li>
+
+
+                            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                    aria-controls="collapseForm10">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                </a>
+                <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="User_Credential.aspx" id="link">User Credential</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>
+                </div>
+            </li>--%>
+
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm14" aria-expanded="true"
+                                    aria-controls="collapseForm10">
+                                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                                </a>
+                                <div id="collapseForm14" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Entry/LoginDetailsRPT.aspx" id="link">User Credential</a>
+                                    </div>
+                                    <%-- <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>--%>
+                                </div>
+                            </li>
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormDM144" aria-expanded="true"
+                                    aria-controls="collapseFormDM144">
+                                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Other</span>
+                                </a>
+                                <div id="collapseFormDM144" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllApplication.aspx" id="A12">Entry Count Thana wise</a>
+                                    </div>
+
+                                </div>
+                            </li>
+
+
+                        </ContentTemplate>
+                    </asp:RoleGroup>
+
+                    <asp:RoleGroup Roles="SDOOPT,DSPOPT,SDPGRO">
+                        <ContentTemplate>                                         
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap1"
+                    aria-expanded="true" aria-controls="collapseBootstrap1">
+                    <i class="fas fa-map" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Map</span>
+                </a>
+                <div id="collapseBootstrap1" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.html" id="link5">भू-समाधान</a>
+                    </div>
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.aspx" id="A4">Map Data</a>
+                    </div>
+                     <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/MapvillagepointFilter.aspx" id="A5">Map Data(Village Point With Filter)</a>
+                    </div>
+
+
+
+                </div>
+            </li>
+
+            
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Consolidated Report</span>
+                </a>
+                <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/SearchApplicationwise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="Search">Search</a>
+                    </div>
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="LandDispute/Reports/Consolidate/ApplicationConsolidateBlockRpt.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="link1">Detail Report</a>
+                    </div>
+                    
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationConsolidateRpt.aspx" id="link3">circle Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                </li>
+                            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesensitivity12345" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Sensitivity Report</span>
+                </a>
+                <div id="collapsePagesensitivity12345" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllSensitivityType.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Detail Report</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DivisionWiseSencitivity.aspx"  id="A15">Division Wise</a></span>
+                    </div>--%>
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Consolidate/DistrictSensitivityType.aspx" id="A16">Circle Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                     </li>
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm101" aria-expanded="true"
+                        aria-controls="collapseForm101">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dispute Details</span>
+                    </a>
+                    <div id="collapseForm101" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">                       
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeConsolidateBlockRpt.aspx" id="Dispute_Details_All">Detail Report</a></span>
+                        </div>
+                       
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDistConsolidateRpt.aspx" id="Dispute_Details_DistrictWise">circle Wise</a></span>
+                        </div>                       
+                       
+                    </div>
+                </li>
+
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1" aria-expanded="true"
+                        aria-controls="collapseForm1">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Vadi Details</span>
+                    </a>
+                    <div id="collapseForm1" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiAllConsolidateRpt.aspx" id="VadiAll">Detail Report</a></span>
+                        </div>
+                        
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiDistrictConsolidateRpt.aspx" id="vadiDistrict">Circle Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+<li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                        aria-controls="collapseForm2">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                    </a>
+                    <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiAllConsolidateRpt.aspx" id="A1">Detail Report</a></span>
+                        </div>
+                        
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiDistrictConsolidateRpt.aspx" id="A7">Circle Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+
+                            
+                            <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                        aria-controls="collapseForm10">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Meeting Details</span>
+                    </a>
+                    <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRpt.aspx" id="A8">Detail Report</a></span>
+                        </div>
+                        
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDistrictWise.aspx" id="A10">Circle Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/ActionDetails.aspx" id="A15">Previous Meeting </a></span>
+                        </div>
+                    </div>
+                </li>
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                    aria-controls="collapseForm2">
+                    <i class="fas fa-home" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                </a>
+                <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                   
+                </div>
+            </li>--%>
+
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm6" aria-expanded="true"
+                    aria-controls="collapseForm6">
+                    <i class="fa fa-house-flood-water" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Khata-Khesra Report</span>
+                </a>
+                <div id="collapseForm6" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                </div>
+            </li>--%>
+
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm3" aria-expanded="true"
+                    aria-controls="collapseForm3">
+                    <i class="fa-solid fa-kitchen-set" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Court Report</span>
+                </a>
+                <div id="collapseForm3" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">                        
+                       <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtWise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="CAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtDistrictConsolidateRpt.aspx" id="CDisW">Circle Wise</a>
+                    </div>
+                    
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm4" aria-expanded="true"
+                    aria-controls="collapseForm4">
+                    <i class="fa-solid fa-house-user" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Crime Report</span>
+                </a>
+                <div id="collapseForm4" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item"  runat="server" href="~/LandDispute/Reports/Crime/All_IncidentConsolidateReport.aspx" id="CrimeAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server"  href="~/LandDispute/Reports/Crime/IncidentDistrictConsolidateRpt.aspx" id="CrimeDistrict">Circle Wise</a>
+                    </div>
+                    
+                </div>
+            </li>
+
+
+                            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormrad143" aria-expanded="true"
+                    aria-controls="collapseFormrad143">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Remarks Report</span>
+                </a>
+                <div id="collapseFormrad143" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRpt.aspx" id="A13">Remarks</a>
+                    </div>
+                </div>
+            </li>
+            
+              <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                    aria-controls="collapseForm10">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                </a>
+                <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="User_Credential.aspx" id="link">User Credential</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>
+                </div>
+            </li>--%>
+                         </ContentTemplate>
+                    </asp:RoleGroup>
+
+
+                    <asp:RoleGroup Roles="COOPT">
+                        <ContentTemplate>
+                                         
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap1"
+                    aria-expanded="true" aria-controls="collapseBootstrap1">
+                    <i class="fas fa-map" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Map</span>
+                </a>
+                <div id="collapseBootstrap1" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.html" id="link5">भू-समाधान</a>
+                    </div>
+                    <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/Map.aspx" id="A4">Map Data</a>
+                    </div>
+                     <div class="py-1">
+                       
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1"  runat="server" href="LandDispute/Map/MapvillagepointFilter.aspx" id="A5">Map Data(Village Point With Filter)</a>
+                    </div>
+
+
+
+                </div>
+            </li>
+
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap00"
+                                    aria-expanded="true" aria-controls="collapseBootstrap00">
+                                    <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Action</span>
+                                </a>
+                                <div id="collapseBootstrap00" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+
+                                    <%--<div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/SearchAppForCoVerify.aspx" id="lnkAddMeeting">Verify Application</a>
+                                    </div>--%>
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/Entry_Page_com.aspx" id="lnkentryco">New Entry</a>
+                                      </div>
+ <div class="py-1">
+   <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/SearchAppForMeeting_co.aspx" id="A35">Add Meeting</a>
+</div>
+                                    <div class="py-1">
+    <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/Unfinalize.aspx" id="A29">Unfinalize Application</a>
+                                        </div>
+                                                                          <div class="py-1">
+  <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/Finalize.aspx" id="A33">finalize Application</a>
+</div>
+                                                                        <div class="py-1">
+ 
+
+  
+                                     <%--<div class="py-1">
+                                         <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/SearchAppForMeeting_Public.aspx" id="lnkaddmettingcopub">Add Meeting Public</a>
+                                     </div>--%>
+
+  
+                                     <div class="py-1">
+     <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/Add_Holiday.aspx" id="A34">Add Holiday</a>
+ </div>
+                                </div>
+                            </li>
+
+             <%-- <li class="nav-item mt-2">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap00"
+                    aria-expanded="true" aria-controls="collapseBootstrap00">
+                    <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Action</span>
+                </a>
+                <div id="collapseBootstrap00" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                    <div class="py-1">                      
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/SearchAppForCoVerify.aspx" id="lnkAddMeeting">Verify Application</a>
+                    </div>
+                </div>
+            </li>--%>
+
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Consolidated Report</span>
+                </a>
+                <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                     <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/SearchApplicationwise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="Search">Search</a>
+                    </div>
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="LandDispute/Reports/Consolidate/ApplicationConsolidateBlockRpt.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="link1">Detail Report</a>
+                    </div>
+                    
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationConsolidateRpt.aspx" id="link3">Thana Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                </li>
+                            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesensitivity123456" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Sensitivity Report</span>
+                </a>
+                <div id="collapsePagesensitivity123456" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllSensitivityType.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Detail Report</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DivisionWiseSencitivity.aspx"  id="A15">Division Wise</a></span>
+                    </div>--%>
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Consolidate/DistrictSensitivityType.aspx" id="A16">Thana Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                     </li>
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm101" aria-expanded="true"
+                        aria-controls="collapseForm101">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dispute Details</span>
+                    </a>
+                    <div id="collapseForm101" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">                       
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeConsolidateBlockRpt.aspx" id="Dispute_Details_All">Detail Report</a></span>
+                        </div>
+                       
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDistConsolidateRpt.aspx" id="Dispute_Details_DistrictWise">Thana Wise</a></span>
+                        </div>                       
+                       
+                    </div>
+                </li>
+
+
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1" aria-expanded="true"
+                        aria-controls="collapseForm1">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Vadi Details</span>
+                    </a>
+                    <div id="collapseForm1" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiAllConsolidateRpt.aspx" id="VadiAll">Detail Report</a></span>
+                        </div>
+                       
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiDistrictConsolidateRpt.aspx" id="vadiDistrict">Thana Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+                <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                        aria-controls="collapseForm2">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                    </a>
+                    <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiAllConsolidateRpt.aspx" id="A1">Detail Report</a></span>
+                        </div>
+                        
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiDistrictConsolidateRpt.aspx" id="A7">Thana Wise</a></span>
+                        </div>
+                        
+                    </div>
+                </li>
+
+                            
+                            <li class="nav-item mt-2">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                        aria-controls="collapseForm10">
+                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Meeting Details</span>
+                    </a>
+                    <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                         <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRpt.aspx" id="A8">Detail Report</a></span>
+                        </div>
+                       
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDistrictWise.aspx" id="A10">Thana Wise</a></span>
+                        </div>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/ActionDetails.aspx" id="A15">Previous Meeting </a></span>
+                        </div>
+                    </div>
+                </li>
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                    aria-controls="collapseForm2">
+                    <i class="fas fa-home" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                </a>
+                <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                   
+                </div>
+            </li>--%>
+
+            <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm6" aria-expanded="true"
+                    aria-controls="collapseForm6">
+                    <i class="fa fa-house-flood-water" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Khata-Khesra Report</span>
+                </a>
+                <div id="collapseForm6" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                </div>
+            </li>--%>
+
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm3" aria-expanded="true"
+                    aria-controls="collapseForm3">
+                    <i class="fa-solid fa-kitchen-set" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Court Report</span>
+                </a>
+                <div id="collapseForm3" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">                        
+                       <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtWise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="CAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtDistrictConsolidateRpt.aspx" id="CDisW">Thana Wise</a>
+                    </div>
+                   
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm4" aria-expanded="true"
+                    aria-controls="collapseForm4">
+                    <i class="fa-solid fa-house-user" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Crime Report</span>
+                </a>
+                <div id="collapseForm4" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item"  runat="server" href="~/LandDispute/Reports/Crime/All_IncidentConsolidateReport.aspx" id="CrimeAll">Detail Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server"  href="~/LandDispute/Reports/Crime/IncidentDistrictConsolidateRpt.aspx" id="CrimeDistrict">Thana Wise</a>
+                    </div>
+                    
+                </div>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormr1412" aria-expanded="true"
+                    aria-controls="collapseFormr1412">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Remarks Report</span>
+                </a>
+                <div id="collapseFormr1412" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRpt.aspx" id="A13">Remarks</a>
+                    </div>
+                </div>
+            </li>
+
+            
+              <%--<li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                    aria-controls="collapseForm10">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Login Details Report</span>
+                </a>
+                <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="User_Credential.aspx" id="link">User Credential</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="#" id="link">Login Report</a>
+                    </div>
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" href="Change_Password.aspx" id="link">Change Password</a>
+                    </div>
+                </div>
+            </li>--%>
+                         </ContentTemplate>
+                    </asp:RoleGroup>
+
+
+                    <asp:RoleGroup Roles="SHOOPT">
+                        <ContentTemplate>
+                             <li class="nav-item mt-2">
+                            <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseBootstrap00"
+                            aria-expanded="true" aria-controls="collapseBootstrap00">
+                            <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                            <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Action</span>
+                            </a>
+                            <div id="collapseBootstrap00" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                                <div class="py-1">                
+                                    <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/Entry_Page.aspx" id="entrypadeID">New Entry</a>
+                                </div>
+                                <div class="py-1">                      
+                                    <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/SearchAppForMetting.aspx" id="lnkAddMeeting">Add Meeting</a>
+                                </div>
+                                <div class="py-1">                      
+                                    <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/Finalize.aspx" id="A2">Finalize Application</a>
+                                </div>
+                                <div class="py-1">                      
+                                    <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/Unfinalize.aspx" id="A3">Unfinalize Application</a>
+                                </div>
+                                <div class="py-1">                      
+    <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/editprofile.aspx" id="A18">Edit Profile</a>
+</div>
+                            </div>
+                             <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+                                    aria-controls="collapsePage">
+                                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Consolidated Report</span>
+                                </a>
+                                <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                                     <div class="py-1">  
+                                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/SearchApplicationwise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="Search">Search</a>
+                                    </div>
+                                    <div class="py-1">  
+                                        <a class="collapse-item" runat="server" href="LandDispute/Reports/Consolidate/ApplicationConsolidateBlockRpt.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="link1">Detail Report</a>
+                                    </div>                                   
+                                    <div class="py-1">                      
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="LandDispute/Reports/Consolidate/ApplicationConsolidateRpt.aspx" id="link3">Panchayat Wise</a></span>
+                                    </div>                    
+                                </div>
+                                <div class="sidebar-heading" style="color: Black">
+                                </div>
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm101" aria-expanded="true"
+                                        aria-controls="collapseForm101">
+                                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Dispute Details</span>
+                                    </a>
+                                    <div id="collapseForm101" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">                       
+                                         <div class="py-1">
+                                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeConsolidateBlockRpt.aspx" id="Dispute_Details_All">Detail Report</a></span>
+                                        </div>                                    
+                                        <div class="py-1">
+                                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Disputs_Details/DisputeDistConsolidateRpt.aspx" id="Dispute_Details_DistrictWise">Panchayat Wise</a></span>
+                                        </div>                       
+                       
+                                    </div>
+                                </li>
+
+                                 <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesensitivity231" aria-expanded="true"
+                    aria-controls="collapsePage">
+                    <i class="fas fa-fw fa-columns" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Sensitivity Report</span>
+                </a>
+                <div id="collapsePagesensitivity231" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">  
+                        <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Consolidate/AllSensitivityType.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="A14">Detail Report</a>
+                    </div>
+                   <%-- <div class="py-1">
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Consolidate/DivisionWiseSencitivity.aspx"  id="A15">Division Wise</a></span>
+                    </div>--%>
+                    <div class="py-1">                      
+                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server"  class="collapse-item" href="~/LandDispute/Reports/Consolidate/DistrictSensitivityType.aspx" id="A16">Panchayat Wise</a></span>
+                    </div>                    
+                </div>
+                <div class="sidebar-heading" style="color: Black">
+                </div>
+                     </li>
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm1" aria-expanded="true"
+                                        aria-controls="collapseForm1">
+                                        <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Vadi Details</span>
+                                    </a>
+                                    <div id="collapseForm1" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                         <div class="py-1">
+                                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiAllConsolidateRpt.aspx" id="VadiAll">Detail Report</a></span>
+                                        </div>                                        
+                                        <div class="py-1">
+                                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/VadiDeatils/VadiDistrictConsolidateRpt.aspx" id="vadiDistrict">Panchayat Wise</a></span>
+                                        </div>
+                        
+                                    </div>
+                                </li>
+
+                                <li class="nav-item mt-2">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                                    aria-controls="collapseForm2">
+                                    <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                                </a>
+                                <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                     <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiAllConsolidateRpt.aspx" id="A1">Detail Report</a></span>
+                                    </div>                                   
+                                    <div class="py-1">
+                                        <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/PratiVadiReport/PratiVadiDistrictConsolidateRpt.aspx" id="A7">Panchayat Wise</a></span>
+                                    </div>
+                        
+                                </div>
+                            </li>
+
+
+
+                            <li class="nav-item mt-2">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm10" aria-expanded="true"
+                                aria-controls="collapseForm10">
+                                <i class="fas fa-shapes" style="color: #606fdd"></i>
+                                <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Meeting Details</span>
+                            </a>
+                            <div id="collapseForm10" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                 <div class="py-1">
+                                    <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingAllConsolidateRpt.aspx" id="A8">Detail Report</a></span>
+                                </div>                              
+                                <%--<div class="py-1">                                
+                                    <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/MeetingDistrictWise.aspx" id="A10">Panchayat Wise</a></span>
+                                </div>--%>
+                        <div class="py-1">
+                            <span><a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" runat="server" class="collapse-item" href="~/LandDispute/Reports/Meeting/ActionDetails.aspx" id="A15">Previous Meeting </a></span>
+                        </div>
+                            </div>
+                        </li>
+                                    <%--<li class="nav-item mt-2">
+                                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm2" aria-expanded="true"
+                                            aria-controls="collapseForm2">
+                                            <i class="fas fa-home" style="color: #606fdd"></i>
+                                            <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Prativadi Details</span>
+                                        </a>
+                                        <div id="collapseForm2" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                   
+                                        </div>
+                                    </li>--%>
+
+                                <%--<li class="nav-item mt-2">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm6" aria-expanded="true"
+                                        aria-controls="collapseForm6">
+                                        <i class="fa fa-house-flood-water" style="color: #606fdd"></i>
+                                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Khata-Khesra Report</span>
+                                    </a>
+                                    <div id="collapseForm6" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    
+                                    </div>
+                                </li>--%>
+
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm3" aria-expanded="true"
+                                        aria-controls="collapseForm3">
+                                        <i class="fa-solid fa-kitchen-set" style="color: #606fdd"></i>
+                                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Court Report</span>
+                                    </a>
+                                    <div id="collapseForm3" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                        <div class="py-1">                        
+                                           <a class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtWise.aspx" style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" id="CAll">Detail Report</a>
+                                        </div>                                       
+                                        <div class="py-1">
+                                            <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Court/CourtConsolidateRpt.aspx" id="CDivW">Panchayat Wise</a>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm4" aria-expanded="true"
+                                        aria-controls="collapseForm4">
+                                        <i class="fa-solid fa-house-user" style="color: #606fdd"></i>
+                                        <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Crime Report</span>
+                                    </a>
+                                    <div id="collapseForm4" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                                        <div class="py-1">
+                                            <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item"  runat="server" href="~/LandDispute/Reports/Crime/All_IncidentConsolidateReport.aspx" id="CrimeAll">Detail Report</a>
+                                        </div>
+                                        <div class="py-1">
+                                            <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server"  href="~/LandDispute/Reports/Crime/IncidentDistrictConsolidateRpt.aspx" id="CrimeDistrict">Panchayat Wise</a>
+                                        </div>                                      
+                                    </div>
+                                </li>
+
+
+                                 <li class="nav-item mt-2">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFormr1412" aria-expanded="true"
+                    aria-controls="collapseFormr1412">
+                    <i class="fa fa-exclamation-triangle" style="color: #606fdd"></i>
+                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Remarks Report</span>
+                </a>
+                <div id="collapseFormr1412" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar" style="width: 300px">
+                    <div class="py-1">
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item" runat="server" href="~/LandDispute/Reports/Disputs_Details/RemarksDistConsolidateRpt.aspx" id="A13">Remarks</a>
+                    </div>
+                </div>
+            </li>
+
+                            </li>
+                         </ContentTemplate>
+                    </asp:RoleGroup>
+                </RoleGroups>
+            </asp:LoginView>
+
+           
+
+
+
+
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top" style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <span style="color: white; font-family: 'Poppins', sans-serif; font-weight: 500">भू-समाधान | गृह विभाग | बिहार सरकार</span>
+ 
+                    <ul class="navbar-nav ml-auto"> 
+                         <li class="nav-item dropdown no-arrow">
+                              <a class="nav-link dropdown-toggle" href="#" id="userDropdownName" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                
+                                <span class="ml-2 d-none d-lg-inline text-white small" style="color: Black; font-family: 'Poppins', sans-serif; font-weight: 700">
+                                    <asp:Label ID="lblusername" runat="server" Text="HQ"></asp:Label>
+                                </span>
+                            </a>
+                         </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>                     
+                           <li class="nav-item dropdown no-arrow">
+                            
+                              <%-- <span class="ml-2 d-none d-lg-inline text-white small" style="color: Black; font-family: 'Poppins', sans-serif; font-weight: 700">
+                                    <asp:Label ID="lblusername" runat="server" Text="HQ"></asp:Label></span>--%>
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                
+                                <span class="ml-2 d-none d-lg-inline text-white small" style="color: Black; font-family: 'Poppins', sans-serif; font-weight: 700">
+                                    <asp:Label ID="lbluserid" runat="server" Text="HQ"></asp:Label>
+                                </span>
+                            </a>
+                            
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="ChangePassword.aspx" style="color: Black">
+                                    <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
+                                </a>
+                                <div class="dropdown-divider"></div>
+                              
+                                <a style="color: Black" runat="server" class="dropdown-item" href="LandDispute/Common/LogOut.aspx">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>                     
+                    </ul>
+                </nav>
+
+
+                <form id="form1" runat="server">
+
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+
+                </form>
+            </div>
+        </div>
+    </div>
+     <footer style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto p-2">
+                        <span>Copyright &copy;
+                            <script> document.write(new Date().getFullYear()); </script>
+                            - | Home Department, Govt. of Bihar | All Rights Reserved | Software solution provided and designed by
+              <b><a href="https://www.nic.in/" target="_blank" style="color: white;text-decoration:none;">NIC-Bihar</a></b>
+                        </span>
+                    </div>
+                </div>
+            </footer>
+
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script src="bhusamadhan/vendor/jquery/jquery.min.js"></script>
+    <!-- ADD SELECT2 JS JUST AFTER JQUERY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="bhusamadhan/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="bhusamadhan/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="bhusamadhan/vendor/chart.js/Chart.min.js"></script>
+    <script src="bhusamadhan/js/demo/chart-area-demo.js"></script>
+    <script src="bhusamadhan/vendor/fontawesome-free-6.1.1/js/all.min.js"></script>
+    <script src="bhusamadhan/js/ruang-admin.min.js"></script>
+
+    <!-- SELECT2 INITIALIZATION -->
+<script>
+    function initSelect2() {
+        $('.select2').select2({
+            width: '100%',
+            placeholder: 'Select'
+        });
+    }
+
+    $(document).ready(function () {
+        initSelect2();
+    });
+
+    // Safe for UpdatePanel / Postback
+    if (typeof (Sys) !== "undefined") {
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            initSelect2();
+        });
+    }
+</script>
+
+    <script>
+        var $sidebar = $('#sidebar-nav');
+        var sidebarTop = $sidebar.position().top;
+        var blogHeight = $('#content').outerHeight() - 10;
+        $(window).scroll(fixSidebarOnScroll);
+
+        function fixSidebarOnScroll() {
+            var windowScrollTop = $(window).scrollTop();
+            if (windowScrollTop >= blogHeight || windowScrollTop <= sidebarTop) {
+                $sidebar.removeClass('sticky');
+            }
+            else if (windowScrollTop >= sidebarTop) {
+                if (!$sidebar.hasClass('sticky')) {
+                    $sidebar.addClass('sticky');
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

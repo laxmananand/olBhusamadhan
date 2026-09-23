@@ -1,0 +1,287 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="SamvidaChangePass.master.cs" Inherits="Samvida" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  .dropdown-cust a {
+   
+    font-size: 12px !important;
+}
+.navbar
+{
+ 
+    margin-bottom: 0px !important;
+    border: 1px solid transparent;
+}
+  </style>
+    <script type="text/javascript">
+        setInterval(function () { register_tab_GUID() }, 1000);
+
+        function register_tab_GUID() {
+            // detect local storage available
+            if (typeof (Storage) !== "undefined") {
+                // get (set if not) tab GUID and store in tab session
+                if (sessionStorage["tabGUID"] == null) sessionStorage["tabGUID"] = tab_GUID();
+                var guid = sessionStorage["tabGUID"];
+
+                // add eventlistener to local storage
+                window.addEventListener("storage", storage_Handler, false);
+
+                // set tab GUID in local storage
+                localStorage["tabGUID"] = guid;
+            }
+        }
+
+        function storage_Handler(e) {
+            // if tabGUID does not match then more than one tab and GUID
+            if (e.key == 'tabGUID') {
+                if (e.oldValue != e.newValue) tab_Warning();
+            }
+        }
+
+        function tab_GUID() {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
+        }
+
+        function tab_Warning() {
+            alert("Please Don't Login in another Tab");
+            location.replace("../Default.aspx");
+        }
+  
+    </script>
+    <style type="text/css">
+        li
+        {
+            padding: 5px;
+        }
+        .abc
+        {
+         font-size:11px;    
+            
+        }
+    </style>
+    <link href="../Mainmenu/animate.min.css" rel="stylesheet" type="text/css" />
+    <link href="../Mainmenu/font-awesome.css" rel="stylesheet" type="text/css" />
+    <%-- <link href="../Styles/Site.css" rel="stylesheet" type="text/css" />
+    <link href="../Styles/Menu.css" rel="Stylesheet" type="text/css" />--%>
+    <%--  <link href="../Styles/Sitemaster.css" rel="stylesheet" type="text/css" />--%>
+    <link href="../Mainmenu/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../Mainmenu/Slider.css" rel="stylesheet" type="text/css" />
+    <link href="../Mainmenu/style-sheet.css" rel="stylesheet" type="text/css" />
+    <link href="../Mainmenu/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <%-- <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/font.css" />--%>
+    <%--  <link rel="stylesheet" type="text/css" href="../assets/css/li-scroller.css" />--%>
+    <%-- <link rel="stylesheet" type="text/css" href="../assets/css/slick.css" />--%>
+    <%-- <link rel="stylesheet" type="text/css" href="../assets/css/jquery.fancybox.css" />--%>
+    <%-- <link rel="stylesheet" type="text/css" href="../assets/css/theme.css" />--%>
+    <link rel="stylesheet" type="text/css" href="../assets/css/style.css" />
+       <script src="../assets/js/jquery.min.js" type="text/javascript"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <%--  <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/font.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/li-scroller.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/slick.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/jquery.fancybox.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/theme.css" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/style.css" />--%>
+    </asp:ContentPlaceHolder>
+    <link href="../Mainmenu/TableCSSCode.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+   <%-- <div id="preloader">
+        <div id="status">
+            &nbsp;</div>
+    </div>--%>
+    <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+    <div class="container-fluid">
+        <div id="header">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12" style="height: 40px; margin-top: -15px">
+                    <div class="header_top">
+                        <div class="header_top_left">
+                            <ul class="top_nav">
+                                <li><a href="../../Default.aspx">Home</a></li>
+                            </ul>
+                        </div>
+                        <div class="header_top_right">
+                            <p style="color: White">
+                                &nbsp; [<asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="true">
+                                    <AnonymousTemplate>
+                                        <a href="~/DeptDefault.aspx" id="HeadLoginStatus" runat="server">Log In</a>
+                                    </AnonymousTemplate>
+                                    <LoggedInTemplate>
+                                        Welcome :<span class="bold">
+                                            <asp:LoginName ID="HeadLoginName" runat="server" />
+                                            ] </span>&nbsp;&nbsp; [<asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect"
+                                                LogoutText="Log Out" LogoutPageUrl="~/LandDispute/Common/LogOut.aspx" Font-Underline="false" />
+                                        </span>
+                                    </LoggedInTemplate>
+                                </asp:LoginView>
+                                ] &nbsp;&nbsp;
+                                <asp:Label ID="lblDate" runat="server" Text="" Style="color: #CCFFFF"></asp:Label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="header_bottom">
+                        <div class="add_banner" style="width:100%;">
+                            <a href="#">
+                                <img src="../images/policeban.jpg"alt="" height="70px" /></a></div>
+                    </div>
+                </div>
+            </div>
+            <%--menu start --%>
+            <!-- Navbar -->
+            <div class="row" style="border-bottom: 1px solid #2c9fe2 !important">
+                <div class="container-fluid">
+                    <div class="row" style="background: #161d61; margin-left: 0px; margin-right: 0px">
+                        <nav class="navbar navbar-expand-lg navbar-light" style="padding: 0rem" id="mainNav"
+                            data-toggle="affix">
+                
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> 
+            <%-- <div class="row">
+             <div class="col-md-4 col-md-4 col-md-4 text-left" style="float:left">
+               <span class="navbar-toggler-icon"></span>
+             </div>
+              <div class="col-md-8 col-md-8 col-md-8 text-right" style="float:right">
+               <img src="../images/Header.jpg" width="100%" />
+             </div>
+             </div>--%>
+                  
+               <div class="row">
+             <%--<div class="col-md-12 text-left" style="float:left">
+               <span class="navbar-toggler-icon" style="color:Black"></span>
+                  <img src="../images/landdispute.jpg"width="80%" />
+             </div>--%>
+           
+            
+            
+             </div>
+
+          </button>  
+          <div class="collapse navbar-collapse" style="padding:4px; " id="navbarResponsive" >
+           <ul class="navbar-nav ml-auto">           
+<asp:LoginView ID="LoginViewHQ" runat="server">
+   
+</asp:LoginView>
+
+      
+      </ul>
+          </div>
+
+ 
+      </nav>
+                    </div>
+                </div>
+            </div>
+            <%--   menu end--%>
+        </div>
+        <div class="container-fluid">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+        <div id="footer">
+            <div class="footer_top">
+                <div class="row">
+                    <div class="col-md-1 col-sm-6 col-xs-12">
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12  Footer-box">
+                        <h4>
+                            <asp:Literal ID="Literal16" runat="server" Text="<%$Resources:Resource,TxtNic%>" />
+                        </h4>
+                        <p class="text" style="margin-top: 10px;">
+                            National Informatics Centre (NIC) was established in 1976, and has since emerged
+                            as a "prime builder" of e-Government / e-Governance applications up to the grassroots
+                            level as well as a promoter of digital opportunities for sustainable development.
+                            <a href="http://www.nic.in/" target="_blank" style="color: white; font-style: italic;
+                                text-decoration: underline">More Info...</a>
+                        </p>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 Footer-box">
+                        <h4>
+                            <asp:Literal ID="Literal18" runat="server" Text="<%$Resources:Resource,txtusfull%>" />
+                        </h4>
+                        <ul>
+                             <li>1.&nbsp;<a href="https://state.bihar.gov.in/home/CitizenHome.html" target="_blank" style="color: White">Home Department</a></li>
+                           
+                        </ul>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12 Footer-box">
+                        <h4>
+                            <asp:Literal ID="Literal17" runat="server" Text="<%$Resources:Resource,MenuHelpdesk%>" />
+                        </h4>
+                        <p>
+                            <a href="tel:+91-9507265767" style="color: White"><span class="glyphicon glyphicon-earphone"
+                                aria-hidden="true" style="color: White"></span>+91-9507265767 ( Manish Kumar)</a><br />
+                           
+                         
+                            <%-- <a href="tel:+91-9709951912" style="color: White"><span class="glyphicon glyphicon-earphone"
+                                            aria-hidden="true" style="color: White"></span>+91-9709951912 ( Alok Kumar )</a>--%>
+                        </p>
+                        <p style="text-align: left">
+                            For any query and suggestion mail us on <b>homeonlinebihar@gmail.com</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer_bottom">
+                <p class="copyright">
+                    Copyright &copy; 2021 <a href="#">All Rights Reserved</a>
+                </p>
+                <p class="developer">
+                    Software Solutions Provided by <a href="">NIC-Bihar</a>
+                </p>
+            </div>
+        </div>
+    </div>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../assets/js/wow.min.js" type="text/javascript"></script>
+    <%-- <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>--%>
+    <%--  <script src="../assets/js/slick.min.js" type="text/javascript"></script>--%>
+    <%--   <script src="../assets/js/jquery.li-scroller.1.0.js" type="text/javascript"></script>--%>
+    <%--    <script src="../assets/js/jquery.newsTicker.min.js" type="text/javascript"></script>--%>
+    <%--    <script src="../assets/js/jquery.fancybox.pack.js" type="text/javascript"></script>--%>
+    <script src="../Mainmenu/wow.min.js" type="text/javascript"></script>
+    <script src="../Mainmenu/Slider.js" type="text/javascript"></script>
+    <script src="../Mainmenu/fontbtn.js" type="text/javascript"></script>
+    <script src="../Mainmenu/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../Mainmenu/custom.js" type="text/javascript"></script>
+    <script src="../assets/js/custom.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+    <script type="text/javascript">
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 160 || document.documentElement.scrollTop > 160) {
+                document.getElementById("navbar").style.top = "0";
+            } else {
+                document.getElementById("navbar").style.top = "-55px";
+            }
+        }
+    </script>
+    </form>
+</body>
+</html>

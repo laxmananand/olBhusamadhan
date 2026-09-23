@@ -1,0 +1,161 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="LoginMaster.master.cs" Inherits="LoginMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+
+    <title>भू-समाधान | बिहार सरकार</title>
+    <link href="../images/bihar_homedept_logo.png" rel="icon">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <link href="bhusamadhan/vendor/fontawesome-free-6.1.1/css/all.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/css/ruang-admin.min.css" rel="stylesheet" />
+    <link href="bhusamadhan/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+    </style>
+
+    <style>
+        #ll1 {
+            list-style: none;
+        }
+    </style>
+
+</head>
+
+<body style="font-family: 'Poppins', sans-serif;">
+
+    <form id="form1" runat="server">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12" style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+                    <div class="top-bar float-left" style="color: white;">
+                        <div class="container-fluid" style="padding-right: 0px; text-align: center">
+                            <div class="row">
+                                <div class="col-lg-12" style="text-align: right !important; padding-left: 0px; padding-right: 0px; float: left">
+                                    <ul style="margin-left: -35px;">
+                                        <li style="float: left; color: white;" id="ll1">
+                                            <%--<a href="Login_Default.aspx" style="color:yellow; text-decoration:none;"><i class="fa fa-home" style="color:yellow"></i>&nbsp;Home</a>&nbsp; |&nbsp;--%>
+                                               <a href="http://homeonline.bih.nic.in/" target="_blank" style="color:white; text-decoration:none;">Home Department</a> &nbsp;|&nbsp;
+                                            <i class="fa fa-envelope" style="color: white !important"></i>&nbsp;homeonlinebihar@gmail.com
+                                    &nbsp; |&nbsp; <i class="fa fa-book"></i>&nbsp;
+                                    <asp:LinkButton ID="lnkScreenReader" Style="color: White; text-decoration: none;" runat="server" PostBackUrl="~/ScreenReader.aspx">
+                                        <asp:Literal ID="LtMenuScreenReader" runat="server" Text="<%$Resources:Resource,MenuScreenReader%>" />
+                                    </asp:LinkButton>
+                                            |&nbsp; <i class="fa fa-key"></i>&nbsp;
+                                    <asp:LinkButton ID="lnkShortcutkey" runat="server" Style="color: White; text-decoration: none;" PostBackUrl="~/ShortcutKeys.aspx">
+                                        <asp:Literal ID="LtMenuSkey" runat="server" Text="<%$Resources:Resource,MenuSkey%>" />
+                                    </asp:LinkButton>
+                                            | 
+                                    <asp:Literal ID="LtMenuTextSize" runat="server" Text="<%$Resources:Resource,MenuTextSize%>" />
+                                            : <a href="JavaScript:" class="Aplus" style="color: White; text-decoration: none;">
+                                                <asp:Literal ID="LtTextMax" runat="server" Text="<%$Resources:Resource,TextMax%>" /></a>
+                                            | <a href="JavaScript:" class="reset" style="color: White; text-decoration: none;">
+                                                <asp:Literal ID="LtTextResize" runat="server" Text="<%$Resources:Resource,TextResize%>" /></a>
+                                            <a href="JavaScript:" class="Aminus" style="color: White; text-decoration: none;">&nbsp; | &nbsp;
+                                        <asp:Literal ID="LtTextMin" runat="server" Text="<%$Resources:Resource,TextMin%>" /></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <img src="images/bhu_samadhan_header.jpg" class="img-fluid" style="width: 100%" />
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12" style="height: 1px; background-color: #22577E"></div>
+            </div>
+        </div>
+
+
+        <nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+            <a class="navbar-brand" href="Login_Default.aspx"><i class="fa fa-home" style="color: white"></i></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Login_Default.aspx" style="color: white">Home <span class="sr-only">(current)</span></a>
+                    </li>
+ <li class="nav-item">
+     <a class="nav-link" href="Bhu-Samadhan format.pdf" style="color: white" target="_blank">Entry Format <span class="sr-only">(current)</span></a>
+ </li>
+ <li class="nav-item">
+     <a class="nav-link" href="BHU SAMADAHAN.pdf" style="color: white" target="_blank">User Manual <span class="sr-only">(current)</span></a>
+ </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Helpdesk.aspx" style="color: white"></a>
+                    </li>
+                    <%--<li class="nav-item">
+                        <a class="nav-link" href="User_Credential.aspx" style="color: white"></a>
+                    </li>--%>
+                    
+<%--                    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white">
+          Important Links
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="User_Credential.aspx">Login Details Report</a>
+          <a class="dropdown-item" href="Change_Password.aspx">Change Password</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="Helpdesk.aspx">Helpdesk</a>
+        </div>
+      </li>--%>
+<%--      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>--%>
+                </ul>
+                <%--               <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>--%>
+            </div>
+        </nav>
+
+
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <div class="container-fluid" style="background: linear-gradient(to right, #1eb089 0%, #7c49ab 100%, #7bd9e8 100%) repeat scroll 0 0; color: white!important">
+            <div class="row">
+                <div class="col-md-12">
+                    <p style="text-align: center; padding-top: 5px;">
+                        © Copyright 2022  | Home Department, Govt. of Bihar | All Rights Reserved | Software solution provided and designed by &nbsp;<a href="https://www.nic.in/" target="_blank" style="color: white; text-decoration: none;"><b>NIC-Bihar</b></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+    <script src="bhusamadhan/vendor/jquery/jquery.min.js"></script>
+    <script src="bhusamadhan/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="bhusamadhan/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="bhusamadhan/vendor/chart.js/Chart.min.js"></script>
+    <script src="bhusamadhan/js/demo/chart-area-demo.js"></script>
+    <script src="bhusamadhan/vendor/fontawesome-free-6.1.1/js/all.min.js"></script>
+    <script src="bhusamadhan/js/ruang-admin.min.js"></script>
+    <script src="skey1.js"></script>
+    <script src="SKey.js"></script>
+
+</body>
+</html>
