@@ -1,0 +1,98 @@
+﻿
+        .modal
+        {
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background-color: black;
+            z-index: 100;
+            opacity: 0.8;
+            filter: alpha(opacity=60);
+            -moz-opacity: 0.8;
+            min-height: 100%;
+        }
+        
+        #divImage
+        {
+            display: none;
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: White;
+            height:auto;
+            width:100%;
+            padding: 3px;
+            border: solid 1px black;
+        }
+        .imm{ margin-left:0px !important;}
+        .pln
+        {
+            height:auto;
+            width:100%;
+            }
+          .srch
+          {
+              width:50%;
+              }
+        srchbtn
+        {
+           width:50%;
+            }      
+    .imgbtn
+       {
+           width:100%;
+           height:auto;
+           }
+     td, th {
+    padding: 4px !important;
+        }
+
+        
+       @media (min-width:1200px) 
+         { 
+         
+          .modal
+        {
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background-color: black;
+            z-index: 100;
+            opacity: 0.8;
+            filter: alpha(opacity=60);
+            -moz-opacity: 0.8;
+            min-height: 100%;
+        }
+        
+        #divImage
+        {
+            display: none;
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: White;
+            height: 500px;
+            width: 600px;
+            padding: 3px;
+            border: solid 1px black;
+         
+        }
+        .imm{  margin-left:500px !important;}
+          .srch
+          {
+              width:150px;
+              }
+       .imgbtn
+       {
+           width:200px;
+           height:200px;
+           }
+      td, th {
+         padding: 5px !important;
+            }
+
+          }

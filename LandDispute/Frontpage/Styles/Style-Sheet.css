@@ -1,0 +1,133 @@
+
+body {
+
+}
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.dashboard
+{
+    text-align:center;
+    background:#b1d41a;
+    color:#fff;
+    }
+    .pendig-work>.panel-heading {
+    color: #fff;
+    background-color: #ea3113;
+    border-color: #ddd;
+}
+    .AWC-Profile>.panel-heading {
+    color: #fff;
+    background-color: #9a6d39;
+    border-color: #ddd;
+} 
+.pendig-work>.panel-heading a
+{
+   text-decoration:none;
+}
+    .AWC-Profile>.panel-heading a
+    {
+        text-decoration:none;
+    } 
+   .panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  
+    content: "\e114";    
+    float: right;        
+    color: #fff;        
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";  
+}
+.awc-tab
+{
+    border-radius:5px 5px 0px 0px;
+    border:1px solid #014e9c;
+   margin-bottom: 15px;
+    }
+.awc-tabs 
+{
+    background:#4d76c5;
+    color:#fff !important;
+    border-radius:5px 5px 0px 0px;
+    padding: 2px
+    }
+      .nav-tabs>li>a{color:#fff !important;}
+  .nav-tabs>li.active>a
+{
+    background:#b6d728 !important;
+    color:#014e9c !important;
+    padding: 8px;
+    } 
+    .nav-tabs>li a:hover
+{
+    background:#b6d728 !important;
+    color:#014e9c !important;
+    padding: 8px;
+    }    
+ .nav-tabs>li>a {
+    float: left;
+    margin-bottom: -1px;
+    padding: 8px;
+}
+ .media-pad
+  {
+      padding:5px;
+      font-size:12px;
+      }  
+   .media-pad h4
+  {
+  font-size:16px;
+      }     
+ .recved
+ {
+     background:#4d76c5;
+     padding:15px;
+    color:#fff;
+    font-size:20px;
+     } 
+ .verified
+ {
+      background:#f39223;
+     padding:15px;
+    color:#fff;
+    font-size:20px;
+     }   
+ .approved
+ {
+      background:#9a6d39;
+     padding:15px;
+    color:#fff;
+    font-size:20px;
+     } 
+  .closed
+ {
+      background:#f54f10;
+     padding:15px;
+    color:#fff;
+    font-size:20px;
+     }   
+   .rejected
+ {
+      background:#45649c;
+     padding:15px;
+    color:#fff;
+    font-size:20px;
+     }  
+   .con-toilet
+ {
+      background:#7b6955;
+     padding:15px;
+    color:#fff;
+    font-size:20px;
+     } 
+ .comm-toilet
+ {
+      background:#102e65;
+     padding:15px;
+    color:#fff;
+    font-size:20px;
+     }

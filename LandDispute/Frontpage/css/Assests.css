@@ -1,0 +1,28 @@
+﻿
+  .Initial
+  {
+    display: block;
+    padding: 4px 18px 4px 18px;
+    float: left;
+    background: url("../images/BlueShade1.gif") repeat right top;
+       color: Black;
+    font-weight: bold;    width: auto;
+    margin-right: 10px;
+  }
+  .Initial:hover
+  {
+    color: White;
+    background: url("../images/BlueShade1.gif") repeat right top;
+  }
+  .Clicked
+  {
+    float: left;
+    display: block;
+    background: url("../images/BlueShade1.gif") repeat right top;
+    padding: 4px 18px 4px 18px;
+    color: Black;
+    font-weight: bold;
+    color: White;width: auto;
+    margin-right: 10px;
+  }
+  /*---------------------------------------------*/

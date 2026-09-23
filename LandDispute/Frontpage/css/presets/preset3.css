@@ -1,0 +1,43 @@
+.top_head {
+    background-color: #7FBA00 !important;
+    min-height: 35px;
+}
+.top_head ul li {
+    float: left;
+    color: #000 !important}
+.text-logo h1 {
+
+    color:#7FBA00 !important;
+}
+.jetmenu,.colorpikr,.bg-purple 
+ {
+	background-color:#7FBA00 !important;
+}
+.jetmenu ul.dropdown li a 
+{
+    background: #7FBA00 !important;
+    color:#000 !important;
+}
+.blue > li:hover > a,
+.blue > li.active > a {
+    background: #10151e !important;
+    color: #ffc40c !important;
+}
+  .jetmenu ul.dropdown li:hover > a {
+                background: #202a3c !important;
+                color: #ffc40c !important;
+            }
+            
+            .blue > li.home > a {
+    background: #10151e !important;
+    color: #ffc40c !important;
+}
+.slider_top {
+    display: table !important;
+    width: 100%;
+    background: #14427d url(../images/bg_green.jpg) repeat-y 50% 0 !importnat;
+    margin-top: 2px;
+}
+
+
+    
