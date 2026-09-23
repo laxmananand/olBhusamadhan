@@ -43,6 +43,3 @@ PublishProfiles/*.user
 
 # --- Config files with live credentials (DB connection strings, SMTP password) ---
 # Keep these local-only; do not commit real secrets to a public repo.
-web.config
-Web1.config
-web_server.config
