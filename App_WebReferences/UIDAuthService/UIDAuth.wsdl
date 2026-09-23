@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="DemographicAuthEnc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mobile_auth_aadhaar" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dob" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Gender" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DemographicAuthEncResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DemographicAuthEncResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DemographicUIDAuth">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mobile_auth_aadhaar" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dob" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DemographicUIDAuthResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DemographicUIDAuthResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DemographicUIDAuthWithGender">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mobile_auth_aadhaar" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dob" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Gender" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DemographicUIDAuthWithGenderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DemographicUIDAuthWithGenderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BioUIDAuth">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mobile_auth_aadhaar" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PdXml" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="biotype" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BioUIDAuthResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BioUIDAuthResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="DemographicAuthEncSoapIn">
+    <wsdl:part name="parameters" element="tns:DemographicAuthEnc" />
+  </wsdl:message>
+  <wsdl:message name="DemographicAuthEncSoapOut">
+    <wsdl:part name="parameters" element="tns:DemographicAuthEncResponse" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthSoapIn">
+    <wsdl:part name="parameters" element="tns:DemographicUIDAuth" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthSoapOut">
+    <wsdl:part name="parameters" element="tns:DemographicUIDAuthResponse" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthWithGenderSoapIn">
+    <wsdl:part name="parameters" element="tns:DemographicUIDAuthWithGender" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthWithGenderSoapOut">
+    <wsdl:part name="parameters" element="tns:DemographicUIDAuthWithGenderResponse" />
+  </wsdl:message>
+  <wsdl:message name="BioUIDAuthSoapIn">
+    <wsdl:part name="parameters" element="tns:BioUIDAuth" />
+  </wsdl:message>
+  <wsdl:message name="BioUIDAuthSoapOut">
+    <wsdl:part name="parameters" element="tns:BioUIDAuthResponse" />
+  </wsdl:message>
+  <wsdl:message name="DemographicAuthEncHttpGetIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="dob" type="s:string" />
+    <wsdl:part name="Gender" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicAuthEncHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthHttpGetIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="dob" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthWithGenderHttpGetIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="dob" type="s:string" />
+    <wsdl:part name="Gender" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthWithGenderHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="BioUIDAuthHttpGetIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="PdXml" type="s:string" />
+    <wsdl:part name="biotype" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="BioUIDAuthHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicAuthEncHttpPostIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="dob" type="s:string" />
+    <wsdl:part name="Gender" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicAuthEncHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthHttpPostIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="dob" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthWithGenderHttpPostIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="dob" type="s:string" />
+    <wsdl:part name="Gender" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DemographicUIDAuthWithGenderHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="BioUIDAuthHttpPostIn">
+    <wsdl:part name="mobile_auth_aadhaar" type="s:string" />
+    <wsdl:part name="PdXml" type="s:string" />
+    <wsdl:part name="biotype" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="BioUIDAuthHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="UIDAuthSoap">
+    <wsdl:operation name="DemographicAuthEnc">
+      <wsdl:input message="tns:DemographicAuthEncSoapIn" />
+      <wsdl:output message="tns:DemographicAuthEncSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuth">
+      <wsdl:input message="tns:DemographicUIDAuthSoapIn" />
+      <wsdl:output message="tns:DemographicUIDAuthSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuthWithGender">
+      <wsdl:input message="tns:DemographicUIDAuthWithGenderSoapIn" />
+      <wsdl:output message="tns:DemographicUIDAuthWithGenderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BioUIDAuth">
+      <wsdl:input message="tns:BioUIDAuthSoapIn" />
+      <wsdl:output message="tns:BioUIDAuthSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="UIDAuthHttpGet">
+    <wsdl:operation name="DemographicAuthEnc">
+      <wsdl:input message="tns:DemographicAuthEncHttpGetIn" />
+      <wsdl:output message="tns:DemographicAuthEncHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuth">
+      <wsdl:input message="tns:DemographicUIDAuthHttpGetIn" />
+      <wsdl:output message="tns:DemographicUIDAuthHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuthWithGender">
+      <wsdl:input message="tns:DemographicUIDAuthWithGenderHttpGetIn" />
+      <wsdl:output message="tns:DemographicUIDAuthWithGenderHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BioUIDAuth">
+      <wsdl:input message="tns:BioUIDAuthHttpGetIn" />
+      <wsdl:output message="tns:BioUIDAuthHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="UIDAuthHttpPost">
+    <wsdl:operation name="DemographicAuthEnc">
+      <wsdl:input message="tns:DemographicAuthEncHttpPostIn" />
+      <wsdl:output message="tns:DemographicAuthEncHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuth">
+      <wsdl:input message="tns:DemographicUIDAuthHttpPostIn" />
+      <wsdl:output message="tns:DemographicUIDAuthHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuthWithGender">
+      <wsdl:input message="tns:DemographicUIDAuthWithGenderHttpPostIn" />
+      <wsdl:output message="tns:DemographicUIDAuthWithGenderHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BioUIDAuth">
+      <wsdl:input message="tns:BioUIDAuthHttpPostIn" />
+      <wsdl:output message="tns:BioUIDAuthHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UIDAuthSoap" type="tns:UIDAuthSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DemographicAuthEnc">
+      <soap:operation soapAction="http://tempuri.org/DemographicAuthEnc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuth">
+      <soap:operation soapAction="http://tempuri.org/DemographicUIDAuth" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuthWithGender">
+      <soap:operation soapAction="http://tempuri.org/DemographicUIDAuthWithGender" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BioUIDAuth">
+      <soap:operation soapAction="http://tempuri.org/BioUIDAuth" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="UIDAuthSoap12" type="tns:UIDAuthSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DemographicAuthEnc">
+      <soap12:operation soapAction="http://tempuri.org/DemographicAuthEnc" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuth">
+      <soap12:operation soapAction="http://tempuri.org/DemographicUIDAuth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuthWithGender">
+      <soap12:operation soapAction="http://tempuri.org/DemographicUIDAuthWithGender" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BioUIDAuth">
+      <soap12:operation soapAction="http://tempuri.org/BioUIDAuth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="UIDAuthHttpGet" type="tns:UIDAuthHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="DemographicAuthEnc">
+      <http:operation location="/DemographicAuthEnc" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuth">
+      <http:operation location="/DemographicUIDAuth" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuthWithGender">
+      <http:operation location="/DemographicUIDAuthWithGender" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BioUIDAuth">
+      <http:operation location="/BioUIDAuth" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="UIDAuthHttpPost" type="tns:UIDAuthHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="DemographicAuthEnc">
+      <http:operation location="/DemographicAuthEnc" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuth">
+      <http:operation location="/DemographicUIDAuth" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DemographicUIDAuthWithGender">
+      <http:operation location="/DemographicUIDAuthWithGender" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BioUIDAuth">
+      <http:operation location="/BioUIDAuth" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UIDAuth">
+    <wsdl:port name="UIDAuthSoap" binding="tns:UIDAuthSoap">
+      <soap:address location="http://164.100.37.11/UIDAuthService/UIDAuth.asmx" />
+    </wsdl:port>
+    <wsdl:port name="UIDAuthSoap12" binding="tns:UIDAuthSoap12">
+      <soap12:address location="http://164.100.37.11/UIDAuthService/UIDAuth.asmx" />
+    </wsdl:port>
+    <wsdl:port name="UIDAuthHttpGet" binding="tns:UIDAuthHttpGet">
+      <http:address location="http://164.100.37.11/UIDAuthService/UIDAuth.asmx" />
+    </wsdl:port>
+    <wsdl:port name="UIDAuthHttpPost" binding="tns:UIDAuthHttpPost">
+      <http:address location="http://164.100.37.11/UIDAuthService/UIDAuth.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

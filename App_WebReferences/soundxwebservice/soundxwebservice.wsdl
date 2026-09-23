@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="getSoundXMatchScore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Name1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Name2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSoundXMatchScoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getSoundXMatchScoreResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSoundXMatchCode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Name1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Name2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSoundXMatchCodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getSoundXMatchCodeResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataTable" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+            <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getSoundXMatchScoreSoapIn">
+    <wsdl:part name="parameters" element="tns:getSoundXMatchScore" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchScoreSoapOut">
+    <wsdl:part name="parameters" element="tns:getSoundXMatchScoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchCodeSoapIn">
+    <wsdl:part name="parameters" element="tns:getSoundXMatchCode" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchCodeSoapOut">
+    <wsdl:part name="parameters" element="tns:getSoundXMatchCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchScoreHttpGetIn">
+    <wsdl:part name="Name1" type="s:string" />
+    <wsdl:part name="Name2" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchScoreHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchCodeHttpGetIn">
+    <wsdl:part name="Name1" type="s:string" />
+    <wsdl:part name="Name2" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchCodeHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchScoreHttpPostIn">
+    <wsdl:part name="Name1" type="s:string" />
+    <wsdl:part name="Name2" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchScoreHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchCodeHttpPostIn">
+    <wsdl:part name="Name1" type="s:string" />
+    <wsdl:part name="Name2" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getSoundXMatchCodeHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:portType name="SoundXWebServiceSoap">
+    <wsdl:operation name="getSoundXMatchScore">
+      <wsdl:input message="tns:getSoundXMatchScoreSoapIn" />
+      <wsdl:output message="tns:getSoundXMatchScoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getSoundXMatchCode">
+      <wsdl:input message="tns:getSoundXMatchCodeSoapIn" />
+      <wsdl:output message="tns:getSoundXMatchCodeSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="SoundXWebServiceHttpGet">
+    <wsdl:operation name="getSoundXMatchScore">
+      <wsdl:input message="tns:getSoundXMatchScoreHttpGetIn" />
+      <wsdl:output message="tns:getSoundXMatchScoreHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getSoundXMatchCode">
+      <wsdl:input message="tns:getSoundXMatchCodeHttpGetIn" />
+      <wsdl:output message="tns:getSoundXMatchCodeHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="SoundXWebServiceHttpPost">
+    <wsdl:operation name="getSoundXMatchScore">
+      <wsdl:input message="tns:getSoundXMatchScoreHttpPostIn" />
+      <wsdl:output message="tns:getSoundXMatchScoreHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getSoundXMatchCode">
+      <wsdl:input message="tns:getSoundXMatchCodeHttpPostIn" />
+      <wsdl:output message="tns:getSoundXMatchCodeHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SoundXWebServiceSoap" type="tns:SoundXWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getSoundXMatchScore">
+      <soap:operation soapAction="http://tempuri.org/getSoundXMatchScore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSoundXMatchCode">
+      <soap:operation soapAction="http://tempuri.org/getSoundXMatchCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SoundXWebServiceSoap12" type="tns:SoundXWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getSoundXMatchScore">
+      <soap12:operation soapAction="http://tempuri.org/getSoundXMatchScore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSoundXMatchCode">
+      <soap12:operation soapAction="http://tempuri.org/getSoundXMatchCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SoundXWebServiceHttpGet" type="tns:SoundXWebServiceHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="getSoundXMatchScore">
+      <http:operation location="/getSoundXMatchScore" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSoundXMatchCode">
+      <http:operation location="/getSoundXMatchCode" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SoundXWebServiceHttpPost" type="tns:SoundXWebServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="getSoundXMatchScore">
+      <http:operation location="/getSoundXMatchScore" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSoundXMatchCode">
+      <http:operation location="/getSoundXMatchCode" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SoundXWebService">
+    <wsdl:port name="SoundXWebServiceSoap" binding="tns:SoundXWebServiceSoap">
+      <soap:address location="http://164.100.37.17/soundxService/soundxwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SoundXWebServiceSoap12" binding="tns:SoundXWebServiceSoap12">
+      <soap12:address location="http://164.100.37.17/soundxService/soundxwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SoundXWebServiceHttpGet" binding="tns:SoundXWebServiceHttpGet">
+      <http:address location="http://164.100.37.17/soundxService/soundxwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SoundXWebServiceHttpPost" binding="tns:SoundXWebServiceHttpPost">
+      <http:address location="http://164.100.37.17/soundxService/soundxwebservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

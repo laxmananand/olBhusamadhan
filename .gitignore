@@ -1,0 +1,42 @@
+# --- ASP.NET build output (auto-regenerated, not vendored deps) ---
+Bin/App_Web_*.dll
+Bin/App_Web_*.pdb
+Bin/App_Code.dll
+Bin/App_Code.compiled
+Bin/*.pdb
+obj/
+
+# --- Visual Studio / Visual Studio Code ---
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# --- NuGet ---
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# --- Backup / temp files left by editors ---
+*~*.TMP
+*.tmp
+*.bak
+*.orig
+*.swp
+*~
+
+# --- Runtime-generated logs ---
+ExceptionDetailsFile/*.txt
+
+# --- OS files ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# --- Publish output ---
+*.publish.xml
+PublishProfiles/*.user

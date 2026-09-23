@@ -1,0 +1,89 @@
+﻿<%@ WebHandler Language="C#" Class="DistrictAll" %>
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+
+public class DistrictAll : IHttpHandler {
+
+    public void ProcessRequest (HttpContext context) {
+        string Data = "{}";
+        string fromdate = context.Request.QueryString["FromDate"].ToString();
+        string todate= context.Request.QueryString["ToDate"].ToString();
+        string BhumiVivadType= context.Request.QueryString["BhumiVivadType"].ToString();
+        string DistCode= context.Request.QueryString["DistCode"].ToString();
+        string savedansheelta= context.Request.QueryString["savedansheelta"].ToString();
+        string Matter_Status= context.Request.QueryString["Matter_Status"].ToString();
+        string Thanacode= context.Request.QueryString["thanacode"].ToString();
+        string conr= context.Request.QueryString["con"].ToString();
+        string condition = "";
+        if(savedansheelta!="0")
+        {
+            condition = @" and((a.Bhumi_savedansheelta is not null and a.Bhumi_savedansheelta="+savedansheelta+")"+
+                            "or"+
+                            "( a.Bhumi_savedansheelta is  null and   m.Bhumi_savedansheelta="+savedansheelta+"))";
+                if(savedansheelta=="4")
+                {
+                    condition = @" and(((a.Bhumi_savedansheelta is not null and a.Bhumi_savedansheelta=2)" +
+                                "or" +
+                                "( a.Bhumi_savedansheelta is  null and   m.Bhumi_savedansheelta=2))"+
+                                " or ((a.Bhumi_savedansheelta is not null and a.Bhumi_savedansheelta=3)"+
+                                 "or" +
+                                "( a.Bhumi_savedansheelta is  null and   m.Bhumi_savedansheelta=3)))" ;
+                }
+        }
+        if(Matter_Status!="0")
+        {
+            condition += @" and a.Matter_Status= "+Matter_Status;
+        }
+        if(Thanacode!="0")
+        {
+            condition += @" and m.Thana_code= "+Thanacode;
+        }
+        condition += conr;
+        try
+        {
+            Data = "{\"title\":\"Bihar\",\"version\":\"1.1.2\",\"type\":\"FeatureCollection\", \"features\": [";
+
+            SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["LandDisputeConnectionString"].ConnectionString);
+            string p = "exec usp_GetDistirctWiseDetailsGraph '" + BhumiVivadType + "'";
+            SqlDataAdapter da = new SqlDataAdapter("exec usp_GetDistirctWiseDetails '"+ BhumiVivadType+"','"+fromdate.ToString()+"','"+todate.ToString()+"','"+DistCode.ToString()+"','"+condition.ToString()+"'", con);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            foreach (DataRow dr in dt.Rows)
+            {
+                string extrapPrperty = ",\"District_Code\":\"" + dr["District_Code"].ToString() + "\"";
+                extrapPrperty = extrapPrperty+ ",\"DISTRICTNAME\":\"" + dr["DISTRICTNAME"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"Total\":\"" + dr["Total"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"Samanya\":\"" + dr["Samanya"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"Sumvadansheel\":\"" + dr["Sumvadansheel"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"AtiSumvadansheel\":\"" + dr["AtiSumvadansheel"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"Nirast\":\"" + dr["Nirast"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"Ashwikrit\":\"" + dr["Ashwikrit"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"Mapi_Nirdharit\":\"" + dr["Mapi_Nirdharit"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"Prakriyadhin\":\"" + dr["Prakriyadhin"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + ",\"FinalNirast\":\"" + dr["FinalNirast"].ToString() + "\"";
+                extrapPrperty = extrapPrperty + "}";
+                string prp = dr["Properties"].ToString().Replace("}", extrapPrperty);
+                Data = Data + "{\"type\":\"Feature\",\"geometry\":" + dr["Geometry"].ToString() + ",\"properties\": " + prp + "},";
+
+            }
+            Data = Data.Remove(Data.Length - 1, 1);
+            Data = Data + "]}";
+
+        }
+        catch (Exception ex) { }
+        context.Response.ContentType = "application/json";
+        context.Response.Write(Data);
+    }
+
+    public bool IsReusable {
+        get {
+            return false;
+        }
+    }
+
+}

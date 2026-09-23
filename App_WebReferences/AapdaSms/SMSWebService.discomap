@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://164.100.37.18/commondeptsms/SMSWebService.asmx?wsdl" filename="SMSWebService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://164.100.37.18/commondeptsms/SMSWebService.asmx?disco" filename="SMSWebService.disco" />
+  </Results>
+</DiscoveryClientResultsFile>

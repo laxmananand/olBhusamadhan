@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://dgrc.bih.nic.in/NicMailService.asmx?wsdl" docRef="http://dgrc.bih.nic.in/NicMailService.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://dgrc.bih.nic.in/NicMailService.asmx" xmlns:q1="http://dgrc.bih.nic.in/" binding="q1:NICMailServiceSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://dgrc.bih.nic.in/NicMailService.asmx" xmlns:q2="http://dgrc.bih.nic.in/" binding="q2:NICMailServiceSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

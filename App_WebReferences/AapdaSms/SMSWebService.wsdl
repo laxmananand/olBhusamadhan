@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://eservices.bih.nic.in/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://eservices.bih.nic.in/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://eservices.bih.nic.in/">
+      <s:element name="sendSMSSingle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dest" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secureKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartmentCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="templateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSSingleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendSMSSingleResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSBulk">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dest" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secureKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartmentCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="templateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSBulkResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendSMSBulkResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSUnicode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dest" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secureKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartmentCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="templateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSUnicodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendSMSUnicodeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendMSGOTP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dest" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secureKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartmentCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="templateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendMSGOTPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendMSGOTPResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSUnicodeOTP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dest" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secureKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepartmentCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="templateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendSMSUnicodeOTPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendSMSUnicodeOTPResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="sendSMSSingleSoapIn">
+    <wsdl:part name="parameters" element="tns:sendSMSSingle" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSSingleSoapOut">
+    <wsdl:part name="parameters" element="tns:sendSMSSingleResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSBulkSoapIn">
+    <wsdl:part name="parameters" element="tns:sendSMSBulk" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSBulkSoapOut">
+    <wsdl:part name="parameters" element="tns:sendSMSBulkResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeSoapIn">
+    <wsdl:part name="parameters" element="tns:sendSMSUnicode" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeSoapOut">
+    <wsdl:part name="parameters" element="tns:sendSMSUnicodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendMSGOTPSoapIn">
+    <wsdl:part name="parameters" element="tns:sendMSGOTP" />
+  </wsdl:message>
+  <wsdl:message name="sendMSGOTPSoapOut">
+    <wsdl:part name="parameters" element="tns:sendMSGOTPResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeOTPSoapIn">
+    <wsdl:part name="parameters" element="tns:sendSMSUnicodeOTP" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeOTPSoapOut">
+    <wsdl:part name="parameters" element="tns:sendSMSUnicodeOTPResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSSingleHttpGetIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSSingleHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSBulkHttpGetIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSBulkHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeHttpGetIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendMSGOTPHttpGetIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendMSGOTPHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeOTPHttpGetIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeOTPHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSSingleHttpPostIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSSingleHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSBulkHttpPostIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSBulkHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeHttpPostIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendMSGOTPHttpPostIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendMSGOTPHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeOTPHttpPostIn">
+    <wsdl:part name="Msg" type="s:string" />
+    <wsdl:part name="Dest" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="secureKey" type="s:string" />
+    <wsdl:part name="DepartmentCode" type="s:string" />
+    <wsdl:part name="templateId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="sendSMSUnicodeOTPHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="SMSWebServiceSoap">
+    <wsdl:operation name="sendSMSSingle">
+      <wsdl:input message="tns:sendSMSSingleSoapIn" />
+      <wsdl:output message="tns:sendSMSSingleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSBulk">
+      <wsdl:input message="tns:sendSMSBulkSoapIn" />
+      <wsdl:output message="tns:sendSMSBulkSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicode">
+      <wsdl:input message="tns:sendSMSUnicodeSoapIn" />
+      <wsdl:output message="tns:sendSMSUnicodeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendMSGOTP">
+      <wsdl:input message="tns:sendMSGOTPSoapIn" />
+      <wsdl:output message="tns:sendMSGOTPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicodeOTP">
+      <wsdl:input message="tns:sendSMSUnicodeOTPSoapIn" />
+      <wsdl:output message="tns:sendSMSUnicodeOTPSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="SMSWebServiceHttpGet">
+    <wsdl:operation name="sendSMSSingle">
+      <wsdl:input message="tns:sendSMSSingleHttpGetIn" />
+      <wsdl:output message="tns:sendSMSSingleHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSBulk">
+      <wsdl:input message="tns:sendSMSBulkHttpGetIn" />
+      <wsdl:output message="tns:sendSMSBulkHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicode">
+      <wsdl:input message="tns:sendSMSUnicodeHttpGetIn" />
+      <wsdl:output message="tns:sendSMSUnicodeHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendMSGOTP">
+      <wsdl:input message="tns:sendMSGOTPHttpGetIn" />
+      <wsdl:output message="tns:sendMSGOTPHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicodeOTP">
+      <wsdl:input message="tns:sendSMSUnicodeOTPHttpGetIn" />
+      <wsdl:output message="tns:sendSMSUnicodeOTPHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="SMSWebServiceHttpPost">
+    <wsdl:operation name="sendSMSSingle">
+      <wsdl:input message="tns:sendSMSSingleHttpPostIn" />
+      <wsdl:output message="tns:sendSMSSingleHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSBulk">
+      <wsdl:input message="tns:sendSMSBulkHttpPostIn" />
+      <wsdl:output message="tns:sendSMSBulkHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicode">
+      <wsdl:input message="tns:sendSMSUnicodeHttpPostIn" />
+      <wsdl:output message="tns:sendSMSUnicodeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendMSGOTP">
+      <wsdl:input message="tns:sendMSGOTPHttpPostIn" />
+      <wsdl:output message="tns:sendMSGOTPHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicodeOTP">
+      <wsdl:input message="tns:sendSMSUnicodeOTPHttpPostIn" />
+      <wsdl:output message="tns:sendSMSUnicodeOTPHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SMSWebServiceSoap" type="tns:SMSWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="sendSMSSingle">
+      <soap:operation soapAction="http://eservices.bih.nic.in/sendSMSSingle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSBulk">
+      <soap:operation soapAction="http://eservices.bih.nic.in/sendSMSBulk" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicode">
+      <soap:operation soapAction="http://eservices.bih.nic.in/sendSMSUnicode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendMSGOTP">
+      <soap:operation soapAction="http://eservices.bih.nic.in/sendMSGOTP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicodeOTP">
+      <soap:operation soapAction="http://eservices.bih.nic.in/sendSMSUnicodeOTP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SMSWebServiceSoap12" type="tns:SMSWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="sendSMSSingle">
+      <soap12:operation soapAction="http://eservices.bih.nic.in/sendSMSSingle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSBulk">
+      <soap12:operation soapAction="http://eservices.bih.nic.in/sendSMSBulk" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicode">
+      <soap12:operation soapAction="http://eservices.bih.nic.in/sendSMSUnicode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendMSGOTP">
+      <soap12:operation soapAction="http://eservices.bih.nic.in/sendMSGOTP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicodeOTP">
+      <soap12:operation soapAction="http://eservices.bih.nic.in/sendSMSUnicodeOTP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SMSWebServiceHttpGet" type="tns:SMSWebServiceHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="sendSMSSingle">
+      <http:operation location="/sendSMSSingle" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSBulk">
+      <http:operation location="/sendSMSBulk" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicode">
+      <http:operation location="/sendSMSUnicode" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendMSGOTP">
+      <http:operation location="/sendMSGOTP" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicodeOTP">
+      <http:operation location="/sendSMSUnicodeOTP" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SMSWebServiceHttpPost" type="tns:SMSWebServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="sendSMSSingle">
+      <http:operation location="/sendSMSSingle" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSBulk">
+      <http:operation location="/sendSMSBulk" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicode">
+      <http:operation location="/sendSMSUnicode" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendMSGOTP">
+      <http:operation location="/sendMSGOTP" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMSUnicodeOTP">
+      <http:operation location="/sendSMSUnicodeOTP" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SMSWebService">
+    <wsdl:port name="SMSWebServiceSoap" binding="tns:SMSWebServiceSoap">
+      <soap:address location="http://164.100.37.18/commondeptsms/SMSWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SMSWebServiceSoap12" binding="tns:SMSWebServiceSoap12">
+      <soap12:address location="http://164.100.37.18/commondeptsms/SMSWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SMSWebServiceHttpGet" binding="tns:SMSWebServiceHttpGet">
+      <http:address location="http://164.100.37.18/commondeptsms/SMSWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SMSWebServiceHttpPost" binding="tns:SMSWebServiceHttpPost">
+      <http:address location="http://164.100.37.18/commondeptsms/SMSWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

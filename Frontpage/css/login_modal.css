@@ -1,0 +1,221 @@
+﻿.modal-body {
+    background: #fff;
+    float: left;
+    width: 100%;
+    padding: 25px;
+}
+.modal-open .modal {    z-index: 9999;
+}
+.modal-header {
+    padding: 5px 25px 7px 25px;
+    border-bottom: 1px solid #fff;
+    background: rgb(30, 40, 50);
+    border-radius: 5px 5px 0px 0px;
+    color: white;
+}
+
+    .modal-header .close {
+        margin-top: -16px;
+    }
+
+.modal a {
+    color: #fff;
+    background: #0070c0;
+    padding: 0px 5px 2px 5px;
+}
+
+.main11 {
+    margin: 0px;
+    padding: 15px;
+    box-sizing: border-box;
+    width: 100%;
+    background: #fff;
+    float: left;
+    height: auto;
+}
+
+.login-para {
+    border-bottom: 2px solid #3a3561!important;
+    margin: 0px 0px 15px 0px;
+    padding: 5px 5px;
+    height: auto;
+    background: #221a61!important;
+    line-height: 35px;
+    font-size: 16px;
+    color: White;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login-table {
+    width: 100%;
+    height: auto;
+    border-spacing: 0px;
+    font-family: Ebrima;
+    color: #333333;
+    margin: 0px;
+    padding: 0px;
+    float: left;
+    font-size: 13px;
+}
+
+    .login-table td {
+        color: #797777;
+        font-size: 16px;
+    }
+
+    .login-table .form-control {
+        margin-bottom: 7px;
+        -webkit-border-radius: 0 0 0 0;
+        border-radius: 0 0 0 0;
+    }
+
+    .login-table .btn {
+        margin-top: 10px;
+        -webkit-border-radius: 0 0 0 0;
+        border-radius: 0 0 0 0;
+    }
+
+
+.btn-danger {
+    background-image: none;
+    background-image: none;
+    background-image: none;
+    background-image: none;
+}
+
+.btn-primary {
+    background-image: none;
+    background-image: none;
+    background-image: none;
+}
+
+.waiting {
+    padding: 6px 0px 3px 0px;
+    bottom: 0px;
+    left: 0px;
+    border-radius: 0px 0px 0px 0px;
+    top: 0px;
+    background: #000;
+    color: #ffffff;
+    height: 45px!important;
+    z-index: 1000;
+    font-size: 12px;
+    text-align: center;
+    width: 140px;
+    position: absolute;
+}
+
+.divider {
+    margin: 10px 0px 0px 0px;
+    height: 4px;
+    width: 100%;
+    float: left;
+}
+
+.reg-para {
+    margin: 0px;
+    padding: 5px 10px;
+    height: auto;
+    background:#FFC109;
+    vertical-align: top;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.09);
+    -moz-box-shadow: 0 2px 2px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.09);
+    font-size: 16px;
+    font-family: 'Open Sans';
+    color: White;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #2A4147;
+}
+
+.modal-footer {
+    padding: 0px;
+    text-align: right;
+    border-top: 1px solid #00000000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff0 !important;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgb(59, 59, 59);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+
+.pop-up-textbox-sec {
+    margin: 0px 20px 0px 0px;
+    padding: 0px;
+    width: 59%;
+    height: auto;
+    float: left;
+}
+
+.pop-up-img-sec {
+    margin: 0px 0px;
+    padding: 0px;
+    width: 37%;
+    height: auto;
+    float: left;
+}
+
+.popup-h {
+    color: #333;
+    text-transform: uppercase;
+    font-size: 25px;
+    margin: 0px 0px 30px 0px;
+    padding: 0;
+    font-weight: 600;
+    letter-spacing: 1px;
+    float: left;
+    width: 100%;
+}
+
+.popup-txtbx-sec {
+    margin: 15px 0px;
+    padding: 0px;
+    width: 100%;
+    height: auto;
+    float: left;
+}
+
+.popup-txtbx-p {
+    margin: 0px 0px 6px 0px;
+    padding: 0px;
+    width: 100%;
+    height: auto;
+    float: left;
+    font-size: 15px;
+    color: #333;
+}
+
+.pop-login-btn {
+    background: #fff;
+    color: #333;
+    padding: 10px 40px;
+    border-radius: 0px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: 1px solid #333;
+    transition: all 0.5s ease-out 0s;
+}
+
+    .pop-login-btn:hover {
+        background: #333;
+        color: #fff;
+    }
+
+@media (min-width: 768px) {
+    .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
+        box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    }
+}

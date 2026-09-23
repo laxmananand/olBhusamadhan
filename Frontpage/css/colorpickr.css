@@ -1,0 +1,44 @@
+﻿body {
+
+}
+
+/*Presets*/
+.disply{ display:none !important; }
+.colorpikr{  
+     color:#fff;
+     background:#fff;
+     font-size:18px;
+    padding:4px;
+    display:none !important; 
+     }
+   .colorul
+   {
+       min-width:100px !important;  
+  
+       }
+    .colorul a{width:25px !important;
+                     height:20px !important;
+                     float:left !important;
+                     padding:5px !important;
+                     margin-left:5px !important;
+                     margin-bottom:3px !important;
+                     margin-top:3px !important;
+                     }
+
+  .setting a {
+  color:#fff;
+  height: 36px;
+  width: 36px;
+ }
+  
+    .setting a:hover{opacity:1;
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);}
+    
+  .fa fa-cog fa-spin{margin-right:10px;}
+  
+  
+  @media (min-width: 1200px) {
+  .colorpikr{display:block !important}
+  .disply{ display:block !important; }
+}
