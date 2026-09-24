@@ -31,6 +31,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
             Session.Abandon();
             Response.Redirect("~/Login_Default.aspx");
         }
+        ApplyADMHOMELayout();
         if (!IsPostBack)
         {
             txtPrativadiVivarani.Attributes.Add("maxlength", txtPrativadiVivarani.MaxLength.ToString());
@@ -160,9 +161,11 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
             fourstar.Visible = false;
             txtbhumivivad_Anya.Enabled = false;
 
-            if (Session["District_Code"] != null)
+            // ADMHOME (state level) has no district in session, so keep district selectable for them
+            string sessionDistrict = Convert.ToString(Session["District_Code"]).Trim();
+            if (sessionDistrict != "" && sessionDistrict != "0")
             {
-                ddlDistrict.SelectedValue = Session["District_Code"].ToString();
+                ddlDistrict.SelectedValue = sessionDistrict;
                 ddlDistrict.Enabled = false;
             }
             BindSubDivision();
@@ -211,6 +214,295 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
         }
     }
+    // ADMHOME login sees only "वादी का विवरण": no step tabs, no department/organisation
+    // questions, no Save, no "भूमि विवाद का विवरण" and no Preview / Save & Next
+    void ApplyADMHOMELayout()
+    {
+        if (Convert.ToString(Session["Role"]).Trim() != "ADMHOME")
+            return;
+
+        divStepTabs.Visible = false;
+        phVadiDeptOrg.Visible = false;
+        divVadiSave.Visible = false;
+        phBhumiVivad.Visible = false;
+        btnBack.Visible = false;
+        LinkBtnPreview.Visible = false;
+        btnNext.Visible = false;
+
+        // ADMHOME-only वादी fields: no birth year; pincode, document upload and remarks added
+        divVadiBirthYear.Visible = false;
+        phADMHOMEExtra.Visible = true;
+
+        // not mandatory for ADMHOME: पिता/पति का नाम, क्षेत्र का प्रकार, ग्राम पंचायत, राजस्व ग्राम, मोबाइल नंबर
+        // (the mobile 10-digit format check stays, it only fires when a number is entered)
+        RequiredFieldValidator12.Enabled = false;
+        RequiredFieldValidator4.Enabled = false;
+        RequiredFieldValidator5.Enabled = false;
+        RequiredFieldValidator7.Enabled = false;
+        RequiredFieldValidator14.Enabled = false;
+    }
+
+    // Hide the mandatory stars for ADMHOME. Done at PreRender because ddlUserAreatype_SelectedIndexChanged
+    // turns the वार्ड star (UWard) back on for Urban areas after Page_Load has run.
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+        if (Convert.ToString(Session["Role"]).Trim() == "ADMHOME")
+        {
+            starFName.Visible = false;
+            starUserAreatype.Visible = false;
+            starUserPanchyat.Visible = false;
+            starUserVillage.Visible = false;
+            starVadiMobile.Visible = false;
+            UWard.Visible = false;
+        }
+    }
+
+    // ADMHOME layout: move मोबाइल नंबर into the first row (the slot freed by the hidden birth year)
+    // so no row is left half empty. Done in OnInit, before view state is loaded, so every request
+    // builds the same control tree. Other roles keep the original layout.
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        if (Session != null && Convert.ToString(Session["Role"]).Trim() == "ADMHOME")
+        {
+            rowVadiMobile.Controls.Remove(divVadiMobile);
+            rowVadiBasic.Controls.Add(divVadiMobile);
+            rowVadiMobile.Visible = false;
+        }
+    }
+
+    const int ADMHOME_MAX_FILE_BYTES = 5 * 1024 * 1024;
+    const int ADMHOME_MAX_REMARK_WORDS = 500;
+
+    // Server-side check of the ADMHOME-only fields (pincode, 5 MB pdf, 500-word remarks).
+    // Returns "" when valid, otherwise the message to show. Call it from the ADMHOME save.
+    string ValidateADMHOMEFields()
+    {
+        // pincode is optional; when entered it must be a valid 6-digit pincode
+        // Indian pincode: exactly 6 digits, not starting with 0 (same rules as validateADMHOMEPincode in the page)
+        string pincode = txtVadiPincode.Text.Trim();
+        string pincodeError = "";
+        if (pincode != "")
+        {
+            if (!System.Text.RegularExpressions.Regex.IsMatch(pincode, @"^[0-9]+$"))
+                pincodeError = "पिनकोड में केवल अंक (0-9) होने चाहिए...";
+            else if (pincode.Length != 6)
+                pincodeError = "पिनकोड ठीक 6 अंकों का होना चाहिए (अभी " + pincode.Length + " अंक हैं).";
+            else if (pincode[0] == '0')
+                pincodeError = "पिनकोड 0 से शुरू नहीं हो सकता...";
+        }
+        if (pincodeError != "")
+        {
+            // show the message just below the पिनकोड box as well
+            cvVadiPincode.ErrorMessage = pincodeError;
+            cvVadiPincode.IsValid = false;
+            return pincodeError;
+        }
+
+        // document is mandatory for ADMHOME
+        if (!fuADMHOMEDoc.HasFile)
+            return "कृपया दस्तावेज़ अपलोड करें...!";
+        if (fuADMHOMEDoc.PostedFile.ContentLength > ADMHOME_MAX_FILE_BYTES)
+            return "फाइल का आकार 5 MB से अधिक नहीं होना चाहिए...!";
+        if (fuADMHOMEDoc.PostedFile.IsPdf(5120, 0) != "OK")
+            return "कृपया केवल सही .pdf फाइल अपलोड करें...!";
+
+        string remarks = txtADMHOMERemarks.Text.Trim();
+        if (remarks.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length > ADMHOME_MAX_REMARK_WORDS)
+            return "टिप्पणी अधिकतम 500 शब्दों की हो सकती है...!";
+
+        return "";
+    }
+
+    #region ADMHOME वादी temporary list
+
+    // Temporary (not yet in DB) वादी rows entered by ADMHOME. Rows live in ViewState, the uploaded
+    // PDFs in Session (keyed by DocKey) so the page does not carry up to 5 MB per row in ViewState.
+    DataTable GetVadiADMHOMETable()
+    {
+        DataTable dt = ViewState["vadiDetailsADMHOME"] as DataTable;
+        if (dt != null)
+            return dt;
+
+        dt = new DataTable();
+        dt.Columns.Add("vadi_Name", typeof(string));
+        dt.Columns.Add("Vadi_Father_Husband_Name", typeof(string));
+        dt.Columns.Add("SexAsPerAadhaar", typeof(string));
+        dt.Columns.Add("Vadi_District_Code", typeof(string));
+        dt.Columns.Add("Vadi_Sub_DivCode", typeof(string));
+        dt.Columns.Add("Vadi_Block_Code", typeof(string));
+        dt.Columns.Add("Vadi_Thana_code", typeof(string));
+        dt.Columns.Add("Vadi_AreaType", typeof(string));
+        dt.Columns.Add("Vadi_Panchayat_Code", typeof(string));
+        dt.Columns.Add("Vadi_Village_Code", typeof(string));
+        dt.Columns.Add("Vadi_WardNo", typeof(string));
+        dt.Columns.Add("mohalla", typeof(string));
+        dt.Columns.Add("Vadi_MobileNo", typeof(string));
+        dt.Columns.Add("Pincode", typeof(string));
+        dt.Columns.Add("Remarks", typeof(string));
+        dt.Columns.Add("DocKey", typeof(string));
+        dt.Columns.Add("DocName", typeof(string));
+        // display text
+        dt.Columns.Add("gender", typeof(string));
+        dt.Columns.Add("dist", typeof(string));
+        dt.Columns.Add("sub_division", typeof(string));
+        dt.Columns.Add("block", typeof(string));
+        dt.Columns.Add("thana", typeof(string));
+        dt.Columns.Add("area_type", typeof(string));
+        dt.Columns.Add("panchayt", typeof(string));
+        dt.Columns.Add("village", typeof(string));
+        dt.Columns.Add("WardNo", typeof(string));
+        return dt;
+    }
+
+    Dictionary<string, byte[]> GetVadiADMHOMEDocs()
+    {
+        Dictionary<string, byte[]> docs = Session["vadiDocsADMHOME"] as Dictionary<string, byte[]>;
+        if (docs == null)
+        {
+            docs = new Dictionary<string, byte[]>();
+            Session["vadiDocsADMHOME"] = docs;
+        }
+        return docs;
+    }
+
+    static string SelectedValueOrEmpty(DropDownList ddl)
+    {
+        string v = ddl.SelectedValue.Trim();
+        return (v == "" || v == "0") ? "" : v;
+    }
+
+    static string SelectedTextOrEmpty(DropDownList ddl)
+    {
+        return SelectedValueOrEmpty(ddl) == "" ? "" : ddl.SelectedItem.Text;
+    }
+
+    void AlertADMHOME(string message)
+    {
+        ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('" + message + "');", true);
+    }
+
+    // Fields still mandatory for ADMHOME: वादी का नाम, लिंग, जिला, अनुमंडल, अंचल, थाना (+ मोहल्ला for Urban)
+    bool ValidateVadiADMHOME()
+    {
+        if (string.IsNullOrWhiteSpace(txtNamePerAadhaar.Text)) { AlertADMHOME("कृपया वादी का नाम अंकित करें...!"); txtNamePerAadhaar.Focus(); return false; }
+        if (ddlgender.SelectedIndex == 0) { AlertADMHOME("कृपया लिंग चुनें...!"); ddlgender.Focus(); return false; }
+        if (SelectedValueOrEmpty(ddlUserDist) == "") { AlertADMHOME("कृपया जिला चुनें...!"); ddlUserDist.Focus(); return false; }
+        if (SelectedValueOrEmpty(ddlUserSubdivision) == "") { AlertADMHOME("कृपया अनुमंडल चुनें...!"); ddlUserSubdivision.Focus(); return false; }
+        if (SelectedValueOrEmpty(ddlUserBlock) == "") { AlertADMHOME("कृपया अंचल चुनें...!"); ddlUserBlock.Focus(); return false; }
+        if (SelectedValueOrEmpty(ddlUserThana) == "") { AlertADMHOME("कृपया थाना चुनें...!"); ddlUserThana.Focus(); return false; }
+        if (ddlUserAreatype.SelectedValue == "U" && string.IsNullOrWhiteSpace(txtUserMohalla.Text)) { AlertADMHOME("कृपया मोहल्ला का नाम अंकित करें...!"); txtUserMohalla.Focus(); return false; }
+
+        string mobile = txtvadimobile.Text.Trim();
+        if (mobile != "" && !System.Text.RegularExpressions.Regex.IsMatch(mobile, @"^[0-9]{10}$")) { AlertADMHOME("कृपया 10 अंकों का सही मोबाइल नंबर डालें...!"); txtvadimobile.Focus(); return false; }
+
+        string msg = ValidateADMHOMEFields();
+        if (msg != "") { AlertADMHOME(msg); return false; }
+        return true;
+    }
+
+    protected void btnAddVadiADMHOME_Click(object sender, EventArgs e)
+    {
+        if (Convert.ToString(Session["Role"]).Trim() != "ADMHOME" || !ValidateVadiADMHOME())
+            return;
+
+        string docKey = "";
+        string docName = "";
+        if (fuADMHOMEDoc.HasFile)
+        {
+            docKey = Guid.NewGuid().ToString("N");
+            docName = Path.GetFileName(fuADMHOMEDoc.FileName);
+            GetVadiADMHOMEDocs()[docKey] = fuADMHOMEDoc.FileBytes;
+        }
+
+        DataTable dt = GetVadiADMHOMETable();
+        DataRow row = dt.NewRow();
+        row["vadi_Name"] = txtNamePerAadhaar.Text.Trim();
+        row["Vadi_Father_Husband_Name"] = txtFName.Text.Trim();
+        row["SexAsPerAadhaar"] = ddlgender.SelectedValue.ToUpper();
+        row["Vadi_District_Code"] = SelectedValueOrEmpty(ddlUserDist);
+        row["Vadi_Sub_DivCode"] = SelectedValueOrEmpty(ddlUserSubdivision);
+        row["Vadi_Block_Code"] = SelectedValueOrEmpty(ddlUserBlock);
+        row["Vadi_Thana_code"] = SelectedValueOrEmpty(ddlUserThana);
+        row["Vadi_AreaType"] = SelectedValueOrEmpty(ddlUserAreatype);
+        row["Vadi_Panchayat_Code"] = SelectedValueOrEmpty(ddlUserPanchyat);
+        row["Vadi_Village_Code"] = SelectedValueOrEmpty(ddlUserVillage);
+        row["Vadi_WardNo"] = SelectedValueOrEmpty(ddlUserWard);
+        row["mohalla"] = txtUserMohalla.Text.Trim();
+        row["Vadi_MobileNo"] = txtvadimobile.Text.Trim();
+        row["Pincode"] = txtVadiPincode.Text.Trim();
+        row["Remarks"] = txtADMHOMERemarks.Text.Trim();
+        row["DocKey"] = docKey;
+        row["DocName"] = docName;
+        row["gender"] = ddlgender.SelectedItem.Text;
+        row["dist"] = SelectedTextOrEmpty(ddlUserDist);
+        row["sub_division"] = SelectedTextOrEmpty(ddlUserSubdivision);
+        row["block"] = SelectedTextOrEmpty(ddlUserBlock);
+        row["thana"] = SelectedTextOrEmpty(ddlUserThana);
+        row["area_type"] = SelectedTextOrEmpty(ddlUserAreatype);
+        row["panchayt"] = SelectedTextOrEmpty(ddlUserPanchyat);
+        row["village"] = SelectedTextOrEmpty(ddlUserVillage);
+        row["WardNo"] = SelectedTextOrEmpty(ddlUserWard);
+        dt.Rows.Add(row);
+
+        ViewState["vadiDetailsADMHOME"] = dt;
+        BindVadiADMHOMEGrid();
+        ClearVadiADMHOMEForm();
+    }
+
+    protected void gvVadiADMHOME_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        if (e.CommandName != "Remove")
+            return;
+
+        DataTable dt = GetVadiADMHOMETable();
+        int index = Convert.ToInt32(e.CommandArgument);
+        if (index < 0 || index >= dt.Rows.Count)
+            return;
+
+        string docKey = Convert.ToString(dt.Rows[index]["DocKey"]);
+        if (docKey != "")
+            GetVadiADMHOMEDocs().Remove(docKey);
+
+        dt.Rows.RemoveAt(index);
+        ViewState["vadiDetailsADMHOME"] = dt;
+        BindVadiADMHOMEGrid();
+    }
+
+    void BindVadiADMHOMEGrid()
+    {
+        gvVadiADMHOME.DataSource = GetVadiADMHOMETable();
+        gvVadiADMHOME.DataBind();
+    }
+
+    void ClearVadiADMHOMEForm()
+    {
+        txtNamePerAadhaar.Text = "";
+        txtFName.Text = "";
+        ddlgender.SelectedIndex = 0;
+        ddlUserDist.SelectedIndex = 0;
+        ddlUserAreatype.SelectedIndex = 0;
+        // reload the dependent lists for "no district" (same binders Page_Load uses)
+        BindSubDivision_wadi();
+        BindBlock_Wadi();
+        BindPolice_wadi();
+        BindPanchyat_Wadi();
+        BindVillage_Wadi();
+        bindward_Wadi();
+        txtUserMohalla.Text = "";
+        txtvadimobile.Text = "";
+        txtVadiPincode.Text = "";
+        txtADMHOMERemarks.Text = "";
+
+        // back to the Rural layout (same as ddlUserAreatype_SelectedIndexChanged for non-Urban)
+        labUVillage.Text = "ग्राम पंचायत";
+        divUserMohalla.Visible = false;
+        divUserVillageCol.Visible = true;
+    }
+
+    #endregion
+
     #region Wadi Details
 
     private string GetUserIP()
@@ -1067,9 +1359,10 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
 
             //string sql = @" select DISTINCT sd.Sd_Name_En as SubDivisionName,sd.Sd_Code2 as SubDivisionCode, sd.Sd_Name_En from SubDivisions sd where sd.DistCode=@District_Code order by sd.Sd_Name_En";
-            string sql = @"select DISTINCT sd.Sd_Name_En as SubDivisionName,sd.Sd_Code2 as SubDivisionCode, sd.Sd_Name_En from SubDivisions sd where Sd_Code2 in (select SubDivCode from Blocks where BlockCode in(select code from MstThanaMapping where thana_code=@thana_code)) and sd.DistCode=@District_Code";
+            // thana filter applies only when the login has a thana (SHO); ADMHOME sees all subdivisions of the district
+            string sql = @"select DISTINCT sd.Sd_Name_En as SubDivisionName,sd.Sd_Code2 as SubDivisionCode, sd.Sd_Name_En from SubDivisions sd where (@thana_code in ('','0') or Sd_Code2 in (select SubDivCode from Blocks where BlockCode in(select code from MstThanaMapping where thana_code=@thana_code))) and sd.DistCode=@District_Code";
             SqlParameter _DCode = new SqlParameter("@District_Code", ddlDistrict.SelectedValue.ToString());
-            SqlParameter _thana_code = new SqlParameter("@thana_code", Session["Thana_Code"].ToString());
+            SqlParameter _thana_code = new SqlParameter("@thana_code", Convert.ToString(Session["Thana_Code"]).Trim());
             DataTable dt = clsData.GetDataTable(sql, new SqlParameter[] { _DCode, _thana_code });
 
 
@@ -1092,10 +1385,11 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
 
             //string sql = @" select DISTINCT t.BlockName,t.BlockCode from Blocks t where t.DistCode=@District_Code And (@Subdivision_Code=0 Or t.SubDivCode=@Subdivision_Code) order by BlockName";
-            string sql = @"select DISTINCT t.BlockName,t.BlockCode from Blocks t where t.DistCode=@District_Code And (@Subdivision_Code=0 Or t.SubDivCode=@Subdivision_Code) and BlockCode in (select code from MstThanaMapping where thana_code=@thana_code)  order by BlockName";
+            // thana filter applies only when the login has a thana (SHO); ADMHOME sees all blocks
+            string sql = @"select DISTINCT t.BlockName,t.BlockCode from Blocks t where t.DistCode=@District_Code And (@Subdivision_Code=0 Or t.SubDivCode=@Subdivision_Code) and (@thana_code in ('','0') or BlockCode in (select code from MstThanaMapping where thana_code=@thana_code))  order by BlockName";
             SqlParameter _DCode = new SqlParameter("@District_Code", ddlDistrict.SelectedValue.ToString());
             SqlParameter _SCode = new SqlParameter("@Subdivision_Code", ddlSubdivision.SelectedValue.ToString());
-            SqlParameter _thana_code = new SqlParameter("@thana_code", Session["Thana_Code"].ToString());
+            SqlParameter _thana_code = new SqlParameter("@thana_code", Convert.ToString(Session["Thana_Code"]).Trim());
             DataTable dt = clsData.GetDataTable(sql, new SqlParameter[] { _DCode, _SCode, _thana_code });
 
 
@@ -1255,11 +1549,18 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
         }
     }
+    // true for logins without a fixed thana (e.g. ADMHOME) - they must pick the thana themselves
+    bool IsThanaSelectable()
+    {
+        string thana = Convert.ToString(Session["Thana_Code"]).Trim();
+        return thana == "" || thana == "0";
+    }
     protected void ddlDistrict_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindSubDivision();
         BindBlock();
         //BindPolice();
+        if (IsThanaSelectable()) BindPolice();
         BindVillage();
         BindPanchyat();
         bindward();
@@ -1268,6 +1569,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
     {
         BindBlock();
         //BindPolice();
+        if (IsThanaSelectable()) BindPolice();
         BindVillage();
         BindPanchyat();
         bindward();

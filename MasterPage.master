@@ -112,6 +112,27 @@
                     </div>--%>
                 </div>
             </li>
+            <%-- Action menu for ADMHOME login: only New Entry (same form as SHO login) --%>
+            <asp:LoginView ID="LoginViewADMHOMEAction" runat="server">
+                <RoleGroups>
+                    <asp:RoleGroup Roles="ADMHOME">
+                        <ContentTemplate>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseADMHOMEAction"
+                                    aria-expanded="true" aria-controls="collapseADMHOMEAction">
+                                    <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
+                                    <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Action</span>
+                                </a>
+                                <div id="collapseADMHOMEAction" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="~/LandDispute/Entry/Entry_Page.aspx" id="lnkADMHOMENewEntry">New Entry</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ContentTemplate>
+                    </asp:RoleGroup>
+                </RoleGroups>
+            </asp:LoginView>
             <asp:LoginView ID="LoginViewHQ" runat="server">
                 <RoleGroups>
 

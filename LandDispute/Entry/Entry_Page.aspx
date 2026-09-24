@@ -1641,7 +1641,8 @@
     <AjaxControlToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server"></AjaxControlToolkit:ToolkitScriptManager>
     <div class="container-fluid">
         <h4 class="text-black text-center"><b>आवेदन का विवरण</b></h4>
-        <div class="card mb-3">
+        <%-- step tabs: hidden for ADMHOME login --%>
+        <div class="card mb-3" id="divStepTabs" runat="server">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -1677,7 +1678,8 @@
                 <div class="card-body">
                     <asp:UpdatePanel runat="server" ID="pnlupdate1" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <div class="row mb-2">
+                            <%-- for ADMHOME login the mobile column is moved into this row (see OnInit) --%>
+                            <div class="row mb-2" id="rowVadiBasic" runat="server">
                                 <div class="col-md-3">
                                     <asp:Label ID="Label2" runat="server" Text="वादी का नाम"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
                                     <asp:TextBox ID="txtNamePerAadhaar" runat="server" CssClass="form-control mb-2"
@@ -1688,7 +1690,7 @@
                                         ControlToValidate="txtNamePerAadhaar" SetFocusOnError="true" Display="Dynamic" ValidationGroup="1" ForeColor="Red"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-3">
-                                    <asp:Label ID="Label4" runat="server" Text="पिता/ पति का नाम"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
+                                    <asp:Label ID="Label4" runat="server" Text="पिता/ पति का नाम"></asp:Label>&nbsp;<img id="starFName" runat="server" src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
                                     <asp:TextBox ID="txtFName" runat="server" CssClass="form-control mb-2" placeholder="पिता/ पति का नाम" oncopy="return false" onpaste="return false"
                                         oncut="return false" onkeyup="Upper(this)" onkeypress="return ValidateAlpha(event)"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ErrorMessage="Enter पिता/ पति का नाम..."
@@ -1707,7 +1709,8 @@
                                         ControlToValidate="ddlgender" SetFocusOnError="true" Display="Dynamic" ValidationGroup="1"
                                         InitialValue="0" ForeColor="Red"></asp:RequiredFieldValidator>
                                 </div>
-                                <div class="col-md-3">
+                                <%-- birth year: hidden for ADMHOME login --%>
+                                <div class="col-md-3" id="divVadiBirthYear" runat="server">
                                     <asp:Label ID="Label3" runat="server" Text="जन्म का वर्ष"></asp:Label>
                                     <asp:DropDownList ID="ddlYear" runat="server" CssClass="form-control mb-2">
                                     </asp:DropDownList>
@@ -1750,7 +1753,7 @@
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-3">
-                                    <asp:Label ID="Label9" runat="server" Text="क्षेत्र का प्रकार"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
+                                    <asp:Label ID="Label9" runat="server" Text="क्षेत्र का प्रकार"></asp:Label>&nbsp;<img id="starUserAreatype" runat="server" src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
                                     <asp:DropDownList ID="ddlUserAreatype" runat="server" CssClass="form-control mb-2" AutoPostBack="True" OnSelectedIndexChanged="ddlUserAreatype_SelectedIndexChanged">
                                         <asp:ListItem Value="0" Text="--Select--" Enabled="true"></asp:ListItem>
                                         <asp:ListItem Value="R" Text="Rural" Enabled="true"></asp:ListItem>
@@ -1761,7 +1764,7 @@
                                         InitialValue="0" ForeColor="Red"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-3" id="divUserPanchyat" runat="server">
-                                    <asp:Label ID="labUVillage" runat="server" Text="ग्राम पंचायत"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
+                                    <asp:Label ID="labUVillage" runat="server" Text="ग्राम पंचायत"></asp:Label>&nbsp;<img id="starUserPanchyat" runat="server" src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
                                     <asp:DropDownList ID="ddlUserPanchyat" runat="server" CssClass="form-control mb-2" AutoPostBack="True" OnSelectedIndexChanged="ddlUserPanchyat_SelectedIndexChanged">
                                     </asp:DropDownList>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Select ग्राम पंचायत..."
@@ -1775,7 +1778,7 @@
                                 <div class="col-md-3" id="divUserVillageCol" runat="server">
                                     <div class="row mb-2">
                                         <div class="col-md-12" id="divUserVillage" runat="server">
-                                            <asp:Label ID="Label11" runat="server" Text="राजस्व ग्राम"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
+                                            <asp:Label ID="Label11" runat="server" Text="राजस्व ग्राम"></asp:Label>&nbsp;<img id="starUserVillage" runat="server" src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
                                             <asp:DropDownList ID="ddlUserVillage" runat="server" CssClass="form-control mb-2" AutoPostBack="True" OnSelectedIndexChanged="ddlUserVillage_SelectedIndexChanged">
                                             </asp:DropDownList>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ErrorMessage="Select राजस्व ग्राम..."
@@ -1807,9 +1810,9 @@
                                         ControlToValidate="txtUserMohalla" SetFocusOnError="true" Display="Dynamic" ValidationGroup="1" ForeColor="Red"></asp:RequiredFieldValidator>
                                 </div>
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-md-3">
-                                    <asp:Label ID="Label14" runat="server" Text="मोबाइल नंबर"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
+                            <div class="row mb-2" id="rowVadiMobile" runat="server">
+                                <div class="col-md-3" id="divVadiMobile" runat="server">
+                                    <asp:Label ID="Label14" runat="server" Text="मोबाइल नंबर"></asp:Label>&nbsp;<img id="starVadiMobile" runat="server" src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
                                     <asp:TextBox ID="txtvadimobile" runat="server" CssClass="form-control" MaxLength="10" onkeypress="return ValidateMobile(event)" placeholder="मोबाइल नंबर"></asp:TextBox>
                                     <asp:RegularExpressionValidator Display="Dynamic" SetFocusOnError="true" ControlToValidate="txtvadimobile" ID="RegularExpressionValidator3"
                                         ValidationExpression="^[\s\S]{10,10}$" runat="server" ValidationGroup="1" ErrorMessage="10 numbers required."></asp:RegularExpressionValidator>
@@ -1820,6 +1823,8 @@
                                 <div class="col-md-3"></div>
                                 <div class="col-md-3"></div>
                             </div>
+                            <%-- department / organisation questions: hidden for ADMHOME login --%>
+                            <asp:PlaceHolder ID="phVadiDeptOrg" runat="server">
                             <br />
                             <div class="row  text-white" style="background-color: dodgerblue">
                                 <div class="col-md-3 p-1">
@@ -1896,10 +1901,147 @@
                                         onkeypress="return ValidateAlpha(event)"></asp:TextBox>
                                 </div>
                             </div>
+                            </asp:PlaceHolder>
                         </ContentTemplate>
                     </asp:UpdatePanel>
+                    <%-- pincode + document upload + remarks: shown only for ADMHOME login.
+                         Kept outside the UpdatePanel so the selected file survives dropdown postbacks --%>
+                    <asp:PlaceHolder ID="phADMHOMEExtra" runat="server" Visible="false">
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <asp:Label ID="lblVadiPincode" runat="server" Text="पिनकोड"></asp:Label>
+                                <asp:TextBox ID="txtVadiPincode" runat="server" CssClass="form-control" MaxLength="6" onkeypress="return ValidateMobile(event)" placeholder="6 अंकों का पिनकोड" AutoComplete="off"
+                                    inputmode="numeric" oninput="onADMHOMEPincodeInput(this);" onblur="checkADMHOMEPincodeNow();"></asp:TextBox>
+                                <%-- optional, but when entered it must be exactly 6 digits and not start with 0.
+                                     The message below the box is set by validateADMHOMEPincode (live on blur, and on Save) --%>
+                                <asp:CustomValidator ID="cvVadiPincode" runat="server" ControlToValidate="txtVadiPincode" ClientValidationFunction="validateADMHOMEPincode"
+                                    ValidateEmptyText="false" Display="Dynamic" SetFocusOnError="true" ValidationGroup="ADMHOME" ForeColor="Red"
+                                    ErrorMessage="पिनकोड ठीक 6 अंकों का होना चाहिए."></asp:CustomValidator>
+                            </div>
+                            <div class="col-md-3">
+                                <asp:Label ID="lblADMHOMEDoc" runat="server" Text="दस्तावेज़ अपलोड करें"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
+                                <asp:FileUpload ID="fuADMHOMEDoc" runat="server" CssClass="form-control" accept=".pdf" onchange="return checkADMHOMEFileSize(this);" />
+                                <small style="color: darkred">केवल .pdf, अधिकतम 5 MB</small>
+                                <asp:RequiredFieldValidator ID="rfvADMHOMEDoc" runat="server" ControlToValidate="fuADMHOMEDoc"
+                                    Display="Dynamic" SetFocusOnError="true" ValidationGroup="ADMHOME" ForeColor="Red" ErrorMessage="कृपया दस्तावेज़ अपलोड करें..."></asp:RequiredFieldValidator>
+                            </div>
+                            <div class="col-md-6">
+                                <asp:Label ID="lblADMHOMERemarks" runat="server" Text="टिप्पणी"></asp:Label>
+                                <asp:TextBox ID="txtADMHOMERemarks" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3"
+                                    placeholder="टिप्पणी लिखें (अधिकतम 500 शब्द)" oninput="limitADMHOMERemarksWords(this);" Style="resize: vertical"></asp:TextBox>
+                                <div class="text-right"><small id="ADMHOMERemarksCount" class="text-muted">0 / 500 शब्द</small></div>
+                            </div>
+                        </div>
+                        <%-- ADMHOME Save: adds the वादी to the temporary list below (full postback so the PDF is sent) --%>
+                        <div class="row mb-2">
+                            <div class="col-md-12 text-center">
+                                <asp:Button ID="btnAddVadiADMHOME" runat="server" Text="Save" CssClass="btn btn-primary" ValidationGroup="ADMHOME" OnClick="btnAddVadiADMHOME_Click" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12" style="text-align: center">
+                                <asp:Panel ID="pnlVadiADMHOMEGrid" runat="server" ScrollBars="Auto">
+                                    <asp:GridView runat="server" Width="100%" ID="gvVadiADMHOME" AutoGenerateColumns="false"
+                                        CssClass="table-responsive CSSTableGeneratorGrid fontsize" OnRowCommand="gvVadiADMHOME_RowCommand">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Action" ItemStyle-Width="50">
+                                                <ItemTemplate>
+                                                    <asp:LinkButton ID="btnRowDelADMHOME" CssClass="btn btn-danger" runat="server" CommandArgument='<%# Container.DataItemIndex %>' CommandName="Remove"
+                                                        OnClientClick="return confirm('Are you sure you want to delete this data?');"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px;"></i></asp:LinkButton>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Sl. No.">
+                                                <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
+                                                <HeaderStyle HorizontalAlign="Center" Width="5%" />
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+                                            <asp:BoundField DataField="vadi_Name" HeaderText="वादी का नाम" />
+                                            <asp:BoundField DataField="Vadi_Father_Husband_Name" HeaderText="पिता/ पति का नाम" />
+                                            <asp:BoundField DataField="gender" HeaderText="लिंग" />
+                                            <asp:BoundField DataField="dist" HeaderText="जिला" />
+                                            <asp:BoundField DataField="sub_division" HeaderText="अनुमंडल" />
+                                            <asp:BoundField DataField="block" HeaderText="अंचल" />
+                                            <asp:BoundField DataField="thana" HeaderText="थाना" />
+                                            <asp:BoundField DataField="area_type" HeaderText="क्षेत्र का प्रकार" />
+                                            <asp:BoundField DataField="panchayt" HeaderText="ग्राम पंचायत" />
+                                            <asp:BoundField DataField="village" HeaderText="राजस्व ग्राम" />
+                                            <asp:BoundField DataField="WardNo" HeaderText="वार्ड" />
+                                            <asp:BoundField DataField="Vadi_MobileNo" HeaderText="मोबाइल संख्या" />
+                                            <asp:BoundField DataField="Pincode" HeaderText="पिनकोड" />
+                                            <asp:BoundField DataField="DocName" HeaderText="दस्तावेज़" />
+                                            <asp:BoundField DataField="Remarks" HeaderText="टिप्पणी" ItemStyle-Width="200" />
+                                        </Columns>
+                                    </asp:GridView>
+                                </asp:Panel>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            // पिनकोड: Indian pincode = exactly 6 digits, first digit 1-9
+                            function getADMHOMEPincodeError(value) {
+                                if (value.length === 0) return "";
+                                if (!/^[0-9]+$/.test(value)) return "पिनकोड में केवल अंक (0-9) होने चाहिए...";
+                                if (value.length < 6) return "पिनकोड ठीक 6 अंकों का होना चाहिए (अभी " + value.length + " अंक हैं).";
+                                if (value.length > 6) return "पिनकोड 6 अंकों से अधिक नहीं हो सकता...";
+                                if (value.charAt(0) === "0") return "पिनकोड 0 से शुरू नहीं हो सकता...";
+                                return "";
+                            }
+
+                            // CustomValidator client function (cvVadiPincode)
+                            function validateADMHOMEPincode(sender, args) {
+                                var msg = getADMHOMEPincodeError(args.Value.trim());
+                                if (msg !== "") sender.innerHTML = msg;
+                                args.IsValid = (msg === "");
+                            }
+
+                            function checkADMHOMEPincodeNow() {
+                                var v = document.getElementById('<%= cvVadiPincode.ClientID %>');
+                                if (v && typeof ValidatorValidate === "function") ValidatorValidate(v);
+                            }
+
+                            // keep only digits (also for pasted text) and at most 6 of them;
+                            // re-check while typing only if an error is already shown, so it clears as soon as it is fixed
+                            function onADMHOMEPincodeInput(box) {
+                                var clean = box.value.replace(/[^0-9]/g, "").substring(0, 6);
+                                if (box.value !== clean) box.value = clean;
+                                var v = document.getElementById('<%= cvVadiPincode.ClientID %>');
+                                if (v && v.style.display !== "none" && v.style.visibility !== "hidden") checkADMHOMEPincodeNow();
+                            }
+
+                            var ADMHOME_MAX_FILE_BYTES = 5 * 1024 * 1024;
+                            var ADMHOME_MAX_REMARK_WORDS = 500;
+
+                            function checkADMHOMEFileSize(input) {
+                                if (input.files && input.files.length > 0) {
+                                    var file = input.files[0];
+                                    if (!/\.pdf$/i.test(file.name)) {
+                                        alert("कृपया केवल .pdf फाइल अपलोड करें...!");
+                                        input.value = "";
+                                        return false;
+                                    }
+                                    if (file.size > ADMHOME_MAX_FILE_BYTES) {
+                                        alert("फाइल का आकार 5 MB से अधिक नहीं होना चाहिए...!");
+                                        input.value = "";
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            }
+
+                            function limitADMHOMERemarksWords(box) {
+                                var words = box.value.trim().split(/\s+/).filter(function (w) { return w.length > 0; });
+                                if (words.length > ADMHOME_MAX_REMARK_WORDS) {
+                                    // cut back to the first 500 words
+                                    var re = new RegExp("^\\s*(\\S+\\s+){" + (ADMHOME_MAX_REMARK_WORDS - 1) + "}\\S+");
+                                    var m = box.value.match(re);
+                                    if (m) box.value = m[0];
+                                    words = words.slice(0, ADMHOME_MAX_REMARK_WORDS);
+                                }
+                                document.getElementById("ADMHOMERemarksCount").innerText = words.length + " / " + ADMHOME_MAX_REMARK_WORDS + " शब्द";
+                            }
+                        </script>
+                    </asp:PlaceHolder>
                     <br />
-                    <div class="row mb-2">
+                    <div class="row mb-2" id="divVadiSave" runat="server">
                         <div class="col-md-12">
                             <center>
                                 <asp:HiddenField ID="hfwadiprint" runat="server" />
@@ -1973,6 +2115,8 @@
                 </div>
             </div>
 
+            <%-- land dispute details: hidden for ADMHOME login --%>
+            <asp:PlaceHolder ID="phBhumiVivad" runat="server">
             <br />
             <div class="card">
                 <div class="card-header text-center" style="font-size: 18px"><b><u>भूमि विवाद का विवरण</u></b></div>
@@ -2160,6 +2304,7 @@
                     </asp:UpdatePanel>
                 </div>
             </div>
+            </asp:PlaceHolder>
         </div>
         <div id="step2" runat="server" visible="false">
             <div class="card">
