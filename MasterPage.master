@@ -89,7 +89,7 @@
 
 
              <li class="nav-item mt-2">
-                 <a class="nav-link collapsed "  href="/LandDispute/DefaultHome.aspx"  
+                 <a class="nav-link collapsed "  href="<%= ResolveUrl("~/DefaultHome.aspx") %>"
                     aria-expanded="true" aria-controls="collapseBootstrap">
                     <i class="fas fa-tachometer-alt" style="color: #606fdd"></i>
                     <span style="color: Black; font-family: 'Poppins', sans-serif; font-size: 14px;">Home</span>
@@ -105,7 +105,7 @@
                 </a>
                 <div id="collapseBootstrap" class="collapse mb-3" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar" style="width: 300px">
                     <div class="py-1">
-                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" href="/LandDispute/LandDispute/Dashboard/Bhu-Dashboard-graph.aspx" id="link6">Dashboard</a>
+                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" href="<%= ResolveUrl("~/LandDispute/Dashboard/Bhu-Dashboard-graph.aspx") %>" id="link6">Dashboard</a>
                     </div>
                    <%-- <div class="py-1">
                         <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" href="#" id="link7">Dispute Area Map</a>

@@ -15,6 +15,6 @@
          <br />
           <br />
           <br />
-      <center>  <a href="/LandDispute/DefaultHome.aspx" style="text-align:center;font-size:30px">Click Here To View Summary Report </a></center>
+      <center>  <a href="DefaultHome.aspx" style="text-align:center;font-size:30px">Click Here To View Summary Report </a></center>
      </div>
 </asp:Content>
