@@ -1674,7 +1674,8 @@
         <div id="step1" runat="server" visible="true">
             <div class="card">
 
-                <div class="card-header text-center" style="font-size: 18px"><b><u>वादी का विवरण</u></b></div>
+                <%-- heading text is changed to "शिकायतकर्ता का विवरण" for ADMHOME login (ApplyADMHOMELayout) --%>
+                <div class="card-header text-center" style="font-size: 18px"><b><u><asp:Literal ID="litVadiSectionHeader" runat="server" Text="वादी का विवरण"></asp:Literal></u></b></div>
                 <div class="card-body">
                     <asp:UpdatePanel runat="server" ID="pnlupdate1" UpdateMode="Conditional">
                         <ContentTemplate>
@@ -1947,7 +1948,12 @@
                                             <asp:TemplateField HeaderText="Action" ItemStyle-Width="50">
                                                 <ItemTemplate>
                                                     <asp:LinkButton ID="btnRowDelADMHOME" CssClass="btn btn-danger" runat="server" CommandArgument='<%# Container.DataItemIndex %>' CommandName="Remove"
+                                                        Visible='<%# !Convert.ToBoolean(Eval("IsFinalised")) %>'
                                                         OnClientClick="return confirm('Are you sure you want to delete this data?');"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px;"></i></asp:LinkButton>
+                                                    <%-- finalised rows are locked: no delete --%>
+                                                    <asp:PlaceHolder ID="phRowLockedADMHOME" runat="server" Visible='<%# Convert.ToBoolean(Eval("IsFinalised")) %>'>
+                                                        <i class="fa fa-lock text-muted" aria-hidden="true" style="font-size:20px;" title="Finalised - cannot be deleted"></i>
+                                                    </asp:PlaceHolder>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Sl. No.">
@@ -1955,7 +1961,7 @@
                                                 <HeaderStyle HorizontalAlign="Center" Width="5%" />
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
-                                            <asp:BoundField DataField="vadi_Name" HeaderText="वादी का नाम" />
+                                            <asp:BoundField DataField="vadi_Name" HeaderText="शिकायतकर्ता का नाम" />
                                             <asp:BoundField DataField="Vadi_Father_Husband_Name" HeaderText="पिता/ पति का नाम" />
                                             <asp:BoundField DataField="gender" HeaderText="लिंग" />
                                             <asp:BoundField DataField="dist" HeaderText="जिला" />
@@ -1970,6 +1976,18 @@
                                             <asp:BoundField DataField="Pincode" HeaderText="पिनकोड" />
                                             <asp:BoundField DataField="DocName" HeaderText="दस्तावेज़" />
                                             <asp:BoundField DataField="Remarks" HeaderText="टिप्पणी" ItemStyle-Width="200" />
+                                            <asp:TemplateField HeaderText="Finalise Application" ItemStyle-Width="110">
+                                                <ItemTemplate>
+                                                    <asp:LinkButton ID="btnRowFinaliseADMHOME" CssClass="btn btn-success" runat="server" CommandArgument='<%# Container.DataItemIndex %>' CommandName="Finalise"
+                                                        Visible='<%# !Convert.ToBoolean(Eval("IsFinalised")) %>' ToolTip="Finalise Application"
+                                                        OnClientClick="return confirm('Are you sure you want to finalise this application? It will be saved with a new application no. and cannot be deleted after finalising.');"><i class="fa fa-check-circle" aria-hidden="true" style="font-size:20px;"></i></asp:LinkButton>
+                                                    <asp:PlaceHolder ID="phRowFinalisedADMHOME" runat="server" Visible='<%# Convert.ToBoolean(Eval("IsFinalised")) %>'>
+                                                        <span class="badge badge-success p-2" title="Finalised"><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;<%# Server.HtmlEncode(Convert.ToString(Eval("ApplicationNo"))) %></span>
+                                                    </asp:PlaceHolder>
+                                                </ItemTemplate>
+                                                <HeaderStyle HorizontalAlign="Center" />
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>
                                 </asp:Panel>

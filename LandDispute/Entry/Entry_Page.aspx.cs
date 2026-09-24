@@ -233,6 +233,11 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         divVadiBirthYear.Visible = false;
         phADMHOMEExtra.Visible = true;
 
+        // ADMHOME wording: शिकायतकर्ता instead of वादी (SHO keeps वादी)
+        litVadiSectionHeader.Text = "शिकायतकर्ता का विवरण";
+        Label2.Text = "शिकायतकर्ता का नाम";
+        txtNamePerAadhaar.Attributes["placeholder"] = "शिकायतकर्ता का नाम";
+
         // not mandatory for ADMHOME: पिता/पति का नाम, क्षेत्र का प्रकार, ग्राम पंचायत, राजस्व ग्राम, मोबाइल नंबर
         // (the mobile 10-digit format check stays, it only fires when a number is entered)
         RequiredFieldValidator12.Enabled = false;
@@ -323,7 +328,17 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
     {
         DataTable dt = ViewState["vadiDetailsADMHOME"] as DataTable;
         if (dt != null)
+        {
+            // a list started before these columns existed
+            if (!dt.Columns.Contains("IsFinalised"))
+            {
+                dt.Columns.Add("IsFinalised", typeof(bool));
+                foreach (DataRow r in dt.Rows) r["IsFinalised"] = false;
+            }
+            if (!dt.Columns.Contains("ApplicationNo"))
+                dt.Columns.Add("ApplicationNo", typeof(string));
             return dt;
+        }
 
         dt = new DataTable();
         dt.Columns.Add("vadi_Name", typeof(string));
@@ -353,6 +368,8 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         dt.Columns.Add("panchayt", typeof(string));
         dt.Columns.Add("village", typeof(string));
         dt.Columns.Add("WardNo", typeof(string));
+        dt.Columns.Add("IsFinalised", typeof(bool));
+        dt.Columns.Add("ApplicationNo", typeof(string));   // HDSBxxxxx, set when finalised (saved to DB)
         return dt;
     }
 
@@ -386,7 +403,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
     // Fields still mandatory for ADMHOME: वादी का नाम, लिंग, जिला, अनुमंडल, अंचल, थाना (+ मोहल्ला for Urban)
     bool ValidateVadiADMHOME()
     {
-        if (string.IsNullOrWhiteSpace(txtNamePerAadhaar.Text)) { AlertADMHOME("कृपया वादी का नाम अंकित करें...!"); txtNamePerAadhaar.Focus(); return false; }
+        if (string.IsNullOrWhiteSpace(txtNamePerAadhaar.Text)) { AlertADMHOME("कृपया शिकायतकर्ता का नाम अंकित करें...!"); txtNamePerAadhaar.Focus(); return false; }
         if (ddlgender.SelectedIndex == 0) { AlertADMHOME("कृपया लिंग चुनें...!"); ddlgender.Focus(); return false; }
         if (SelectedValueOrEmpty(ddlUserDist) == "") { AlertADMHOME("कृपया जिला चुनें...!"); ddlUserDist.Focus(); return false; }
         if (SelectedValueOrEmpty(ddlUserSubdivision) == "") { AlertADMHOME("कृपया अनुमंडल चुनें...!"); ddlUserSubdivision.Focus(); return false; }
@@ -397,9 +414,65 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         string mobile = txtvadimobile.Text.Trim();
         if (mobile != "" && !System.Text.RegularExpressions.Regex.IsMatch(mobile, @"^[0-9]{10}$")) { AlertADMHOME("कृपया 10 अंकों का सही मोबाइल नंबर डालें...!"); txtvadimobile.Focus(); return false; }
 
+        // column sizes of dbo.ADMHOME_VadiApplication
+        if (txtNamePerAadhaar.Text.Trim().Length > 100) { AlertADMHOME("शिकायतकर्ता का नाम अधिकतम 100 अक्षरों का हो सकता है...!"); txtNamePerAadhaar.Focus(); return false; }
+        if (txtFName.Text.Trim().Length > 100) { AlertADMHOME("पिता/ पति का नाम अधिकतम 100 अक्षरों का हो सकता है...!"); txtFName.Focus(); return false; }
+
         string msg = ValidateADMHOMEFields();
         if (msg != "") { AlertADMHOME(msg); return false; }
         return true;
+    }
+
+    static object DbValueOrNull(object value)
+    {
+        string s = Convert.ToString(value).Trim();
+        return s == "" ? (object)DBNull.Value : s;
+    }
+
+    // Saves one temporary row (and its PDF) via dbo.usp_ADMHOME_InsertVadiApplication.
+    // Returns the new application no. (HDSBxxxxx), or "" on failure (error is logged).
+    string SaveVadiApplicationADMHOME(DataRow row, byte[] docBytes)
+    {
+        try
+        {
+            string cs = ConfigurationManager.ConnectionStrings["LandDisputeConnectionString"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            using (SqlCommand cmd = new SqlCommand("dbo.usp_ADMHOME_InsertVadiApplication", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@vadi_Name", Convert.ToString(row["vadi_Name"]));
+                cmd.Parameters.AddWithValue("@Vadi_Father_Husband_Name", DbValueOrNull(row["Vadi_Father_Husband_Name"]));
+                cmd.Parameters.AddWithValue("@SexAsPerAadhaar", Convert.ToString(row["SexAsPerAadhaar"]));
+                cmd.Parameters.AddWithValue("@Vadi_District_Code", Convert.ToInt64(row["Vadi_District_Code"]));
+                cmd.Parameters.AddWithValue("@Vadi_Sub_DivCode", Convert.ToInt64(row["Vadi_Sub_DivCode"]));
+                cmd.Parameters.AddWithValue("@Vadi_Block_Code", Convert.ToInt64(row["Vadi_Block_Code"]));
+                cmd.Parameters.AddWithValue("@Vadi_Thana_code", Convert.ToInt64(row["Vadi_Thana_code"]));
+                cmd.Parameters.AddWithValue("@Vadi_AreaType", DbValueOrNull(row["Vadi_AreaType"]));
+                cmd.Parameters.AddWithValue("@Vadi_Panchayat_Code", DbValueOrNull(row["Vadi_Panchayat_Code"]));
+                cmd.Parameters.AddWithValue("@Vadi_Village_Code", DbValueOrNull(row["Vadi_Village_Code"]));
+                cmd.Parameters.AddWithValue("@Vadi_WardNo", DbValueOrNull(row["Vadi_WardNo"]));
+                cmd.Parameters.AddWithValue("@mohalla", DbValueOrNull(row["mohalla"]));
+                cmd.Parameters.AddWithValue("@Vadi_MobileNo", DbValueOrNull(row["Vadi_MobileNo"]));
+                cmd.Parameters.AddWithValue("@PinCode", DbValueOrNull(row["Pincode"]));
+                cmd.Parameters.AddWithValue("@Remarks", DbValueOrNull(row["Remarks"]));
+                cmd.Parameters.AddWithValue("@CreatedBy", Convert.ToString(Session["UserID"]));
+                cmd.Parameters.AddWithValue("@CreatedIP", GetUserIP());
+                cmd.Parameters.AddWithValue("@FileName", Convert.ToString(row["DocName"]));
+                cmd.Parameters.Add("@FileData", SqlDbType.VarBinary, -1).Value = docBytes;
+
+                con.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                        return Convert.ToString(dr["ApplicationNo"]);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ExceptionLogging.SendErrorToText(ex);
+        }
+        return "";
     }
 
     protected void btnAddVadiADMHOME_Click(object sender, EventArgs e)
@@ -444,6 +517,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         row["panchayt"] = SelectedTextOrEmpty(ddlUserPanchyat);
         row["village"] = SelectedTextOrEmpty(ddlUserVillage);
         row["WardNo"] = SelectedTextOrEmpty(ddlUserWard);
+        row["IsFinalised"] = false;
         dt.Rows.Add(row);
 
         ViewState["vadiDetailsADMHOME"] = dt;
@@ -453,13 +527,52 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
     protected void gvVadiADMHOME_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (e.CommandName != "Remove")
+        if (e.CommandName != "Remove" && e.CommandName != "Finalise")
             return;
 
         DataTable dt = GetVadiADMHOMETable();
         int index = Convert.ToInt32(e.CommandArgument);
         if (index < 0 || index >= dt.Rows.Count)
             return;
+
+        bool isFinalised = Convert.ToBoolean(dt.Rows[index]["IsFinalised"]);
+
+        if (e.CommandName == "Finalise")
+        {
+            if (isFinalised || Convert.ToString(Session["Role"]).Trim() != "ADMHOME")
+                return;
+
+            // the PDF is kept in Session until the application is saved
+            string finaliseDocKey = Convert.ToString(dt.Rows[index]["DocKey"]);
+            byte[] docBytes;
+            if (finaliseDocKey == "" || !GetVadiADMHOMEDocs().TryGetValue(finaliseDocKey, out docBytes))
+            {
+                AlertADMHOME("इस आवेदन का दस्तावेज़ नहीं मिला (सत्र समाप्त हो गया हो सकता है)। कृपया पंक्ति हटाकर पुनः जोड़ें...!");
+                return;
+            }
+
+            string applicationNo = SaveVadiApplicationADMHOME(dt.Rows[index], docBytes);
+            if (applicationNo == "")
+            {
+                AlertADMHOME("तकनीकी त्रुटि: आवेदन सहेजा नहीं जा सका, कृपया पुनः प्रयास करें...!");
+                return;
+            }
+
+            dt.Rows[index]["IsFinalised"] = true;
+            dt.Rows[index]["ApplicationNo"] = applicationNo;
+            GetVadiADMHOMEDocs().Remove(finaliseDocKey);   // saved in DB now
+            ViewState["vadiDetailsADMHOME"] = dt;
+            BindVadiADMHOMEGrid();
+            AlertADMHOME("आवेदन संख्या " + applicationNo + " के साथ आवेदन सफलतापूर्वक फाइनल किया गया। यह आवेदन View & Forward Application में देखा जा सकता है...!");
+            return;
+        }
+
+        // Remove: finalised rows are locked
+        if (isFinalised)
+        {
+            AlertADMHOME("फाइनल किया गया आवेदन हटाया नहीं जा सकता...!");
+            return;
+        }
 
         string docKey = Convert.ToString(dt.Rows[index]["DocKey"]);
         if (docKey != "")
