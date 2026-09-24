@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
@@ -15,7 +16,15 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
                d.DISTRICTNAME AS DistrictName, s.Sd_Name_En AS SubDivisionName, b.BlockName, t.Police_Station AS ThanaName,
                CASE a.Vadi_AreaType WHEN 'R' THEN 'Rural' WHEN 'U' THEN 'Urban' ELSE '' END AS AreaType,
                p.PanchayatName, v.VILLNAME AS VillageName, w.WARDNAME AS WardName, a.mohalla,
-               a.Vadi_MobileNo, a.PinCode, a.Remarks, a.Status, a.CreatedBy, a.CreatedOn
+               a.Vadi_MobileNo, a.PinCode, a.Remarks, a.Status, a.CreatedBy, a.CreatedOn, a.Vadi_District_Code,
+               -- e.g. ""BHAGALPUR - DM, BHAGALPUR - SP"" (FOR XML PATH instead of STRING_AGG: works before SQL 2017)
+               STUFF((SELECT ', ' + ISNULL(fd.DISTRICTNAME, CAST(f.DistrictCode AS varchar(20))) + ' - '
+                             + CASE f.ForwardedToRole WHEN 'DMOPT' THEN 'DM' ELSE 'SP' END
+                      FROM dbo.ADMHOME_VadiApplicationForward f
+                      OUTER APPLY (SELECT TOP 1 DISTRICTNAME FROM dbo.mst_Commissionary_Districts WHERE DISTRICTCODE = f.DistrictCode) fd
+                      WHERE f.ApplicationId = a.ApplicationId
+                      ORDER BY f.ForwardId
+                      FOR XML PATH(''), TYPE).value('.', 'nvarchar(max)'), 1, 2, '') AS ForwardedTo
         FROM dbo.ADMHOME_VadiApplication a
         OUTER APPLY (SELECT TOP 1 DISTRICTNAME FROM dbo.mst_Commissionary_Districts WHERE DISTRICTCODE = a.Vadi_District_Code) d
         OUTER APPLY (SELECT TOP 1 Sd_Name_En FROM dbo.SubDivisions WHERE Sd_Code2 = a.Vadi_Sub_DivCode) s
@@ -105,7 +114,6 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
     void ApplyFilters()
     {
         gvApplications.PageIndex = 0;
-        pnlDetails.Visible = false;
         BindApplications();
     }
 
@@ -159,6 +167,8 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
     {
         if (e.CommandName == "ViewApp")
             ShowDetails(Convert.ToString(e.CommandArgument));
+        else if (e.CommandName == "ForwardApp")
+            ShowForwardForm(Convert.ToString(e.CommandArgument));
     }
 
     void ShowDetails(string applicationNo)
@@ -166,10 +176,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
         DataTable dt = clsData.GetDataTable(ApplicationSelect + " WHERE a.ApplicationNo = @ApplicationNo",
             new SqlParameter[] { new SqlParameter("@ApplicationNo", applicationNo) });
         if (dt.Rows.Count == 0)
-        {
-            pnlDetails.Visible = false;
             return;
-        }
 
         DataRow r = dt.Rows[0];
         // Labels render raw HTML, so every value is encoded
@@ -193,17 +200,170 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
         lblDCreatedBy.Text = Enc(r["CreatedBy"]);
         lblDRemarks.Text = Enc(r["Remarks"]);
         lnkDDocument.NavigateUrl = "ADMHOME_ViewDocument.aspx?app=" + Server.UrlEncode(applicationNo);
-        pnlDetails.Visible = true;
+
+        gvForwardHistory.DataSource = clsData.GetDataTable(@"
+            SELECT fd.DISTRICTNAME AS DistrictName,
+                   -- N'' = Unicode literal; without N the Hindi text becomes '?'
+                   CASE f.ForwardedToRole WHEN 'DMOPT' THEN N'DM (जिलाधिकारी)' ELSE N'SP (पुलिस अधीक्षक)' END AS RoleName,
+                   f.ForwardedToUserID, f.ForwardRemarks, f.ForwardedBy, f.ForwardedOn
+            FROM dbo.ADMHOME_VadiApplicationForward f
+            INNER JOIN dbo.ADMHOME_VadiApplication a ON a.ApplicationId = f.ApplicationId
+            OUTER APPLY (SELECT TOP 1 DISTRICTNAME FROM dbo.mst_Commissionary_Districts WHERE DISTRICTCODE = f.DistrictCode) fd
+            WHERE a.ApplicationNo = @ApplicationNo
+            ORDER BY f.ForwardId",
+            new SqlParameter[] { new SqlParameter("@ApplicationNo", applicationNo) });
+        gvForwardHistory.DataBind();
+
+        ShowModal("modalAppDetails");
     }
+
+    #region Forward
+
+    void ShowForwardForm(string applicationNo)
+    {
+        DataTable dt = clsData.GetDataTable("SELECT Vadi_District_Code FROM dbo.ADMHOME_VadiApplication WHERE ApplicationNo = @ApplicationNo",
+            new SqlParameter[] { new SqlParameter("@ApplicationNo", applicationNo) });
+        if (dt.Rows.Count == 0)
+            return;
+
+        hfFwdApplicationNo.Value = applicationNo;
+        lblFwdApplicationNo.Text = Server.HtmlEncode(applicationNo);
+        txtFwdRemarks.Text = "";
+
+        // district list; the application's own district is pre-selected (it can be changed)
+        ddlFwdDistrict.DataSource = clsData.GetDataTable("SELECT DISTINCT DISTRICTNAME, DISTRICTCODE FROM dbo.mst_Commissionary_Districts ORDER BY DISTRICTNAME");
+        ddlFwdDistrict.DataTextField = "DISTRICTNAME";
+        ddlFwdDistrict.DataValueField = "DISTRICTCODE";
+        ddlFwdDistrict.DataBind();
+        ddlFwdDistrict.Items.Insert(0, new ListItem("--जिला चुनें--", "0"));
+        string appDistrict = Convert.ToString(dt.Rows[0]["Vadi_District_Code"]);
+        if (ddlFwdDistrict.Items.FindByValue(appDistrict) != null)
+            ddlFwdDistrict.SelectedValue = appDistrict;
+
+        UpdateForwardTargets();
+        ShowModal("modalForward");
+    }
+
+    protected void ddlFwdDistrict_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        UpdateForwardTargets();
+    }
+
+    // shows the DM / SP login of the chosen district and locks a target the application was already forwarded to
+    void UpdateForwardTargets()
+    {
+        chkFwdDM.Checked = chkFwdSP.Checked = false;
+        chkFwdDM.Enabled = chkFwdSP.Enabled = true;
+        lblFwdDMInfo.Text = lblFwdSPInfo.Text = "";
+        if (ddlFwdDistrict.SelectedValue == "0")
+            return;
+
+        DataTable dt = clsData.GetDataTable(@"
+            SELECT r.Role,
+                   (SELECT TOP 1 u.UserID FROM dbo.UserLogin u
+                    WHERE u.Userrole = r.Role AND u.District_Code = @DistrictCode ORDER BY u.UserID) AS UserID,
+                   (SELECT TOP 1 f.ForwardedOn FROM dbo.ADMHOME_VadiApplicationForward f
+                    INNER JOIN dbo.ADMHOME_VadiApplication a ON a.ApplicationId = f.ApplicationId
+                    WHERE a.ApplicationNo = @ApplicationNo AND f.DistrictCode = @DistrictCode AND f.ForwardedToRole = r.Role) AS ForwardedOn
+            FROM (VALUES ('DMOPT'), ('SSPOPT')) r(Role)",
+            new SqlParameter[] {
+                new SqlParameter("@DistrictCode", Convert.ToInt64(ddlFwdDistrict.SelectedValue)),
+                new SqlParameter("@ApplicationNo", hfFwdApplicationNo.Value) });
+
+        foreach (DataRow r in dt.Rows)
+        {
+            bool isDM = Convert.ToString(r["Role"]) == "DMOPT";
+            CheckBox chk = isDM ? chkFwdDM : chkFwdSP;
+            Label info = isDM ? lblFwdDMInfo : lblFwdSPInfo;
+            string user = Convert.ToString(r["UserID"]);
+
+            if (r["ForwardedOn"] != DBNull.Value)
+            {
+                chk.Checked = true;
+                chk.Enabled = false;
+                info.Text = "पहले ही अग्रेषित: " + Convert.ToDateTime(r["ForwardedOn"]).ToString("dd/MM/yyyy hh:mm tt");
+            }
+            else
+            {
+                info.Text = user != "" ? "Login: " + Server.HtmlEncode(user) : "इस जिले में लॉगिन उपलब्ध नहीं है";
+            }
+        }
+    }
+
+    protected void btnFwdSubmit_Click(object sender, EventArgs e)
+    {
+        string applicationNo = hfFwdApplicationNo.Value;
+        // a disabled checkbox = already forwarded, so only enabled + ticked ones are new targets
+        bool toDM = chkFwdDM.Enabled && chkFwdDM.Checked;
+        bool toSP = chkFwdSP.Enabled && chkFwdSP.Checked;
+        string remarks = txtFwdRemarks.Text.Trim();
+
+        // on a validation error the pop-up is opened again with what the user entered
+        if (ddlFwdDistrict.SelectedValue == "0") { Alert("कृपया जिला चुनें...!"); ShowModal("modalForward"); return; }
+        if (!toDM && !toSP) { Alert("कृपया DM या SP (या दोनों) चुनें...!"); ShowModal("modalForward"); return; }
+        if (remarks.Length > 500) { Alert("टिप्पणी अधिकतम 500 अक्षरों की हो सकती है...!"); ShowModal("modalForward"); return; }
+
+        DataTable result = new DataTable();
+        try
+        {
+            string cs = ConfigurationManager.ConnectionStrings["LandDisputeConnectionString"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            using (SqlCommand cmd = new SqlCommand("dbo.usp_ADMHOME_ForwardVadiApplication", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ApplicationNo", applicationNo);
+                cmd.Parameters.AddWithValue("@DistrictCode", Convert.ToInt64(ddlFwdDistrict.SelectedValue));
+                cmd.Parameters.AddWithValue("@ToDM", toDM);
+                cmd.Parameters.AddWithValue("@ToSP", toSP);
+                cmd.Parameters.AddWithValue("@ForwardRemarks", remarks == "" ? (object)DBNull.Value : remarks);
+                cmd.Parameters.AddWithValue("@ForwardedBy", Convert.ToString(Session["UserID"]));
+                cmd.Parameters.AddWithValue("@ForwardedIP", Request.UserHostAddress);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    da.Fill(result);
+            }
+        }
+        catch (Exception ex)
+        {
+            ExceptionLogging.SendErrorToText(ex);
+            Alert("तकनीकी त्रुटि: आवेदन अग्रेषित नहीं हो सका, कृपया पुनः प्रयास करें...!");
+            ShowModal("modalForward");
+            return;
+        }
+
+        string districtName = ddlFwdDistrict.SelectedItem.Text;
+        string done = "", already = "";
+        foreach (DataRow r in result.Rows)
+        {
+            string who = Convert.ToString(r["Role"]) == "DMOPT" ? "DM" : "SP";
+            if (Convert.ToString(r["Result"]) == "FORWARDED") done += (done == "" ? "" : ", ") + who;
+            else already += (already == "" ? "" : ", ") + who;
+        }
+
+        string msg = done != "" ? "आवेदन " + applicationNo + " सफलतापूर्वक " + districtName + " के " + done + " को अग्रेषित किया गया।" : "";
+        if (already != "") msg += (msg == "" ? "" : " ") + already + " को यह आवेदन पहले ही अग्रेषित किया जा चुका है।";
+        Alert(msg);
+
+        BindApplications();
+    }
+
+    // opens a Bootstrap pop-up once the page has loaded (see showADMHOMEModal in the .aspx)
+    void ShowModal(string modalId)
+    {
+        ClientScript.RegisterStartupScript(GetType(), "showModal", "showADMHOMEModal('" + modalId + "');", true);
+    }
+
+    void Alert(string message)
+    {
+        // message only contains fixed text, district names and HDSB numbers; escape quotes anyway
+        ClientScript.RegisterStartupScript(GetType(), "alert",
+            "alert(" + System.Web.HttpUtility.JavaScriptStringEncode(message, true) + ");", true);
+    }
+
+    #endregion
 
     string Enc(object value)
     {
         string s = Convert.ToString(value);
         return s == "" ? "-" : Server.HtmlEncode(s);
-    }
-
-    protected void btnCloseDetails_Click(object sender, EventArgs e)
-    {
-        pnlDetails.Visible = false;
     }
 }

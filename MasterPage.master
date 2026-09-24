@@ -720,6 +720,18 @@
                     <div class="py-1">                      
                         <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif;" class="collapse-item p-1" runat="server" href="LandDispute/Entry/SearchAppForRemarks.aspx" id="lnkAddMeeting">Add Remarks</a>
                     </div>
+                    <%-- DM and SP only (not ADM / DPGRO): applications forwarded by the Home Department (ADMHOME) --%>
+                    <asp:LoginView ID="LoginViewDMSPForwarded" runat="server">
+                        <RoleGroups>
+                            <asp:RoleGroup Roles="DMOPT,SSPOPT">
+                                <ContentTemplate>
+                                    <div class="py-1">
+                                        <a style="padding: 1.2em !important; font-family: 'Poppins', sans-serif; display: block; white-space: normal; max-width: 13.5rem;" class="collapse-item p-1" runat="server" href="~/LandDispute/Entry/ForwardedApplications.aspx" id="lnkDMSPForwardedApplications">Forwarded Applications</a>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:RoleGroup>
+                        </RoleGroups>
+                    </asp:LoginView>
                 </div>
             </li>
 
