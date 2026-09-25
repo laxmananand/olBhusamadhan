@@ -112,10 +112,10 @@
                     </div>--%>
                 </div>
             </li>
-            <%-- Action menu for ADMHOME login: only New Entry (same form as SHO login) --%>
+            <%-- Action menu for ADMHOME (Home Dept.) and ADMLR (Land & Revenue Dept.): New Entry + View & Forward Application --%>
             <asp:LoginView ID="LoginViewADMHOMEAction" runat="server">
                 <RoleGroups>
-                    <asp:RoleGroup Roles="ADMHOME">
+                    <asp:RoleGroup Roles="ADMHOME,ADMLR">
                         <ContentTemplate>
                             <li class="nav-item mt-2">
                                 <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseADMHOMEAction"

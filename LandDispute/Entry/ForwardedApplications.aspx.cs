@@ -16,7 +16,9 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
                CASE a.Vadi_AreaType WHEN 'R' THEN 'Rural' WHEN 'U' THEN 'Urban' ELSE '' END AS AreaType,
                p.PanchayatName, v.VILLNAME AS VillageName, w.WARDNAME AS WardName, a.mohalla,
                a.Vadi_MobileNo, a.PinCode, a.Remarks,
-               f.ForwardedOn, f.ForwardRemarks, f.ForwardedBy
+               f.ForwardedOn, f.ForwardRemarks, f.ForwardedBy,
+               -- sending department (N'' keeps the Hindi text)
+               CASE a.CreatedRole WHEN 'ADMLR' THEN N'राजस्व एवं भूमि सुधार विभाग' ELSE N'गृह विभाग' END AS DeptName
         FROM dbo.ADMHOME_VadiApplicationForward f
         INNER JOIN dbo.ADMHOME_VadiApplication a ON a.ApplicationId = f.ApplicationId
         OUTER APPLY (SELECT TOP 1 DISTRICTNAME FROM dbo.mst_Commissionary_Districts WHERE DISTRICTCODE = a.Vadi_District_Code) d
@@ -136,7 +138,7 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
         lblDWard.Text = Enc(ward != "" && mohalla != "" ? ward + " / " + mohalla : ward + mohalla);
         lblDPincode.Text = Enc(r["PinCode"]);
         lblDForwardedOn.Text = Convert.ToDateTime(r["ForwardedOn"]).ToString("dd/MM/yyyy hh:mm tt");
-        lblDForwardedBy.Text = Enc(r["ForwardedBy"]);
+        lblDForwardedBy.Text = Enc(Convert.ToString(r["DeptName"]) + " (" + Convert.ToString(r["ForwardedBy"]) + ")");
         lblDForwardRemarks.Text = Enc(r["ForwardRemarks"]);
         lblDRemarks.Text = Enc(r["Remarks"]);
         lnkDDocument.NavigateUrl = "ADMHOME_ViewDocument.aspx?file=" + Server.UrlEncode(fileNo);

@@ -4,18 +4,19 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text.RegularExpressions;
 
-// Opens the uploaded PDF of an ADMHOME application in the browser: ADMHOME_ViewDocument.aspx?file=HDSB10001
+// Opens the uploaded PDF of an ADMHOME / ADMLR file in the browser: ADMHOME_ViewDocument.aspx?file=HDSB10001
 public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
 {
     clsDataAccessLandDispute clsData = new clsDataAccessLandDispute();
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        // ADMHOME: any application. DM (DMOPT) / SP (SSPOPT): only applications forwarded to their role in their district.
+        // ADMHOME / ADMLR: their own department's files. DM (DMOPT) / SP (SSPOPT): only files forwarded to their role in their district.
         string role = Convert.ToString(Session["Role"]).Trim();
         long districtCode = 0;
         bool isRecipient = (role == "DMOPT" || role == "SSPOPT") && long.TryParse(Convert.ToString(Session["District_Code"]), out districtCode);
-        if (Convert.ToString(Session["UserID"]) == "" || (role != "ADMHOME" && !isRecipient))
+        bool isDept = role == "ADMHOME" || role == "ADMLR";   // own department's files only (CreatedRole)
+        if (Convert.ToString(Session["UserID"]) == "" || (!isDept && !isRecipient))
         {
             Response.StatusCode = 403;
             Response.Write("Access denied.");
@@ -35,7 +36,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
             FROM dbo.ADMHOME_VadiApplication a
             INNER JOIN dbo.ADMHOME_VadiApplicationDoc d ON d.ApplicationId = a.ApplicationId
             WHERE a.FileNo = @FileNo
-              AND (@Role = 'ADMHOME'
+              AND (a.CreatedRole = @Role
                    OR EXISTS (SELECT 1 FROM dbo.ADMHOME_VadiApplicationForward f
                               WHERE f.ApplicationId = a.ApplicationId AND f.ForwardedToRole = @Role AND f.DistrictCode = @DistrictCode))",
             new SqlParameter[] {

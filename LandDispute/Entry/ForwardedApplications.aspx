@@ -66,7 +66,7 @@
 
                     <div class="col-md-3"><div class="vf-detail-label">पिनकोड</div><div class="vf-detail-value"><asp:Label ID="lblDPincode" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">अग्रेषण तिथि</div><div class="vf-detail-value"><asp:Label ID="lblDForwardedOn" runat="server" /></div></div>
-                    <div class="col-md-3"><div class="vf-detail-label">अग्रेषित करने वाले</div><div class="vf-detail-value"><asp:Label ID="lblDForwardedBy" runat="server" /></div></div>
+                    <div class="col-md-3"><div class="vf-detail-label">अग्रेषित करने वाला विभाग</div><div class="vf-detail-value"><asp:Label ID="lblDForwardedBy" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">दस्तावेज़</div><div class="vf-detail-value"><asp:HyperLink ID="lnkDDocument" runat="server" Target="_blank" CssClass="btn btn-sm btn-outline-danger"><i class="fa fa-file-pdf"></i>&nbsp;View PDF</asp:HyperLink></div></div>
 
                     <div class="col-md-12"><div class="vf-detail-label">अग्रेषण टिप्पणी</div><div class="vf-detail-value" style="white-space: pre-wrap;"><asp:Label ID="lblDForwardRemarks" runat="server" /></div></div>
@@ -100,6 +100,7 @@
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:TemplateField>
                             <asp:BoundField DataField="FileNo" HeaderText="File No." ItemStyle-Font-Bold="true" />
+                            <asp:BoundField DataField="DeptName" HeaderText="विभाग" />
                             <asp:BoundField DataField="vadi_Name" HeaderText="शिकायतकर्ता का नाम" />
                             <asp:BoundField DataField="Vadi_Father_Husband_Name" HeaderText="पिता/ पति का नाम" />
                             <asp:BoundField DataField="Gender" HeaderText="लिंग" />

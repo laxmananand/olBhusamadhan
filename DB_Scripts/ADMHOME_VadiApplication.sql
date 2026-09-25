@@ -1,6 +1,10 @@
 ﻿/* =====================================================================================
-   ADMHOME login - शिकायतकर्ता / वादी file (Finalise -> View & Forward -> DM / SP -> CO / SHO)
+   ADMHOME (Home Dept.) and ADMLR (Land & Revenue Dept.) logins -
+   शिकायतकर्ता / वादी file (Finalise -> View & Forward -> DM / SP -> CO / SHO)
    Database : LandDisputeDB   (SQL Server 2016 SP1 or later - uses SEQUENCE, THROW, CREATE OR ALTER)
+
+   Departments: both logins use the same screens and ONE shared File No. series (HDSB...), but each
+   department only sees / forwards its own files (ADMHOME_VadiApplication.CreatedRole).
 
    Objects (all ADMHOME-specific; no pre-existing table / procedure is modified):
      1. dbo.seq_HDSB_FileNo                   - number generator for the File No.
@@ -85,6 +89,7 @@ BEGIN
         -- workflow
         Status                   CHAR(1)        NOT NULL CONSTRAINT DF_ADMHOME_VadiApplication_Status DEFAULT ('F'),  -- F = Finalised, W = Forwarded
         CreatedBy                VARCHAR(30)    NOT NULL,          -- UserLogin.UserID
+        CreatedRole              VARCHAR(10)    NOT NULL CONSTRAINT DF_ADMHOME_VadiApplication_CreatedRole DEFAULT ('ADMHOME'),  -- owning department: ADMHOME / ADMLR
         CreatedIP                VARCHAR(50)    NULL,
         CreatedOn                DATETIME       NOT NULL CONSTRAINT DF_ADMHOME_VadiApplication_CreatedOn DEFAULT (GETDATE()),
         -- forwards (DM / SP) are kept in dbo.ADMHOME_VadiApplicationForward (section 5)
@@ -100,11 +105,30 @@ BEGIN
         CONSTRAINT CK_ADMHOME_VadiApplication_FileNo CHECK (FileNo LIKE 'HDSB[0-9][0-9][0-9][0-9][0-9]'),
         CONSTRAINT CK_ADMHOME_VadiApplication_PinCode CHECK (PinCode IS NULL OR PinCode LIKE '[1-9][0-9][0-9][0-9][0-9][0-9]'),
         CONSTRAINT CK_ADMHOME_VadiApplication_Sex CHECK (SexAsPerAadhaar IN ('M','F','O')),
-        CONSTRAINT CK_ADMHOME_VadiApplication_Status CHECK (Status IN ('F','W'))
+        CONSTRAINT CK_ADMHOME_VadiApplication_Status CHECK (Status IN ('F','W')),
+        CONSTRAINT CK_ADMHOME_VadiApplication_CreatedRole CHECK (CreatedRole IN ('ADMHOME','ADMLR'))
     );
 
     CREATE INDEX IX_ADMHOME_VadiApplication_CreatedOn ON dbo.ADMHOME_VadiApplication (CreatedOn DESC);
 END
+GO
+
+-- 2c. upgrade: owning department (ADMHOME = Home Department, ADMLR = Land & Revenue Department).
+-- Files created before this column existed were all created by ADMHOME.
+IF COL_LENGTH('dbo.ADMHOME_VadiApplication', 'CreatedRole') IS NULL
+    ALTER TABLE dbo.ADMHOME_VadiApplication
+        ADD CreatedRole VARCHAR(10) NOT NULL
+            CONSTRAINT DF_ADMHOME_VadiApplication_CreatedRole DEFAULT ('ADMHOME') WITH VALUES;
+GO
+IF OBJECT_ID('dbo.CK_ADMHOME_VadiApplication_CreatedRole', 'C') IS NULL
+    ALTER TABLE dbo.ADMHOME_VadiApplication WITH CHECK
+        ADD CONSTRAINT CK_ADMHOME_VadiApplication_CreatedRole CHECK (CreatedRole IN ('ADMHOME','ADMLR'));
+GO
+-- each department's View & Forward list (its own files, newest first)
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_ADMHOME_VadiApplication_CreatedRole'
+                                        AND object_id = OBJECT_ID('dbo.ADMHOME_VadiApplication'))
+    CREATE INDEX IX_ADMHOME_VadiApplication_CreatedRole
+        ON dbo.ADMHOME_VadiApplication (CreatedRole, CreatedOn DESC);
 GO
 
 -- 2a. upgrade: ApplicationNo -> FileNo (data kept).
@@ -188,11 +212,15 @@ CREATE OR ALTER PROCEDURE dbo.usp_ADMHOME_InsertVadiApplication
     @CreatedBy                VARCHAR(30),
     @CreatedIP                VARCHAR(50)   = NULL,
     @FileName                 NVARCHAR(260),
-    @FileData                 VARBINARY(MAX)
+    @FileData                 VARBINARY(MAX),
+    @CreatedRole              VARCHAR(10)   = 'ADMHOME'     -- ADMHOME / ADMLR (owning department)
 AS
 BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;     -- any error rolls the whole thing back
+
+    IF @CreatedRole NOT IN ('ADMHOME', 'ADMLR')
+        THROW 50004, 'Only ADMHOME / ADMLR can finalise a file.', 1;
 
     DECLARE @FileNo VARCHAR(9) =
         'HDSB' + CAST(NEXT VALUE FOR dbo.seq_HDSB_FileNo AS VARCHAR(5));
@@ -204,12 +232,12 @@ BEGIN
             (FileNo, vadi_Name, Vadi_Father_Husband_Name, SexAsPerAadhaar,
              Vadi_District_Code, Vadi_Sub_DivCode, Vadi_Block_Code, Vadi_Thana_code,
              Vadi_AreaType, Vadi_Panchayat_Code, Vadi_Village_Code, Vadi_WardNo, mohalla,
-             Vadi_MobileNo, PinCode, Remarks, Status, CreatedBy, CreatedIP)
+             Vadi_MobileNo, PinCode, Remarks, Status, CreatedBy, CreatedRole, CreatedIP)
         VALUES
             (@FileNo, @vadi_Name, NULLIF(@Vadi_Father_Husband_Name, N''), @SexAsPerAadhaar,
              @Vadi_District_Code, @Vadi_Sub_DivCode, @Vadi_Block_Code, @Vadi_Thana_code,
              NULLIF(@Vadi_AreaType, ''), @Vadi_Panchayat_Code, @Vadi_Village_Code, @Vadi_WardNo, NULLIF(@mohalla, N''),
-             NULLIF(@Vadi_MobileNo, ''), NULLIF(@PinCode, ''), NULLIF(@Remarks, N''), 'F', @CreatedBy, @CreatedIP);
+             NULLIF(@Vadi_MobileNo, ''), NULLIF(@PinCode, ''), NULLIF(@Remarks, N''), 'F', @CreatedBy, @CreatedRole, @CreatedIP);
 
         SET @ApplicationId = SCOPE_IDENTITY();
 
@@ -269,7 +297,8 @@ CREATE OR ALTER PROCEDURE dbo.usp_ADMHOME_ForwardVadiApplication
     @ToSP            BIT,
     @ForwardRemarks  NVARCHAR(500) = NULL,
     @ForwardedBy     VARCHAR(30),
-    @ForwardedIP     VARCHAR(50)   = NULL
+    @ForwardedIP     VARCHAR(50)   = NULL,
+    @OwnerRole       VARCHAR(10)   = NULL     -- ADMHOME / ADMLR: a department can only forward its own files
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -279,7 +308,8 @@ BEGIN
         THROW 50001, 'Select DM and/or SP.', 1;
 
     DECLARE @ApplicationId BIGINT =
-        (SELECT ApplicationId FROM dbo.ADMHOME_VadiApplication WHERE FileNo = @FileNo);
+        (SELECT ApplicationId FROM dbo.ADMHOME_VadiApplication
+         WHERE FileNo = @FileNo AND (@OwnerRole IS NULL OR CreatedRole = @OwnerRole));
     IF @ApplicationId IS NULL
         THROW 50002, 'File not found.', 1;
 

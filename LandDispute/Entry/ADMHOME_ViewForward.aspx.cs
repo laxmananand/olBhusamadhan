@@ -43,7 +43,8 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             Response.Redirect("~/Login_Default.aspx");
             return;
         }
-        if (Convert.ToString(Session["Role"]).Trim() != "ADMHOME")
+        // ADMHOME (Home Dept.) and ADMLR (Land & Revenue Dept.); each sees only its own files
+        if (DeptRole != "ADMHOME" && DeptRole != "ADMLR")
         {
             Response.Redirect("~/Default.aspx");
             return;
@@ -119,6 +120,9 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
 
     #endregion
 
+    // the logged-in department; every query on this page is limited to a.CreatedRole = @CreatedRole
+    string DeptRole { get { return Convert.ToString(Session["Role"]).Trim(); } }
+
     void BindApplications()
     {
         // LIKE wildcards typed by the user are matched literally
@@ -128,7 +132,8 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
         long blockCode = Convert.ToInt64(ddlFilterBlock.SelectedValue);
 
         string sql = ApplicationSelect + @"
-        WHERE (@DistrictCode = 0 OR a.Vadi_District_Code = @DistrictCode)
+        WHERE a.CreatedRole = @CreatedRole
+          AND (@DistrictCode = 0 OR a.Vadi_District_Code = @DistrictCode)
           AND (@BlockCode = 0 OR a.Vadi_Block_Code = @BlockCode)
           AND (@Name = '' OR a.vadi_Name LIKE '%' + @Name + '%' ESCAPE '\')
           AND (@Search = '' OR a.FileNo LIKE '%' + @Search + '%' ESCAPE '\'
@@ -139,7 +144,8 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             new SqlParameter("@DistrictCode", districtCode),
             new SqlParameter("@BlockCode", blockCode),
             new SqlParameter("@Name", name),
-            new SqlParameter("@Search", search) });
+            new SqlParameter("@Search", search),
+            new SqlParameter("@CreatedRole", DeptRole) });
         gvApplications.PageSize = Convert.ToInt32(ddlPageSize.SelectedValue);
         gvApplications.DataSource = dt;
         gvApplications.DataBind();
@@ -173,8 +179,8 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
 
     void ShowDetails(string fileNo)
     {
-        DataTable dt = clsData.GetDataTable(ApplicationSelect + " WHERE a.FileNo = @FileNo",
-            new SqlParameter[] { new SqlParameter("@FileNo", fileNo) });
+        DataTable dt = clsData.GetDataTable(ApplicationSelect + " WHERE a.FileNo = @FileNo AND a.CreatedRole = @CreatedRole",
+            new SqlParameter[] { new SqlParameter("@FileNo", fileNo), new SqlParameter("@CreatedRole", DeptRole) });
         if (dt.Rows.Count == 0)
             return;
 
@@ -209,9 +215,9 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             FROM dbo.ADMHOME_VadiApplicationForward f
             INNER JOIN dbo.ADMHOME_VadiApplication a ON a.ApplicationId = f.ApplicationId
             OUTER APPLY (SELECT TOP 1 DISTRICTNAME FROM dbo.mst_Commissionary_Districts WHERE DISTRICTCODE = f.DistrictCode) fd
-            WHERE a.FileNo = @FileNo
+            WHERE a.FileNo = @FileNo AND a.CreatedRole = @CreatedRole
             ORDER BY f.ForwardId",
-            new SqlParameter[] { new SqlParameter("@FileNo", fileNo) });
+            new SqlParameter[] { new SqlParameter("@FileNo", fileNo), new SqlParameter("@CreatedRole", DeptRole) });
         gvForwardHistory.DataBind();
 
         ShowModal("modalAppDetails");
@@ -221,8 +227,8 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
 
     void ShowForwardForm(string fileNo)
     {
-        DataTable dt = clsData.GetDataTable("SELECT Vadi_District_Code FROM dbo.ADMHOME_VadiApplication WHERE FileNo = @FileNo",
-            new SqlParameter[] { new SqlParameter("@FileNo", fileNo) });
+        DataTable dt = clsData.GetDataTable("SELECT Vadi_District_Code FROM dbo.ADMHOME_VadiApplication WHERE FileNo = @FileNo AND CreatedRole = @CreatedRole",
+            new SqlParameter[] { new SqlParameter("@FileNo", fileNo), new SqlParameter("@CreatedRole", DeptRole) });
         if (dt.Rows.Count == 0)
             return;
 
@@ -318,6 +324,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@ForwardRemarks", remarks == "" ? (object)DBNull.Value : remarks);
                 cmd.Parameters.AddWithValue("@ForwardedBy", Convert.ToString(Session["UserID"]));
                 cmd.Parameters.AddWithValue("@ForwardedIP", Request.UserHostAddress);
+                cmd.Parameters.AddWithValue("@OwnerRole", DeptRole);   // the procedure refuses another department's file
                 using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     da.Fill(result);
             }

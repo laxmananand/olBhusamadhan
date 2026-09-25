@@ -214,11 +214,21 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
         }
     }
-    // ADMHOME login sees only "वादी का विवरण": no step tabs, no department/organisation
+    // Department logins that get the simplified शिकायतकर्ता form + File No. workflow:
+    // ADMHOME (Home Department) and ADMLR (Land & Revenue Department). Everything named "ADMHOME"
+    // below applies to both; each department only sees its own files (ADMHOME_VadiApplication.CreatedRole).
+    bool IsDeptFileRole()
+    {
+        if (Session == null) return false;
+        string role = Convert.ToString(Session["Role"]).Trim();
+        return role == "ADMHOME" || role == "ADMLR";
+    }
+
+    // ADMHOME / ADMLR login sees only "वादी का विवरण": no step tabs, no department/organisation
     // questions, no Save, no "भूमि विवाद का विवरण" and no Preview / Save & Next
     void ApplyADMHOMELayout()
     {
-        if (Convert.ToString(Session["Role"]).Trim() != "ADMHOME")
+        if (!IsDeptFileRole())
             return;
 
         divStepTabs.Visible = false;
@@ -252,7 +262,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
-        if (Convert.ToString(Session["Role"]).Trim() == "ADMHOME")
+        if (IsDeptFileRole())
         {
             starFName.Visible = false;
             starUserAreatype.Visible = false;
@@ -269,7 +279,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
-        if (Session != null && Convert.ToString(Session["Role"]).Trim() == "ADMHOME")
+        if (IsDeptFileRole())
         {
             rowVadiMobile.Controls.Remove(divVadiMobile);
             rowVadiBasic.Controls.Add(divVadiMobile);
@@ -458,6 +468,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@PinCode", DbValueOrNull(row["Pincode"]));
                 cmd.Parameters.AddWithValue("@Remarks", DbValueOrNull(row["Remarks"]));
                 cmd.Parameters.AddWithValue("@CreatedBy", Convert.ToString(Session["UserID"]));
+                cmd.Parameters.AddWithValue("@CreatedRole", Convert.ToString(Session["Role"]).Trim());   // ADMHOME / ADMLR
                 cmd.Parameters.AddWithValue("@CreatedIP", GetUserIP());
                 cmd.Parameters.AddWithValue("@FileName", Convert.ToString(row["DocName"]));
                 cmd.Parameters.Add("@FileData", SqlDbType.VarBinary, -1).Value = docBytes;
@@ -479,7 +490,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
     protected void btnAddVadiADMHOME_Click(object sender, EventArgs e)
     {
-        if (Convert.ToString(Session["Role"]).Trim() != "ADMHOME" || !ValidateVadiADMHOME())
+        if (!IsDeptFileRole() || !ValidateVadiADMHOME())
             return;
 
         string docKey = "";
@@ -562,7 +573,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
     // row Submit: finalises (saves to DB with a new HDSB application no.) that row, only if its tick box is ticked
     void FinaliseClickedRowADMHOME(GridViewCommandEventArgs e, DataTable dt, int index)
     {
-        if (Convert.ToString(Session["Role"]).Trim() != "ADMHOME")
+        if (!IsDeptFileRole())
             return;
 
         // the tick box in the same row as the clicked Submit (checked on the server as well as in the browser)
