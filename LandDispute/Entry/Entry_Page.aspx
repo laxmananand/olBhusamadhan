@@ -1989,7 +1989,7 @@
                                                         </div>
                                                     </asp:PlaceHolder>
                                                     <asp:PlaceHolder ID="phRowFinalisedADMHOME" runat="server" Visible='<%# Convert.ToBoolean(Eval("IsFinalised")) %>'>
-                                                        <span class="badge badge-success p-2" title="Finalised"><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;<%# Server.HtmlEncode(Convert.ToString(Eval("ApplicationNo"))) %></span>
+                                                        <span class="badge badge-success p-2" title="Finalised - File No."><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;<%# Server.HtmlEncode(Convert.ToString(Eval("FileNo"))) %></span>
                                                     </asp:PlaceHolder>
                                                 </ItemTemplate>
                                                 <HeaderStyle HorizontalAlign="Center" />

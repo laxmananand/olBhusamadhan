@@ -335,8 +335,10 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
                 dt.Columns.Add("IsFinalised", typeof(bool));
                 foreach (DataRow r in dt.Rows) r["IsFinalised"] = false;
             }
-            if (!dt.Columns.Contains("ApplicationNo"))
-                dt.Columns.Add("ApplicationNo", typeof(string));
+            if (dt.Columns.Contains("ApplicationNo") && !dt.Columns.Contains("FileNo"))
+                dt.Columns["ApplicationNo"].ColumnName = "FileNo";   // list started before the File No. rename
+            if (!dt.Columns.Contains("FileNo"))
+                dt.Columns.Add("FileNo", typeof(string));
             return dt;
         }
 
@@ -369,7 +371,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         dt.Columns.Add("village", typeof(string));
         dt.Columns.Add("WardNo", typeof(string));
         dt.Columns.Add("IsFinalised", typeof(bool));
-        dt.Columns.Add("ApplicationNo", typeof(string));   // HDSBxxxxx, set when finalised (saved to DB)
+        dt.Columns.Add("FileNo", typeof(string));   // File No. HDSBxxxxx, set when finalised (saved to DB)
         return dt;
     }
 
@@ -464,7 +466,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     if (dr.Read())
-                        return Convert.ToString(dr["ApplicationNo"]);
+                        return Convert.ToString(dr["FileNo"]);
                 }
             }
         }
@@ -586,7 +588,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
         ViewState["vadiDetailsADMHOME"] = dt;
         BindVadiADMHOMEGrid();
-        AlertADMHOME("आवेदन संख्या " + result + " के साथ आवेदन सफलतापूर्वक फाइनल किया गया। यह आवेदन View & Forward Application में देखा जा सकता है...!");
+        AlertADMHOME("फाइल संख्या " + result + " के साथ आवेदन सफलतापूर्वक फाइनल किया गया। यह फाइल View & Forward Application में देखी जा सकती है...!");
     }
 
     // Saves one temporary row. Returns the new application no., "NO_DOC" if its PDF is no longer
@@ -594,7 +596,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
     string FinaliseVadiADMHOMERow(DataRow row)
     {
         if (Convert.ToBoolean(row["IsFinalised"]))
-            return Convert.ToString(row["ApplicationNo"]);
+            return Convert.ToString(row["FileNo"]);
 
         string docKey = Convert.ToString(row["DocKey"]);
         byte[] docBytes;
@@ -606,7 +608,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
             return "";
 
         row["IsFinalised"] = true;
-        row["ApplicationNo"] = applicationNo;
+        row["FileNo"] = applicationNo;
         GetVadiADMHOMEDocs().Remove(docKey);   // saved in DB now
         return applicationNo;
     }

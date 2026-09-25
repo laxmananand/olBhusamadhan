@@ -10,7 +10,7 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
     clsDataAccessLandDispute clsData = new clsDataAccessLandDispute();
 
     const string ForwardedSelect = @"
-        SELECT a.ApplicationNo, a.vadi_Name, a.Vadi_Father_Husband_Name,
+        SELECT a.FileNo, a.vadi_Name, a.Vadi_Father_Husband_Name,
                CASE a.SexAsPerAadhaar WHEN 'M' THEN 'Male' WHEN 'F' THEN 'Female' ELSE 'Other' END AS Gender,
                d.DISTRICTNAME AS DistrictName, s.Sd_Name_En AS SubDivisionName, b.BlockName, t.Police_Station AS ThanaName,
                CASE a.Vadi_AreaType WHEN 'R' THEN 'Rural' WHEN 'U' THEN 'Urban' ELSE '' END AS AreaType,
@@ -63,7 +63,7 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
     {
         string search = EscapeLike(txtSearch.Text.Trim());
         DataTable dt = clsData.GetDataTable(ForwardedSelect + @"
-            AND (@Search = '' OR a.ApplicationNo LIKE '%' + @Search + '%' ESCAPE '\'
+            AND (@Search = '' OR a.FileNo LIKE '%' + @Search + '%' ESCAPE '\'
                               OR a.vadi_Name LIKE '%' + @Search + '%' ESCAPE '\'
                               OR a.Vadi_MobileNo LIKE '%' + @Search + '%' ESCAPE '\')
             ORDER BY f.ForwardedOn DESC",
@@ -110,16 +110,16 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
             ShowDetails(Convert.ToString(e.CommandArgument));
     }
 
-    void ShowDetails(string applicationNo)
+    void ShowDetails(string fileNo)
     {
         // same recipient filter, so a DM / SP can only open what was forwarded to them
-        DataTable dt = clsData.GetDataTable(ForwardedSelect + " AND a.ApplicationNo = @ApplicationNo",
-            RecipientParams(new SqlParameter("@ApplicationNo", applicationNo)));
+        DataTable dt = clsData.GetDataTable(ForwardedSelect + " AND a.FileNo = @FileNo",
+            RecipientParams(new SqlParameter("@FileNo", fileNo)));
         if (dt.Rows.Count == 0)
             return;
 
         DataRow r = dt.Rows[0];
-        lblDApplicationNo.Text = Enc(r["ApplicationNo"]);
+        lblDFileNo.Text = Enc(r["FileNo"]);
         lblDName.Text = Enc(r["vadi_Name"]);
         lblDFather.Text = Enc(r["Vadi_Father_Husband_Name"]);
         lblDGender.Text = Enc(r["Gender"]);
@@ -139,7 +139,7 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
         lblDForwardedBy.Text = Enc(r["ForwardedBy"]);
         lblDForwardRemarks.Text = Enc(r["ForwardRemarks"]);
         lblDRemarks.Text = Enc(r["Remarks"]);
-        lnkDDocument.NavigateUrl = "ADMHOME_ViewDocument.aspx?app=" + Server.UrlEncode(applicationNo);
+        lnkDDocument.NavigateUrl = "ADMHOME_ViewDocument.aspx?file=" + Server.UrlEncode(fileNo);
         ClientScript.RegisterStartupScript(GetType(), "showModal", "showADMHOMEModal('modalAppDetails');", true);
     }
 

@@ -31,7 +31,7 @@
                         <asp:TextBox ID="txtFilterName" runat="server" CssClass="form-control" placeholder="शिकायतकर्ता का नाम" MaxLength="100" AutoComplete="off"></asp:TextBox>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <label class="control-label" for="<%= txtSearch.ClientID %>">Application No. / मोबाइल संख्या</label>
+                        <label class="control-label" for="<%= txtSearch.ClientID %>">File No. / मोबाइल संख्या</label>
                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="HDSB10001 / 98XXXXXXXX" MaxLength="15" AutoComplete="off"></asp:TextBox>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
           <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAppDetailsTitle"><i class="fa fa-eye"></i>&nbsp;आवेदन संख्या: <asp:Label ID="lblDApplicationNo" runat="server"></asp:Label></h5>
+                <h5 class="modal-title" id="modalAppDetailsTitle"><i class="fa fa-eye"></i>&nbsp;फाइल संख्या: <asp:Label ID="lblDFileNo" runat="server"></asp:Label></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -115,11 +115,11 @@
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalForwardTitle"><i class="fa fa-share"></i>&nbsp;आवेदन अग्रेषित करें (Forward Application): <asp:Label ID="lblFwdApplicationNo" runat="server"></asp:Label></h5>
+                <h5 class="modal-title" id="modalForwardTitle"><i class="fa fa-share"></i>&nbsp;आवेदन अग्रेषित करें (Forward Application): <asp:Label ID="lblFwdFileNo" runat="server"></asp:Label></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <asp:HiddenField ID="hfFwdApplicationNo" runat="server" />
+                <asp:HiddenField ID="hfFwdFileNo" runat="server" />
                 <asp:UpdatePanel ID="upForward" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                 <div class="row">
@@ -179,7 +179,7 @@
         <div class="card">
             <div class="card-body">
                 <asp:Panel ID="pnlGrid" runat="server" ScrollBars="Auto">
-                    <asp:GridView ID="gvApplications" runat="server" Width="100%" AutoGenerateColumns="false" DataKeyNames="ApplicationNo"
+                    <asp:GridView ID="gvApplications" runat="server" Width="100%" AutoGenerateColumns="false" DataKeyNames="FileNo"
                         CssClass="table-responsive CSSTableGeneratorGrid fontsize vf-grid" AllowPaging="true" PageSize="10"
                         OnPageIndexChanging="gvApplications_PageIndexChanging" OnRowCommand="gvApplications_RowCommand"
                         EmptyDataText="कोई फाइनल आवेदन नहीं मिला।">
@@ -188,7 +188,7 @@
                                 <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:TemplateField>
-                            <asp:BoundField DataField="ApplicationNo" HeaderText="Application No." ItemStyle-Font-Bold="true" />
+                            <asp:BoundField DataField="FileNo" HeaderText="File No." ItemStyle-Font-Bold="true" />
                             <asp:BoundField DataField="vadi_Name" HeaderText="शिकायतकर्ता का नाम" />
                             <asp:BoundField DataField="Vadi_Father_Husband_Name" HeaderText="पिता/ पति का नाम" />
                             <asp:BoundField DataField="Gender" HeaderText="लिंग" />
@@ -212,16 +212,16 @@
                             <asp:TemplateField HeaderText="View">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-primary btn-sm" CommandName="ViewApp"
-                                        CommandArgument='<%# Eval("ApplicationNo") %>' ToolTip="View Application"><i class="fa fa-eye"></i></asp:LinkButton>
+                                        CommandArgument='<%# Eval("FileNo") %>' ToolTip="View Application"><i class="fa fa-eye"></i></asp:LinkButton>
                                     <asp:HyperLink ID="lnkDoc" runat="server" CssClass="btn btn-outline-danger btn-sm" Target="_blank" ToolTip="View PDF"
-                                        NavigateUrl='<%# "ADMHOME_ViewDocument.aspx?app=" + Server.UrlEncode(Convert.ToString(Eval("ApplicationNo"))) %>'><i class="fa fa-file-pdf"></i></asp:HyperLink>
+                                        NavigateUrl='<%# "ADMHOME_ViewDocument.aspx?file=" + Server.UrlEncode(Convert.ToString(Eval("FileNo"))) %>'><i class="fa fa-file-pdf"></i></asp:HyperLink>
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" Wrap="false" />
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Forward">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="btnForward" runat="server" CssClass="btn btn-info btn-sm" CommandName="ForwardApp"
-                                        CommandArgument='<%# Eval("ApplicationNo") %>' ToolTip="Forward to DM / SP"><i class="fa fa-share"></i>&nbsp;Forward</asp:LinkButton>
+                                        CommandArgument='<%# Eval("FileNo") %>' ToolTip="Forward to DM / SP"><i class="fa fa-share"></i>&nbsp;Forward</asp:LinkButton>
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" Wrap="false" />
                             </asp:TemplateField>

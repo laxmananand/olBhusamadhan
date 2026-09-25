@@ -17,7 +17,7 @@
             <div class="card-body">
                 <div class="row align-items-end">
                     <div class="col-md-4 mb-2">
-                        <label class="control-label" for="<%= txtSearch.ClientID %>">Application No. / शिकायतकर्ता का नाम / मोबाइल संख्या</label>
+                        <label class="control-label" for="<%= txtSearch.ClientID %>">File No. / शिकायतकर्ता का नाम / मोबाइल संख्या</label>
                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search" MaxLength="100" AutoComplete="off"></asp:TextBox>
                     </div>
                     <div class="col-md-2 mb-2">
@@ -44,7 +44,7 @@
           <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAppDetailsTitle"><i class="fa fa-eye"></i>&nbsp;आवेदन संख्या: <asp:Label ID="lblDApplicationNo" runat="server"></asp:Label></h5>
+                <h5 class="modal-title" id="modalAppDetailsTitle"><i class="fa fa-eye"></i>&nbsp;फाइल संख्या: <asp:Label ID="lblDFileNo" runat="server"></asp:Label></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -99,7 +99,7 @@
                                 <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:TemplateField>
-                            <asp:BoundField DataField="ApplicationNo" HeaderText="Application No." ItemStyle-Font-Bold="true" />
+                            <asp:BoundField DataField="FileNo" HeaderText="File No." ItemStyle-Font-Bold="true" />
                             <asp:BoundField DataField="vadi_Name" HeaderText="शिकायतकर्ता का नाम" />
                             <asp:BoundField DataField="Vadi_Father_Husband_Name" HeaderText="पिता/ पति का नाम" />
                             <asp:BoundField DataField="Gender" HeaderText="लिंग" />
@@ -113,9 +113,9 @@
                             <asp:TemplateField HeaderText="View">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-primary btn-sm" CommandName="ViewApp"
-                                        CommandArgument='<%# Eval("ApplicationNo") %>' ToolTip="View Application"><i class="fa fa-eye"></i></asp:LinkButton>
+                                        CommandArgument='<%# Eval("FileNo") %>' ToolTip="View Application"><i class="fa fa-eye"></i></asp:LinkButton>
                                     <asp:HyperLink ID="lnkDoc" runat="server" CssClass="btn btn-outline-danger btn-sm" Target="_blank" ToolTip="View PDF"
-                                        NavigateUrl='<%# "ADMHOME_ViewDocument.aspx?app=" + Server.UrlEncode(Convert.ToString(Eval("ApplicationNo"))) %>'><i class="fa fa-file-pdf"></i></asp:HyperLink>
+                                        NavigateUrl='<%# "ADMHOME_ViewDocument.aspx?file=" + Server.UrlEncode(Convert.ToString(Eval("FileNo"))) %>'><i class="fa fa-file-pdf"></i></asp:HyperLink>
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" Wrap="false" />
                             </asp:TemplateField>

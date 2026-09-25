@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text.RegularExpressions;
 
-// Opens the uploaded PDF of an ADMHOME application in the browser: ADMHOME_ViewDocument.aspx?app=HDSB10001
+// Opens the uploaded PDF of an ADMHOME application in the browser: ADMHOME_ViewDocument.aspx?file=HDSB10001
 public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
 {
     clsDataAccessLandDispute clsData = new clsDataAccessLandDispute();
@@ -23,8 +23,8 @@ public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
             return;
         }
 
-        string applicationNo = Convert.ToString(Request.QueryString["app"]).Trim();
-        if (!Regex.IsMatch(applicationNo, @"^HDSB[0-9]{5}$"))
+        string fileNo = Convert.ToString(Request.QueryString["file"]).Trim();
+        if (!Regex.IsMatch(fileNo, @"^HDSB[0-9]{5}$"))
         {
             NotFound();
             return;
@@ -34,12 +34,12 @@ public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
             SELECT d.FileName, d.ContentType, d.FileData
             FROM dbo.ADMHOME_VadiApplication a
             INNER JOIN dbo.ADMHOME_VadiApplicationDoc d ON d.ApplicationId = a.ApplicationId
-            WHERE a.ApplicationNo = @ApplicationNo
+            WHERE a.FileNo = @FileNo
               AND (@Role = 'ADMHOME'
                    OR EXISTS (SELECT 1 FROM dbo.ADMHOME_VadiApplicationForward f
                               WHERE f.ApplicationId = a.ApplicationId AND f.ForwardedToRole = @Role AND f.DistrictCode = @DistrictCode))",
             new SqlParameter[] {
-                new SqlParameter("@ApplicationNo", applicationNo),
+                new SqlParameter("@FileNo", fileNo),
                 new SqlParameter("@Role", role),
                 new SqlParameter("@DistrictCode", districtCode) });
 
@@ -52,11 +52,11 @@ public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
         byte[] data = (byte[])dt.Rows[0]["FileData"];
         // keep the header safe: only plain characters in the suggested file name
         string fileName = Regex.Replace(Path.GetFileName(Convert.ToString(dt.Rows[0]["FileName"])), @"[^A-Za-z0-9._\- ]", "_");
-        if (fileName == "") fileName = applicationNo + ".pdf";
+        if (fileName == "") fileName = fileNo + ".pdf";
 
         Response.Clear();
         Response.ContentType = "application/pdf";
-        Response.AddHeader("Content-Disposition", "inline; filename=\"" + applicationNo + "_" + fileName + "\"");
+        Response.AddHeader("Content-Disposition", "inline; filename=\"" + fileNo + "_" + fileName + "\"");
         Response.AddHeader("X-Content-Type-Options", "nosniff");
         Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
         Response.BinaryWrite(data);

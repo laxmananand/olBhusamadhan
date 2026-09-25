@@ -11,7 +11,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
 
     // names are looked up with OUTER APPLY ... TOP 1 so duplicate master rows can never duplicate an application
     const string ApplicationSelect = @"
-        SELECT a.ApplicationId, a.ApplicationNo, a.vadi_Name, a.Vadi_Father_Husband_Name,
+        SELECT a.ApplicationId, a.FileNo, a.vadi_Name, a.Vadi_Father_Husband_Name,
                CASE a.SexAsPerAadhaar WHEN 'M' THEN 'Male' WHEN 'F' THEN 'Female' ELSE 'Other' END AS Gender,
                d.DISTRICTNAME AS DistrictName, s.Sd_Name_En AS SubDivisionName, b.BlockName, t.Police_Station AS ThanaName,
                CASE a.Vadi_AreaType WHEN 'R' THEN 'Rural' WHEN 'U' THEN 'Urban' ELSE '' END AS AreaType,
@@ -131,7 +131,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
         WHERE (@DistrictCode = 0 OR a.Vadi_District_Code = @DistrictCode)
           AND (@BlockCode = 0 OR a.Vadi_Block_Code = @BlockCode)
           AND (@Name = '' OR a.vadi_Name LIKE '%' + @Name + '%' ESCAPE '\')
-          AND (@Search = '' OR a.ApplicationNo LIKE '%' + @Search + '%' ESCAPE '\'
+          AND (@Search = '' OR a.FileNo LIKE '%' + @Search + '%' ESCAPE '\'
                             OR a.Vadi_MobileNo LIKE '%' + @Search + '%' ESCAPE '\')
         ORDER BY a.ApplicationId DESC";
 
@@ -171,16 +171,16 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             ShowForwardForm(Convert.ToString(e.CommandArgument));
     }
 
-    void ShowDetails(string applicationNo)
+    void ShowDetails(string fileNo)
     {
-        DataTable dt = clsData.GetDataTable(ApplicationSelect + " WHERE a.ApplicationNo = @ApplicationNo",
-            new SqlParameter[] { new SqlParameter("@ApplicationNo", applicationNo) });
+        DataTable dt = clsData.GetDataTable(ApplicationSelect + " WHERE a.FileNo = @FileNo",
+            new SqlParameter[] { new SqlParameter("@FileNo", fileNo) });
         if (dt.Rows.Count == 0)
             return;
 
         DataRow r = dt.Rows[0];
         // Labels render raw HTML, so every value is encoded
-        lblDApplicationNo.Text = Enc(r["ApplicationNo"]);
+        lblDFileNo.Text = Enc(r["FileNo"]);
         lblDName.Text = Enc(r["vadi_Name"]);
         lblDFather.Text = Enc(r["Vadi_Father_Husband_Name"]);
         lblDGender.Text = Enc(r["Gender"]);
@@ -199,7 +199,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
         lblDCreatedOn.Text = Convert.ToDateTime(r["CreatedOn"]).ToString("dd/MM/yyyy hh:mm tt");
         lblDCreatedBy.Text = Enc(r["CreatedBy"]);
         lblDRemarks.Text = Enc(r["Remarks"]);
-        lnkDDocument.NavigateUrl = "ADMHOME_ViewDocument.aspx?app=" + Server.UrlEncode(applicationNo);
+        lnkDDocument.NavigateUrl = "ADMHOME_ViewDocument.aspx?file=" + Server.UrlEncode(fileNo);
 
         gvForwardHistory.DataSource = clsData.GetDataTable(@"
             SELECT fd.DISTRICTNAME AS DistrictName,
@@ -209,9 +209,9 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             FROM dbo.ADMHOME_VadiApplicationForward f
             INNER JOIN dbo.ADMHOME_VadiApplication a ON a.ApplicationId = f.ApplicationId
             OUTER APPLY (SELECT TOP 1 DISTRICTNAME FROM dbo.mst_Commissionary_Districts WHERE DISTRICTCODE = f.DistrictCode) fd
-            WHERE a.ApplicationNo = @ApplicationNo
+            WHERE a.FileNo = @FileNo
             ORDER BY f.ForwardId",
-            new SqlParameter[] { new SqlParameter("@ApplicationNo", applicationNo) });
+            new SqlParameter[] { new SqlParameter("@FileNo", fileNo) });
         gvForwardHistory.DataBind();
 
         ShowModal("modalAppDetails");
@@ -219,15 +219,15 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
 
     #region Forward
 
-    void ShowForwardForm(string applicationNo)
+    void ShowForwardForm(string fileNo)
     {
-        DataTable dt = clsData.GetDataTable("SELECT Vadi_District_Code FROM dbo.ADMHOME_VadiApplication WHERE ApplicationNo = @ApplicationNo",
-            new SqlParameter[] { new SqlParameter("@ApplicationNo", applicationNo) });
+        DataTable dt = clsData.GetDataTable("SELECT Vadi_District_Code FROM dbo.ADMHOME_VadiApplication WHERE FileNo = @FileNo",
+            new SqlParameter[] { new SqlParameter("@FileNo", fileNo) });
         if (dt.Rows.Count == 0)
             return;
 
-        hfFwdApplicationNo.Value = applicationNo;
-        lblFwdApplicationNo.Text = Server.HtmlEncode(applicationNo);
+        hfFwdFileNo.Value = fileNo;
+        lblFwdFileNo.Text = Server.HtmlEncode(fileNo);
         txtFwdRemarks.Text = "";
 
         // district list; the application's own district is pre-selected (it can be changed)
@@ -264,11 +264,11 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
                     WHERE u.Userrole = r.Role AND u.District_Code = @DistrictCode ORDER BY u.UserID) AS UserID,
                    (SELECT TOP 1 f.ForwardedOn FROM dbo.ADMHOME_VadiApplicationForward f
                     INNER JOIN dbo.ADMHOME_VadiApplication a ON a.ApplicationId = f.ApplicationId
-                    WHERE a.ApplicationNo = @ApplicationNo AND f.DistrictCode = @DistrictCode AND f.ForwardedToRole = r.Role) AS ForwardedOn
+                    WHERE a.FileNo = @FileNo AND f.DistrictCode = @DistrictCode AND f.ForwardedToRole = r.Role) AS ForwardedOn
             FROM (VALUES ('DMOPT'), ('SSPOPT')) r(Role)",
             new SqlParameter[] {
                 new SqlParameter("@DistrictCode", Convert.ToInt64(ddlFwdDistrict.SelectedValue)),
-                new SqlParameter("@ApplicationNo", hfFwdApplicationNo.Value) });
+                new SqlParameter("@FileNo", hfFwdFileNo.Value) });
 
         foreach (DataRow r in dt.Rows)
         {
@@ -292,7 +292,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
 
     protected void btnFwdSubmit_Click(object sender, EventArgs e)
     {
-        string applicationNo = hfFwdApplicationNo.Value;
+        string fileNo = hfFwdFileNo.Value;
         // a disabled checkbox = already forwarded, so only enabled + ticked ones are new targets
         bool toDM = chkFwdDM.Enabled && chkFwdDM.Checked;
         bool toSP = chkFwdSP.Enabled && chkFwdSP.Checked;
@@ -311,7 +311,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             using (SqlCommand cmd = new SqlCommand("dbo.usp_ADMHOME_ForwardVadiApplication", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@ApplicationNo", applicationNo);
+                cmd.Parameters.AddWithValue("@FileNo", fileNo);
                 cmd.Parameters.AddWithValue("@DistrictCode", Convert.ToInt64(ddlFwdDistrict.SelectedValue));
                 cmd.Parameters.AddWithValue("@ToDM", toDM);
                 cmd.Parameters.AddWithValue("@ToSP", toSP);
@@ -339,7 +339,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             else already += (already == "" ? "" : ", ") + who;
         }
 
-        string msg = done != "" ? "आवेदन " + applicationNo + " सफलतापूर्वक " + districtName + " के " + done + " को अग्रेषित किया गया।" : "";
+        string msg = done != "" ? "फाइल संख्या " + fileNo + " सफलतापूर्वक " + districtName + " के " + done + " को अग्रेषित किया गया।" : "";
         if (already != "") msg += (msg == "" ? "" : " ") + already + " को यह आवेदन पहले ही अग्रेषित किया जा चुका है।";
         Alert(msg);
 
