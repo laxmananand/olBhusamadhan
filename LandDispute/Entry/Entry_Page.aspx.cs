@@ -527,7 +527,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
 
     protected void gvVadiADMHOME_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (e.CommandName != "Remove" && e.CommandName != "Finalise")
+        if (e.CommandName != "Remove" && e.CommandName != "FinaliseRow")
             return;
 
         DataTable dt = GetVadiADMHOMETable();
@@ -535,40 +535,14 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         if (index < 0 || index >= dt.Rows.Count)
             return;
 
-        bool isFinalised = Convert.ToBoolean(dt.Rows[index]["IsFinalised"]);
-
-        if (e.CommandName == "Finalise")
+        if (e.CommandName == "FinaliseRow")
         {
-            if (isFinalised || Convert.ToString(Session["Role"]).Trim() != "ADMHOME")
-                return;
-
-            // the PDF is kept in Session until the application is saved
-            string finaliseDocKey = Convert.ToString(dt.Rows[index]["DocKey"]);
-            byte[] docBytes;
-            if (finaliseDocKey == "" || !GetVadiADMHOMEDocs().TryGetValue(finaliseDocKey, out docBytes))
-            {
-                AlertADMHOME("इस आवेदन का दस्तावेज़ नहीं मिला (सत्र समाप्त हो गया हो सकता है)। कृपया पंक्ति हटाकर पुनः जोड़ें...!");
-                return;
-            }
-
-            string applicationNo = SaveVadiApplicationADMHOME(dt.Rows[index], docBytes);
-            if (applicationNo == "")
-            {
-                AlertADMHOME("तकनीकी त्रुटि: आवेदन सहेजा नहीं जा सका, कृपया पुनः प्रयास करें...!");
-                return;
-            }
-
-            dt.Rows[index]["IsFinalised"] = true;
-            dt.Rows[index]["ApplicationNo"] = applicationNo;
-            GetVadiADMHOMEDocs().Remove(finaliseDocKey);   // saved in DB now
-            ViewState["vadiDetailsADMHOME"] = dt;
-            BindVadiADMHOMEGrid();
-            AlertADMHOME("आवेदन संख्या " + applicationNo + " के साथ आवेदन सफलतापूर्वक फाइनल किया गया। यह आवेदन View & Forward Application में देखा जा सकता है...!");
+            FinaliseClickedRowADMHOME(e, dt, index);
             return;
         }
 
         // Remove: finalised rows are locked
-        if (isFinalised)
+        if (Convert.ToBoolean(dt.Rows[index]["IsFinalised"]))
         {
             AlertADMHOME("फाइनल किया गया आवेदन हटाया नहीं जा सकता...!");
             return;
@@ -581,6 +555,60 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         dt.Rows.RemoveAt(index);
         ViewState["vadiDetailsADMHOME"] = dt;
         BindVadiADMHOMEGrid();
+    }
+
+    // row Submit: finalises (saves to DB with a new HDSB application no.) that row, only if its tick box is ticked
+    void FinaliseClickedRowADMHOME(GridViewCommandEventArgs e, DataTable dt, int index)
+    {
+        if (Convert.ToString(Session["Role"]).Trim() != "ADMHOME")
+            return;
+
+        // the tick box in the same row as the clicked Submit (checked on the server as well as in the browser)
+        GridViewRow gr = (GridViewRow)((Control)e.CommandSource).NamingContainer;
+        CheckBox chk = gr.FindControl("chkFinaliseADMHOME") as CheckBox;
+        if (chk == null || !chk.Checked)
+        {
+            AlertADMHOME("कृपया पहले इस आवेदन के बॉक्स पर टिक करें...!");
+            return;
+        }
+
+        string result = FinaliseVadiADMHOMERow(dt.Rows[index]);
+        if (result == "NO_DOC")
+        {
+            AlertADMHOME("इस आवेदन का दस्तावेज़ नहीं मिला (सत्र समाप्त हो गया हो सकता है)। कृपया पंक्ति हटाकर पुनः जोड़ें...!");
+            return;
+        }
+        if (result == "")
+        {
+            AlertADMHOME("तकनीकी त्रुटि: आवेदन सहेजा नहीं जा सका, कृपया पुनः प्रयास करें...!");
+            return;
+        }
+
+        ViewState["vadiDetailsADMHOME"] = dt;
+        BindVadiADMHOMEGrid();
+        AlertADMHOME("आवेदन संख्या " + result + " के साथ आवेदन सफलतापूर्वक फाइनल किया गया। यह आवेदन View & Forward Application में देखा जा सकता है...!");
+    }
+
+    // Saves one temporary row. Returns the new application no., "NO_DOC" if its PDF is no longer
+    // in Session, or "" if the database save failed (the row then stays ticked-able for a retry).
+    string FinaliseVadiADMHOMERow(DataRow row)
+    {
+        if (Convert.ToBoolean(row["IsFinalised"]))
+            return Convert.ToString(row["ApplicationNo"]);
+
+        string docKey = Convert.ToString(row["DocKey"]);
+        byte[] docBytes;
+        if (docKey == "" || !GetVadiADMHOMEDocs().TryGetValue(docKey, out docBytes))
+            return "NO_DOC";
+
+        string applicationNo = SaveVadiApplicationADMHOME(row, docBytes);
+        if (applicationNo == "")
+            return "";
+
+        row["IsFinalised"] = true;
+        row["ApplicationNo"] = applicationNo;
+        GetVadiADMHOMEDocs().Remove(docKey);   // saved in DB now
+        return applicationNo;
     }
 
     void BindVadiADMHOMEGrid()

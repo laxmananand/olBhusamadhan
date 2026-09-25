@@ -200,10 +200,11 @@
                             <asp:BoundField DataField="PinCode" HeaderText="पिनकोड" />
                             <asp:BoundField DataField="CreatedOn" HeaderText="फाइनल करने की तिथि" DataFormatString="{0:dd/MM/yyyy hh:mm tt}" />
                             <asp:BoundField DataField="ForwardedTo" HeaderText="अग्रेषित (Forwarded To)" />
-                            <asp:TemplateField HeaderText="Status">
+                            <%-- Status W = forwarded (Yes), F = finalised but not yet forwarded (No) --%>
+                            <asp:TemplateField HeaderText="Forwarded Status">
                                 <ItemTemplate>
-                                    <span class='badge p-2 <%# Convert.ToString(Eval("Status")) == "W" ? "badge-info" : "badge-success" %>'>
-                                        <%# Convert.ToString(Eval("Status")) == "W" ? "Forwarded" : "Finalised" %>
+                                    <span class='badge p-2 <%# Convert.ToString(Eval("Status")) == "W" ? "badge-success" : "badge-secondary" %>'>
+                                        <%# Convert.ToString(Eval("Status")) == "W" ? "Yes" : "No" %>
                                     </span>
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" />

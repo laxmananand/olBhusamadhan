@@ -1978,9 +1978,16 @@
                                             <asp:BoundField DataField="Remarks" HeaderText="टिप्पणी" ItemStyle-Width="200" />
                                             <asp:TemplateField HeaderText="Finalise Application" ItemStyle-Width="110">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton ID="btnRowFinaliseADMHOME" CssClass="btn btn-success" runat="server" CommandArgument='<%# Container.DataItemIndex %>' CommandName="Finalise"
-                                                        Visible='<%# !Convert.ToBoolean(Eval("IsFinalised")) %>' ToolTip="Finalise Application"
-                                                        OnClientClick="return confirm('Are you sure you want to finalise this application? It will be saved with a new application no. and cannot be deleted after finalising.');"><i class="fa fa-check-circle" aria-hidden="true" style="font-size:20px;"></i></asp:LinkButton>
+                                                    <%-- tick box (yellow = not ticked, green = ticked) with this row's own Submit just below it --%>
+                                                    <asp:PlaceHolder ID="phRowFinaliseADMHOME" runat="server" Visible='<%# !Convert.ToBoolean(Eval("IsFinalised")) %>'>
+                                                        <div class="d-flex flex-column align-items-center" style="gap: 6px;">
+                                                            <asp:CheckBox ID="chkFinaliseADMHOME" runat="server" CssClass="adm-fin-check" ToolTip="Finalise Application"
+                                                                Text="<span class='sr-only'>Finalise Application</span>" />
+                                                            <asp:Button ID="btnRowSubmitADMHOME" runat="server" Text="Submit" CssClass="btn btn-success btn-sm"
+                                                                CommandName="FinaliseRow" CommandArgument='<%# Container.DataItemIndex %>' CausesValidation="false"
+                                                                OnClientClick="return confirmADMHOMEFinaliseRow(this);" />
+                                                        </div>
+                                                    </asp:PlaceHolder>
                                                     <asp:PlaceHolder ID="phRowFinalisedADMHOME" runat="server" Visible='<%# Convert.ToBoolean(Eval("IsFinalised")) %>'>
                                                         <span class="badge badge-success p-2" title="Finalised"><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;<%# Server.HtmlEncode(Convert.ToString(Eval("ApplicationNo"))) %></span>
                                                     </asp:PlaceHolder>
@@ -1993,7 +2000,29 @@
                                 </asp:Panel>
                             </div>
                         </div>
+                        <style type="text/css">
+                            /* Finalise Application tick box: yellow when not ticked, green with a check mark when ticked */
+                            .adm-fin-check { display: inline-block; position: relative; }
+                            .adm-fin-check input[type=checkbox] { position: absolute; opacity: 0; width: 1px; height: 1px; }
+                            .adm-fin-check label {
+                                display: inline-block; width: 34px; height: 34px; margin: 0; cursor: pointer; position: relative;
+                                background: #ffc107; border: 2px solid #d39e00; border-radius: 6px; transition: background .15s, border-color .15s;
+                            }
+                            .adm-fin-check input[type=checkbox]:checked + label { background: #28a745; border-color: #1e7e34; }
+                            .adm-fin-check input[type=checkbox]:checked + label::after {
+                                content: "\2713"; color: #fff; font-size: 22px; font-weight: bold; line-height: 30px;
+                                position: absolute; left: 0; right: 0; text-align: center;
+                            }
+                            .adm-fin-check input[type=checkbox]:focus + label { box-shadow: 0 0 0 3px rgba(40, 167, 69, .35); }
+                        </style>
                         <script type="text/javascript">
+                            // row Submit: only works when that row's tick box is ticked (green)
+                            function confirmADMHOMEFinaliseRow(btn) {
+                                var box = btn.parentNode.querySelector(".adm-fin-check input[type=checkbox]");
+                                if (!box || !box.checked) { alert("कृपया पहले इस आवेदन के बॉक्स पर टिक करें...!"); return false; }
+                                return confirm("क्या आप यह आवेदन फाइनल करना चाहते हैं? फाइनल होने के बाद इसे हटाया नहीं जा सकता और इसे नई आवेदन संख्या मिलेगी।");
+                            }
+
                             // पिनकोड: Indian pincode = exactly 6 digits, first digit 1-9
                             function getADMHOMEPincodeError(value) {
                                 if (value.length === 0) return "";
