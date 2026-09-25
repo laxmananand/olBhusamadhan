@@ -65,6 +65,7 @@
                     <div class="col-md-3"><div class="vf-detail-label">वार्ड / मोहल्ला</div><div class="vf-detail-value"><asp:Label ID="lblDWard" runat="server" /></div></div>
 
                     <div class="col-md-3"><div class="vf-detail-label">पिनकोड</div><div class="vf-detail-value"><asp:Label ID="lblDPincode" runat="server" /></div></div>
+                    <div class="col-md-3"><div class="vf-detail-label">आवेदन प्राप्ति की तिथि</div><div class="vf-detail-value"><asp:Label ID="lblDAwedanPraptiDate" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">अग्रेषण तिथि</div><div class="vf-detail-value"><asp:Label ID="lblDForwardedOn" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">अग्रेषित करने वाला विभाग</div><div class="vf-detail-value"><asp:Label ID="lblDForwardedBy" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">दस्तावेज़</div><div class="vf-detail-value"><asp:HyperLink ID="lnkDDocument" runat="server" Target="_blank" CssClass="btn btn-sm btn-outline-danger"><i class="fa fa-file-pdf"></i>&nbsp;View PDF</asp:HyperLink></div></div>
@@ -109,6 +110,7 @@
                             <asp:BoundField DataField="ThanaName" HeaderText="थाना" />
                             <asp:BoundField DataField="Vadi_MobileNo" HeaderText="मोबाइल संख्या" />
                             <asp:BoundField DataField="PinCode" HeaderText="पिनकोड" />
+                            <asp:BoundField DataField="AwedanPraptiDate" HeaderText="आवेदन प्राप्ति की तिथि" DataFormatString="{0:dd/MM/yyyy}" />
                             <asp:BoundField DataField="ForwardedOn" HeaderText="अग्रेषण तिथि" DataFormatString="{0:dd/MM/yyyy hh:mm tt}" />
                             <asp:BoundField DataField="ForwardRemarks" HeaderText="अग्रेषण टिप्पणी" ItemStyle-Width="200" />
                             <asp:TemplateField HeaderText="View">

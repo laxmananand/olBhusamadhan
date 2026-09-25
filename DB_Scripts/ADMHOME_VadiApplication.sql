@@ -85,6 +85,7 @@ BEGIN
         Vadi_MobileNo            VARCHAR(15)    NULL,
         PinCode                  CHAR(6)        NULL,
         Remarks                  NVARCHAR(MAX)  NULL,              -- up to 500 words
+        AwedanPraptiDate         DATE           NULL,              -- आवेदन प्राप्ति की तिथि (entered; may be a back date). CreatedOn = when it was finalised
 
         -- workflow
         Status                   CHAR(1)        NOT NULL CONSTRAINT DF_ADMHOME_VadiApplication_Status DEFAULT ('F'),  -- F = Finalised, W = Forwarded
@@ -124,6 +125,18 @@ IF OBJECT_ID('dbo.CK_ADMHOME_VadiApplication_CreatedRole', 'C') IS NULL
     ALTER TABLE dbo.ADMHOME_VadiApplication WITH CHECK
         ADD CONSTRAINT CK_ADMHOME_VadiApplication_CreatedRole CHECK (CreatedRole IN ('ADMHOME','ADMLR'));
 GO
+-- 2d. upgrade: आवेदन प्राप्ति की तिथि (date the application was received; can be a back date).
+-- Files finalised before this column existed keep NULL. CreatedOn still records the finalise date/time.
+IF COL_LENGTH('dbo.ADMHOME_VadiApplication', 'AwedanPraptiDate') IS NULL
+    ALTER TABLE dbo.ADMHOME_VadiApplication ADD AwedanPraptiDate DATE NULL;
+GO
+-- received date can never be after the date the file was finalised
+IF OBJECT_ID('dbo.CK_ADMHOME_VadiApplication_AwedanPraptiDate', 'C') IS NULL
+    ALTER TABLE dbo.ADMHOME_VadiApplication WITH CHECK
+        ADD CONSTRAINT CK_ADMHOME_VadiApplication_AwedanPraptiDate
+        CHECK (AwedanPraptiDate IS NULL OR AwedanPraptiDate <= CAST(CreatedOn AS DATE));
+GO
+
 -- each department's View & Forward list (its own files, newest first)
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_ADMHOME_VadiApplication_CreatedRole'
                                         AND object_id = OBJECT_ID('dbo.ADMHOME_VadiApplication'))
@@ -213,7 +226,8 @@ CREATE OR ALTER PROCEDURE dbo.usp_ADMHOME_InsertVadiApplication
     @CreatedIP                VARCHAR(50)   = NULL,
     @FileName                 NVARCHAR(260),
     @FileData                 VARBINARY(MAX),
-    @CreatedRole              VARCHAR(10)   = 'ADMHOME'     -- ADMHOME / ADMLR (owning department)
+    @CreatedRole              VARCHAR(10)   = 'ADMHOME',    -- ADMHOME / ADMLR (owning department)
+    @AwedanPraptiDate         DATE          = NULL          -- आवेदन प्राप्ति की तिथि
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -232,12 +246,12 @@ BEGIN
             (FileNo, vadi_Name, Vadi_Father_Husband_Name, SexAsPerAadhaar,
              Vadi_District_Code, Vadi_Sub_DivCode, Vadi_Block_Code, Vadi_Thana_code,
              Vadi_AreaType, Vadi_Panchayat_Code, Vadi_Village_Code, Vadi_WardNo, mohalla,
-             Vadi_MobileNo, PinCode, Remarks, Status, CreatedBy, CreatedRole, CreatedIP)
+             Vadi_MobileNo, PinCode, Remarks, AwedanPraptiDate, Status, CreatedBy, CreatedRole, CreatedIP)
         VALUES
             (@FileNo, @vadi_Name, NULLIF(@Vadi_Father_Husband_Name, N''), @SexAsPerAadhaar,
              @Vadi_District_Code, @Vadi_Sub_DivCode, @Vadi_Block_Code, @Vadi_Thana_code,
              NULLIF(@Vadi_AreaType, ''), @Vadi_Panchayat_Code, @Vadi_Village_Code, @Vadi_WardNo, NULLIF(@mohalla, N''),
-             NULLIF(@Vadi_MobileNo, ''), NULLIF(@PinCode, ''), NULLIF(@Remarks, N''), 'F', @CreatedBy, @CreatedRole, @CreatedIP);
+             NULLIF(@Vadi_MobileNo, ''), NULLIF(@PinCode, ''), NULLIF(@Remarks, N''), @AwedanPraptiDate, 'F', @CreatedBy, @CreatedRole, @CreatedIP);
 
         SET @ApplicationId = SCOPE_IDENTITY();
 

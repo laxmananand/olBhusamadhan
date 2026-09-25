@@ -81,6 +81,7 @@
                     <div class="col-md-3"><div class="vf-detail-label">वार्ड / मोहल्ला</div><div class="vf-detail-value"><asp:Label ID="lblDWard" runat="server" /></div></div>
 
                     <div class="col-md-3"><div class="vf-detail-label">पिनकोड</div><div class="vf-detail-value"><asp:Label ID="lblDPincode" runat="server" /></div></div>
+                    <div class="col-md-3"><div class="vf-detail-label">आवेदन प्राप्ति की तिथि</div><div class="vf-detail-value"><asp:Label ID="lblDAwedanPraptiDate" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">फाइनल करने की तिथि</div><div class="vf-detail-value"><asp:Label ID="lblDCreatedOn" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">फाइनल करने वाले</div><div class="vf-detail-value"><asp:Label ID="lblDCreatedBy" runat="server" /></div></div>
                     <div class="col-md-3"><div class="vf-detail-label">दस्तावेज़</div><div class="vf-detail-value"><asp:HyperLink ID="lnkDDocument" runat="server" Target="_blank" CssClass="btn btn-sm btn-outline-danger"><i class="fa fa-file-pdf"></i>&nbsp;View PDF</asp:HyperLink></div></div>
@@ -184,11 +185,11 @@
                         OnPageIndexChanging="gvApplications_PageIndexChanging" OnRowCommand="gvApplications_RowCommand"
                         EmptyDataText="कोई फाइनल आवेदन नहीं मिला।">
                         <Columns>
-                            <asp:TemplateField HeaderText="Sl. No.">
+                            <asp:TemplateField HeaderText="क्रम सं. (Sl. No.)">
                                 <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:TemplateField>
-                            <asp:BoundField DataField="FileNo" HeaderText="File No." ItemStyle-Font-Bold="true" />
+                            <asp:BoundField DataField="FileNo" HeaderText="फाइल संख्या (File No.)" ItemStyle-Font-Bold="true" />
                             <asp:BoundField DataField="vadi_Name" HeaderText="शिकायतकर्ता का नाम" />
                             <asp:BoundField DataField="Vadi_Father_Husband_Name" HeaderText="पिता/ पति का नाम" />
                             <asp:BoundField DataField="Gender" HeaderText="लिंग" />
@@ -198,10 +199,11 @@
                             <asp:BoundField DataField="ThanaName" HeaderText="थाना" />
                             <asp:BoundField DataField="Vadi_MobileNo" HeaderText="मोबाइल संख्या" />
                             <asp:BoundField DataField="PinCode" HeaderText="पिनकोड" />
+                            <asp:BoundField DataField="AwedanPraptiDate" HeaderText="आवेदन प्राप्ति की तिथि" DataFormatString="{0:dd/MM/yyyy}" />
                             <asp:BoundField DataField="CreatedOn" HeaderText="फाइनल करने की तिथि" DataFormatString="{0:dd/MM/yyyy hh:mm tt}" />
                             <asp:BoundField DataField="ForwardedTo" HeaderText="अग्रेषित (Forwarded To)" />
                             <%-- Status W = forwarded (Yes), F = finalised but not yet forwarded (No) --%>
-                            <asp:TemplateField HeaderText="Forwarded Status">
+                            <asp:TemplateField HeaderText="अग्रेषित स्थिति (Forwarded Status)">
                                 <ItemTemplate>
                                     <span class='badge p-2 <%# Convert.ToString(Eval("Status")) == "W" ? "badge-success" : "badge-secondary" %>'>
                                         <%# Convert.ToString(Eval("Status")) == "W" ? "Yes" : "No" %>
@@ -209,7 +211,7 @@
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="View">
+                            <asp:TemplateField HeaderText="देखें (View)">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="btnView" runat="server" CssClass="btn btn-primary btn-sm" CommandName="ViewApp"
                                         CommandArgument='<%# Eval("FileNo") %>' ToolTip="View Application"><i class="fa fa-eye"></i></asp:LinkButton>
@@ -218,7 +220,7 @@
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" Wrap="false" />
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Forward">
+                            <asp:TemplateField HeaderText="भेजें (Forward)">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="btnForward" runat="server" CssClass="btn btn-info btn-sm" CommandName="ForwardApp"
                                         CommandArgument='<%# Eval("FileNo") %>' ToolTip="Forward to DM / SP"><i class="fa fa-share"></i>&nbsp;Forward</asp:LinkButton>

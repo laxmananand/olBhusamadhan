@@ -15,7 +15,7 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
                d.DISTRICTNAME AS DistrictName, s.Sd_Name_En AS SubDivisionName, b.BlockName, t.Police_Station AS ThanaName,
                CASE a.Vadi_AreaType WHEN 'R' THEN 'Rural' WHEN 'U' THEN 'Urban' ELSE '' END AS AreaType,
                p.PanchayatName, v.VILLNAME AS VillageName, w.WARDNAME AS WardName, a.mohalla,
-               a.Vadi_MobileNo, a.PinCode, a.Remarks,
+               a.Vadi_MobileNo, a.PinCode, a.Remarks, a.AwedanPraptiDate,
                f.ForwardedOn, f.ForwardRemarks, f.ForwardedBy,
                -- sending department (N'' keeps the Hindi text)
                CASE a.CreatedRole WHEN 'ADMLR' THEN N'राजस्व एवं भूमि सुधार विभाग' ELSE N'गृह विभाग' END AS DeptName
@@ -137,6 +137,7 @@ public partial class LandDispute_Entry_ForwardedApplications : System.Web.UI.Pag
         string mohalla = Convert.ToString(r["mohalla"]);
         lblDWard.Text = Enc(ward != "" && mohalla != "" ? ward + " / " + mohalla : ward + mohalla);
         lblDPincode.Text = Enc(r["PinCode"]);
+        lblDAwedanPraptiDate.Text = r["AwedanPraptiDate"] == DBNull.Value ? "-" : Convert.ToDateTime(r["AwedanPraptiDate"]).ToString("dd/MM/yyyy");
         lblDForwardedOn.Text = Convert.ToDateTime(r["ForwardedOn"]).ToString("dd/MM/yyyy hh:mm tt");
         lblDForwardedBy.Text = Enc(Convert.ToString(r["DeptName"]) + " (" + Convert.ToString(r["ForwardedBy"]) + ")");
         lblDForwardRemarks.Text = Enc(r["ForwardRemarks"]);

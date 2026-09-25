@@ -1909,6 +1909,11 @@
                          Kept outside the UpdatePanel so the selected file survives dropdown postbacks --%>
                     <asp:PlaceHolder ID="phADMHOMEExtra" runat="server" Visible="false">
                         <div class="row mb-2">
+                            <%-- date the application was received; may be a back date, never a future date (max set in ApplyADMHOMELayout) --%>
+                            <div class="col-md-3">
+                                <asp:Label ID="lblAwedanPraptiDate" runat="server" Text="आवेदन प्राप्ति की तिथि"></asp:Label>
+                                <asp:TextBox ID="txtAwedanPraptiDate" runat="server" CssClass="form-control" TextMode="Date" AutoComplete="off"></asp:TextBox>
+                            </div>
                             <div class="col-md-3">
                                 <asp:Label ID="lblVadiPincode" runat="server" Text="पिनकोड"></asp:Label>
                                 <asp:TextBox ID="txtVadiPincode" runat="server" CssClass="form-control" MaxLength="6" onkeypress="return ValidateMobile(event)" placeholder="6 अंकों का पिनकोड" AutoComplete="off"
@@ -1919,14 +1924,16 @@
                                     ValidateEmptyText="false" Display="Dynamic" SetFocusOnError="true" ValidationGroup="ADMHOME" ForeColor="Red"
                                     ErrorMessage="पिनकोड ठीक 6 अंकों का होना चाहिए."></asp:CustomValidator>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <asp:Label ID="lblADMHOMEDoc" runat="server" Text="दस्तावेज़ अपलोड करें"></asp:Label>&nbsp;<img src="images/red_star_PNG44.png" class="img-fluid" style="width: 15px; height: auto" />
                                 <asp:FileUpload ID="fuADMHOMEDoc" runat="server" CssClass="form-control" accept=".pdf" onchange="return checkADMHOMEFileSize(this);" />
                                 <small style="color: darkred">केवल .pdf, अधिकतम 5 MB</small>
                                 <asp:RequiredFieldValidator ID="rfvADMHOMEDoc" runat="server" ControlToValidate="fuADMHOMEDoc"
                                     Display="Dynamic" SetFocusOnError="true" ValidationGroup="ADMHOME" ForeColor="Red" ErrorMessage="कृपया दस्तावेज़ अपलोड करें..."></asp:RequiredFieldValidator>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
                                 <asp:Label ID="lblADMHOMERemarks" runat="server" Text="टिप्पणी"></asp:Label>
                                 <asp:TextBox ID="txtADMHOMERemarks" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3"
                                     placeholder="टिप्पणी लिखें (अधिकतम 500 शब्द)" oninput="limitADMHOMERemarksWords(this);" Style="resize: vertical"></asp:TextBox>
@@ -1974,7 +1981,22 @@
                                             <asp:BoundField DataField="WardNo" HeaderText="वार्ड" />
                                             <asp:BoundField DataField="Vadi_MobileNo" HeaderText="मोबाइल संख्या" />
                                             <asp:BoundField DataField="Pincode" HeaderText="पिनकोड" />
-                                            <asp:BoundField DataField="DocName" HeaderText="दस्तावेज़" />
+                                            <asp:BoundField DataField="AwedanPraptiDate" HeaderText="आवेदन प्राप्ति की तिथि" DataFormatString="{0:dd/MM/yyyy}" />
+                                            <%-- file name + PDF icon: before Finalise the PDF is read from Session (temp=DocKey), after it from the DB (file=FileNo) --%>
+                                            <asp:TemplateField HeaderText="दस्तावेज़">
+                                                <ItemTemplate>
+                                                    <%# Server.HtmlEncode(Convert.ToString(Eval("DocName"))) %>
+                                                    <asp:PlaceHolder ID="phDocIconADMHOME" runat="server" Visible='<%# Convert.ToString(Eval("DocName")) != "" %>'>
+                                                        <div class="mt-1">
+                                                            <a class="btn btn-outline-danger btn-sm" target="_blank" title="View PDF"
+                                                                href='<%# Convert.ToBoolean(Eval("IsFinalised"))
+                                                                    ? "ADMHOME_ViewDocument.aspx?file=" + Server.UrlEncode(Convert.ToString(Eval("FileNo")))
+                                                                    : "ADMHOME_ViewDocument.aspx?temp=" + Server.UrlEncode(Convert.ToString(Eval("DocKey"))) %>'><i class="fa fa-file-pdf"></i></a>
+                                                        </div>
+                                                    </asp:PlaceHolder>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
                                             <asp:BoundField DataField="Remarks" HeaderText="टिप्पणी" ItemStyle-Width="200" />
                                             <asp:TemplateField HeaderText="Finalise Application" ItemStyle-Width="110">
                                                 <ItemTemplate>

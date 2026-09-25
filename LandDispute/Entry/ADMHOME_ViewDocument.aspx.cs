@@ -24,6 +24,23 @@ public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
             return;
         }
 
+        // ?temp=<DocKey>: a PDF in the New Entry temporary list, not finalised yet. It only exists
+        // in this user's own Session (Entry_Page GetVadiADMHOMEDocs), so nobody else can open it.
+        string tempKey = Convert.ToString(Request.QueryString["temp"]).Trim();
+        if (tempKey != "")
+        {
+            System.Collections.Generic.Dictionary<string, byte[]> docs =
+                Session["vadiDocsADMHOME"] as System.Collections.Generic.Dictionary<string, byte[]>;
+            byte[] tempData;
+            if (!isDept || !Regex.IsMatch(tempKey, @"^[0-9a-f]{32}$") || docs == null || !docs.TryGetValue(tempKey, out tempData))
+            {
+                NotFound();
+                return;
+            }
+            WritePdf(tempData, "document.pdf");
+            return;
+        }
+
         string fileNo = Convert.ToString(Request.QueryString["file"]).Trim();
         if (!Regex.IsMatch(fileNo, @"^HDSB[0-9]{5}$"))
         {
@@ -54,10 +71,14 @@ public partial class LandDispute_Entry_ADMHOME_ViewDocument : System.Web.UI.Page
         // keep the header safe: only plain characters in the suggested file name
         string fileName = Regex.Replace(Path.GetFileName(Convert.ToString(dt.Rows[0]["FileName"])), @"[^A-Za-z0-9._\- ]", "_");
         if (fileName == "") fileName = fileNo + ".pdf";
+        WritePdf(data, fileNo + "_" + fileName);
+    }
 
+    void WritePdf(byte[] data, string fileName)
+    {
         Response.Clear();
         Response.ContentType = "application/pdf";
-        Response.AddHeader("Content-Disposition", "inline; filename=\"" + fileNo + "_" + fileName + "\"");
+        Response.AddHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
         Response.AddHeader("X-Content-Type-Options", "nosniff");
         Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
         Response.BinaryWrite(data);

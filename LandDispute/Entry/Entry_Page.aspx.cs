@@ -242,6 +242,8 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         // ADMHOME-only वादी fields: no birth year; pincode, document upload and remarks added
         divVadiBirthYear.Visible = false;
         phADMHOMEExtra.Visible = true;
+        // the calendar cannot pick a future date (also checked on the server)
+        txtAwedanPraptiDate.Attributes["max"] = DateTime.Today.ToString("yyyy-MM-dd");
 
         // ADMHOME wording: शिकायतकर्ता instead of वादी (SHO keeps वादी)
         litVadiSectionHeader.Text = "शिकायतकर्ता का विवरण";
@@ -349,6 +351,8 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
                 dt.Columns["ApplicationNo"].ColumnName = "FileNo";   // list started before the File No. rename
             if (!dt.Columns.Contains("FileNo"))
                 dt.Columns.Add("FileNo", typeof(string));
+            if (!dt.Columns.Contains("AwedanPraptiDate"))
+                dt.Columns.Add("AwedanPraptiDate", typeof(DateTime));   // list started before the date field existed
             return dt;
         }
 
@@ -367,6 +371,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         dt.Columns.Add("mohalla", typeof(string));
         dt.Columns.Add("Vadi_MobileNo", typeof(string));
         dt.Columns.Add("Pincode", typeof(string));
+        dt.Columns.Add("AwedanPraptiDate", typeof(DateTime));   // आवेदन प्राप्ति की तिथि (may be a back date)
         dt.Columns.Add("Remarks", typeof(string));
         dt.Columns.Add("DocKey", typeof(string));
         dt.Columns.Add("DocName", typeof(string));
@@ -430,9 +435,25 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         if (txtNamePerAadhaar.Text.Trim().Length > 100) { AlertADMHOME("शिकायतकर्ता का नाम अधिकतम 100 अक्षरों का हो सकता है...!"); txtNamePerAadhaar.Focus(); return false; }
         if (txtFName.Text.Trim().Length > 100) { AlertADMHOME("पिता/ पति का नाम अधिकतम 100 अक्षरों का हो सकता है...!"); txtFName.Focus(); return false; }
 
+        // आवेदन प्राप्ति की तिथि is optional; when entered it must be a valid, non-future date
+        if (txtAwedanPraptiDate.Text.Trim() != "")
+        {
+            DateTime praptiDate;
+            if (!TryGetAwedanPraptiDate(out praptiDate)) { AlertADMHOME("कृपया आवेदन प्राप्ति की सही तिथि चुनें...!"); txtAwedanPraptiDate.Focus(); return false; }
+            if (praptiDate > DateTime.Today) { AlertADMHOME("आवेदन प्राप्ति की तिथि आज की तिथि के बाद की नहीं हो सकती...!"); txtAwedanPraptiDate.Focus(); return false; }
+            if (praptiDate < new DateTime(2000, 1, 1)) { AlertADMHOME("कृपया आवेदन प्राप्ति की सही तिथि चुनें...!"); txtAwedanPraptiDate.Focus(); return false; }
+        }
+
         string msg = ValidateADMHOMEFields();
         if (msg != "") { AlertADMHOME(msg); return false; }
         return true;
+    }
+
+    // the date box (input type=date) always posts yyyy-MM-dd
+    bool TryGetAwedanPraptiDate(out DateTime date)
+    {
+        return DateTime.TryParseExact(txtAwedanPraptiDate.Text.Trim(), "yyyy-MM-dd",
+            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date);
     }
 
     static object DbValueOrNull(object value)
@@ -466,6 +487,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@mohalla", DbValueOrNull(row["mohalla"]));
                 cmd.Parameters.AddWithValue("@Vadi_MobileNo", DbValueOrNull(row["Vadi_MobileNo"]));
                 cmd.Parameters.AddWithValue("@PinCode", DbValueOrNull(row["Pincode"]));
+                cmd.Parameters.Add("@AwedanPraptiDate", SqlDbType.Date).Value = row["AwedanPraptiDate"];   // DBNull for rows added before the field existed
                 cmd.Parameters.AddWithValue("@Remarks", DbValueOrNull(row["Remarks"]));
                 cmd.Parameters.AddWithValue("@CreatedBy", Convert.ToString(Session["UserID"]));
                 cmd.Parameters.AddWithValue("@CreatedRole", Convert.ToString(Session["Role"]).Trim());   // ADMHOME / ADMLR
@@ -518,6 +540,8 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         row["mohalla"] = txtUserMohalla.Text.Trim();
         row["Vadi_MobileNo"] = txtvadimobile.Text.Trim();
         row["Pincode"] = txtVadiPincode.Text.Trim();
+        DateTime praptiDate;   // optional: left empty -> NULL in the database
+        row["AwedanPraptiDate"] = TryGetAwedanPraptiDate(out praptiDate) ? (object)praptiDate : DBNull.Value;
         row["Remarks"] = txtADMHOMERemarks.Text.Trim();
         row["DocKey"] = docKey;
         row["DocName"] = docName;
@@ -647,6 +671,7 @@ public partial class LandDispute_Entry_Entry_Page : System.Web.UI.Page
         txtUserMohalla.Text = "";
         txtvadimobile.Text = "";
         txtVadiPincode.Text = "";
+        txtAwedanPraptiDate.Text = "";
         txtADMHOMERemarks.Text = "";
 
         // back to the Rural layout (same as ddlUserAreatype_SelectedIndexChanged for non-Urban)

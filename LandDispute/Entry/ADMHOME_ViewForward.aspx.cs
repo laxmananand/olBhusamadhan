@@ -16,7 +16,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
                d.DISTRICTNAME AS DistrictName, s.Sd_Name_En AS SubDivisionName, b.BlockName, t.Police_Station AS ThanaName,
                CASE a.Vadi_AreaType WHEN 'R' THEN 'Rural' WHEN 'U' THEN 'Urban' ELSE '' END AS AreaType,
                p.PanchayatName, v.VILLNAME AS VillageName, w.WARDNAME AS WardName, a.mohalla,
-               a.Vadi_MobileNo, a.PinCode, a.Remarks, a.Status, a.CreatedBy, a.CreatedOn, a.Vadi_District_Code,
+               a.Vadi_MobileNo, a.PinCode, a.Remarks, a.AwedanPraptiDate, a.Status, a.CreatedBy, a.CreatedOn, a.Vadi_District_Code,
                -- e.g. ""BHAGALPUR - DM, BHAGALPUR - SP"" (FOR XML PATH instead of STRING_AGG: works before SQL 2017)
                STUFF((SELECT ', ' + ISNULL(fd.DISTRICTNAME, CAST(f.DistrictCode AS varchar(20))) + ' - '
                              + CASE f.ForwardedToRole WHEN 'DMOPT' THEN 'DM' ELSE 'SP' END
@@ -202,6 +202,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
         string mohalla = Convert.ToString(r["mohalla"]);
         lblDWard.Text = Enc(ward != "" && mohalla != "" ? ward + " / " + mohalla : ward + mohalla);
         lblDPincode.Text = Enc(r["PinCode"]);
+        lblDAwedanPraptiDate.Text = r["AwedanPraptiDate"] == DBNull.Value ? "-" : Convert.ToDateTime(r["AwedanPraptiDate"]).ToString("dd/MM/yyyy");
         lblDCreatedOn.Text = Convert.ToDateTime(r["CreatedOn"]).ToString("dd/MM/yyyy hh:mm tt");
         lblDCreatedBy.Text = Enc(r["CreatedBy"]);
         lblDRemarks.Text = Enc(r["Remarks"]);
@@ -255,7 +256,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
         UpdateForwardTargets();
     }
 
-    // shows the DM / SP login of the chosen district and locks a target the application was already forwarded to
+    // warns when the chosen district has no DM / SP login and locks a target the application was already forwarded to
     void UpdateForwardTargets()
     {
         chkFwdDM.Checked = chkFwdSP.Checked = false;
@@ -291,7 +292,7 @@ public partial class LandDispute_Entry_ADMHOME_ViewForward : System.Web.UI.Page
             }
             else
             {
-                info.Text = user != "" ? "Login: " + Server.HtmlEncode(user) : "इस जिले में लॉगिन उपलब्ध नहीं है";
+                info.Text = user != "" ? "" : "इस जिले में लॉगिन उपलब्ध नहीं है";
             }
         }
     }
